@@ -1,0 +1,33 @@
+@import "bootstrap";
+@import "font-awesome";
+
+.container{
+  max-width: 1000px;
+}
+.user-section{
+  a{
+    padding-left: 15px;
+  }
+  i.fa{
+    font-size: 22px;
+  }
+}
+.search-form{
+  input{
+    font-size: 13px;
+    text-align: center;
+  }
+}
+.footer{
+  font-size: 12px;
+  ul{
+    padding-left: 0;
+    > li{
+      display: inline;
+      padding-right: 15px;
+    }
+  }
+  p{
+    color: #999;
+  }
+}
