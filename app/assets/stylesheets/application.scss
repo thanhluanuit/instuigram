@@ -1,8 +1,13 @@
 @import "bootstrap";
 @import "font-awesome";
+@import "users";
 
 .container{
   max-width: 1000px;
+}
+
+.navbar{
+  border-bottom: 1px solid rgba(0,0,0,.0975);
 }
 .user-section{
   a{
@@ -10,6 +15,7 @@
   }
   i.fa{
     font-size: 22px;
+    color: #000000d4;
   }
 }
 .search-form{
@@ -20,11 +26,13 @@
 }
 .footer{
   font-size: 12px;
+  padding-top: 30px;
   ul{
     padding-left: 0;
     > li{
       display: inline;
       padding-right: 15px;
+      color: #003569;
     }
   }
   p{

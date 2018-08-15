@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Instuigram</title>
+    <title>Instagram</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -27,7 +27,7 @@
           <a><i class="fa fa-compass"></i></a>
           <a><i class="fa fa-heart"></i></a>
           <% if user_signed_in? %>
-            <a href="<%= destroy_user_session_path%>" data-method="delete">
+            <a href="<%= user_path(current_user)%>">
               <i class="fa fa-user"></i>
             </a>
           <% else %>
