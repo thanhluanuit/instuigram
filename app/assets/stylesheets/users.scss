@@ -12,10 +12,26 @@
 
 .profile .basic-info{
   padding: 40px 0;
+  .user-wrapper{
+    display: flex;
+  }
   .username{
     font-size: 30px;
     line-height: 40px;
     font-weight: 200;
+  }
+  .edit-profile{
+    margin-left: 20px;
+    margin-top: 5px;
+  }
+  .edit-profile button{
+    background-color: transparent;
+    border-radius: 5px;
+    border: 1px solid #dbdbdb;
+    color: #262626;
+    font-size: 14px;
+    padding: 4px 10px;
+    font-weight: 500;
   }
   ul.posts{
     padding-left: 0;
