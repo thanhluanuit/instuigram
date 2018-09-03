@@ -1,0 +1,77 @@
+<div class="user-edit-page">
+  <div class="actions">
+    <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+      <a class="nav-link active" data-toggle="pill" href="#v-pills-home" role="tab" aria-selected="true">Edit Profile</a>
+      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Change Password</a>
+      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Authorized Applications</a>
+      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Email and SMS</a>
+      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Manage Contacts</a>
+      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Privacy and Security</a>
+    </div>
+  </div>
+  <div class="details tab-content">
+    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+      <%= form_for @user, url: {action: "update"}, html: {class: "form-horizontal form-edit-user"} do |f| %>
+        <div class="form-group row">
+          <div class="col-sm-3 col-form-label">
+            <img class="avatar" src="https://instagram.fsgn5-1.fna.fbcdn.net/vp/3ef315d2478029b529d3c3f38daadeb3/5C12B330/t51.2885-19/s150x150/21980557_344791629305453_6312020290528346112_n.jpg">
+          </div>
+          <div class="col-sm-9">
+            <p class="username"><%=@user.username %></p>
+            <a class="change-photo" href="">Change Profile Photo</a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :name, class: 'col-sm-3 col-form-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :name, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :username, class: 'col-sm-3 col-form-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :username, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :website, class: 'col-sm-3 col-form-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :website, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :bio, class: 'col-sm-3 col-form-label' %>
+          <div class="col-sm-9">
+            <%= f.text_area :bio, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :email, class: 'col-sm-3 col-form-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :email, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :phone, class: 'col-sm-3 col-form-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :phone, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :gender, class: 'col-sm-3 col-form-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :gender, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-3">
+          </div>
+          <div class="col-sm-9">
+            <%= f.submit "Submit", class: 'btn btn-primary' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

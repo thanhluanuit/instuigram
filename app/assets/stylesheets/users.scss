@@ -99,3 +99,70 @@
     }
   }
 }
+
+/*  Edit Profile page */
+.user-edit-page{
+  margin-top: 60px;
+  display: flex;
+
+  .actions{
+    border: 1px solid #dbdbdb;
+    width: 220px;
+
+    .nav-link{
+      font-size: 14px;
+      background-color: white;
+      color: black;
+      border-radius: 0;
+      padding: 12px 0 12px 30px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    .nav-pills .nav-link.active{
+      border-left: 2px solid;
+      font-weight: 600;
+    }
+  }
+  .details{
+    border: 1px solid #dbdbdb;
+    border-left:none;
+    flex: 1;
+  }
+}
+
+/* Form Edit User */
+.form-edit-user{
+  padding: 30px 100px 10px 50px;
+
+  .form-group, input{
+    font-size: 14px;
+    color: black;
+  }
+  input, textarea{
+    border: 1px solid #efefef;
+  }
+  .col-form-label{
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .avatar{
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+  }
+  .username{
+    font-size: 20px;
+    line-height: 22px;
+    margin-bottom: 0;
+  }
+  .change-photo{
+    color: #3897f0;
+    text-decoration: none;
+    font-size: 13px;
+  }
+  input[type='submit']{
+    color: white;
+  }
+}
