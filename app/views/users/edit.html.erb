@@ -11,7 +11,7 @@
   </div>
   <div class="details tab-content">
     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-      <%= form_for @user, url: {action: "update"}, html: {class: "form-horizontal form-edit-user"} do |f| %>
+      <%= form_with model: @user, local: true, html: {class: "form-horizontal form-edit-user"} do |f| %>
         <div class="form-group row">
           <div class="col-sm-3 col-form-label">
             <img class="avatar" src="https://instagram.fsgn5-1.fna.fbcdn.net/vp/3ef315d2478029b529d3c3f38daadeb3/5C12B330/t51.2885-19/s150x150/21980557_344791629305453_6312020290528346112_n.jpg">

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.update(user_params)
 
-    redirect_to edit_user_path(@user)
+    redirect_to @user
   end
 
   private
