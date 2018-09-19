@@ -2,11 +2,12 @@
   <div class="actions">
     <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
       <a class="nav-link active" data-toggle="pill" href="#v-pills-home" role="tab" aria-selected="true">Edit Profile</a>
-      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Change Password</a>
-      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Authorized Applications</a>
-      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Email and SMS</a>
-      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Manage Contacts</a>
-      <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Privacy and Security</a>
+      <a class="nav-link" data-toggle="pill">Change Password</a>
+      <a class="nav-link" data-toggle="pill">Authorized Applications</a>
+      <a class="nav-link" data-toggle="pill">Email and SMS</a>
+      <a class="nav-link" data-toggle="pill">Manage Contacts</a>
+      <a class="nav-link" data-toggle="pill">Privacy and Security</a>
+      <%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: "nav-link" %>
     </div>
   </div>
   <div class="details tab-content">
@@ -74,4 +75,3 @@
     </div>
   </div>
 </div>
-

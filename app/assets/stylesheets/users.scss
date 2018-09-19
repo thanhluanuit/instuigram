@@ -102,12 +102,13 @@
 
 /*  Edit Profile page */
 .user-edit-page{
-  margin-top: 60px;
   display: flex;
+  margin-top: 60px;
+  min-height: 500px;
 
   .actions{
-    border: 1px solid #dbdbdb;
     width: 220px;
+    border: 1px solid #dbdbdb;
 
     .nav-link{
       font-size: 14px;
@@ -125,9 +126,9 @@
     }
   }
   .details{
+    flex: 1;
     border: 1px solid #dbdbdb;
     border-left:none;
-    flex: 1;
   }
 }
 
