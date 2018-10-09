@@ -15,3 +15,22 @@
     </div>
   <% end %>
 </div>
+
+<div class="posts">
+  <% @posts.each do |post| %>
+    <section class="post">
+      <div class="user">
+        <div class="avatar">
+          <img src="https://instagram.fsgn5-1.fna.fbcdn.net/vp/3ef315d2478029b529d3c3f38daadeb3/5C12B330/t51.2885-19/s150x150/21980557_344791629305453_6312020290528346112_n.jpg">
+        </div>
+        <div class="username">
+          <%= current_user.username %>
+        </div>
+      </div>
+      <%= image_tag post.image, class: 'main-image' %>
+      <div class="description">
+        <%= post.description %>
+      </div>
+    </section>
+  <% end %>
+</div>
