@@ -93,9 +93,14 @@
     width: 280px;
     height: 280px;
     margin: 15px;
+
     img{
       width: 100%;
       border-radius: 4%;
+      width: 278px;
+      height: 278px;
+      object-fit: cover;
+      border: 1px solid #efefef;
     }
   }
 }
