@@ -15,11 +15,17 @@
       <%= form_with model: @user, local: true, html: {class: "form-horizontal form-edit-user"} do |f| %>
         <div class="form-group row">
           <div class="col-sm-3 col-form-label">
-            <img class="avatar" src="https://instagram.fsgn5-1.fna.fbcdn.net/vp/3ef315d2478029b529d3c3f38daadeb3/5C12B330/t51.2885-19/s150x150/21980557_344791629305453_6312020290528346112_n.jpg">
+            <%= image_tag @user.avatar, class: 'avatar' %>
           </div>
           <div class="col-sm-9">
             <p class="username"><%=@user.username %></p>
             <a class="change-photo" href="">Change Profile Photo</a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :avatar, class: 'col-sm-3 col-form-label' %>
+          <div class="col-sm-9">
+            <%= f.file_field :avatar, class: 'form-control' %>
           </div>
         </div>
         <div class="form-group row">

@@ -22,7 +22,9 @@
       <section class="post">
         <div class="user">
           <div class="avatar">
-            <img src="https://instagram.fsgn5-1.fna.fbcdn.net/vp/3ef315d2478029b529d3c3f38daadeb3/5C12B330/t51.2885-19/s150x150/21980557_344791629305453_6312020290528346112_n.jpg">
+            <% if post.user.avatar.attached? %>
+              <%= image_tag post.user.avatar %>
+            <% end %>
           </div>
           <div class="username">
             <%= post.user.username %>
