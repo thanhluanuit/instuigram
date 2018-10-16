@@ -12,13 +12,15 @@
   </div>
   <div class="details tab-content">
     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-      <%= form_with model: @user, local: true, html: {class: "form-horizontal form-edit-user"} do |f| %>
+      <%= form_with model: current_user, local: true, html: {class: "form-horizontal form-edit-user"} do |f| %>
         <div class="form-group row">
           <div class="col-sm-3 col-form-label">
-            <%= image_tag @user.avatar, class: 'avatar' %>
+            <% if current_user.avatar.attached? %>
+              <%= image_tag current_user.avatar, class: 'avatar' %>
+            <%end %>
           </div>
           <div class="col-sm-9">
-            <p class="username"><%=@user.username %></p>
+            <p class="username"><%=current_user.username %></p>
             <a class="change-photo" href="">Change Profile Photo</a>
           </div>
         </div>
