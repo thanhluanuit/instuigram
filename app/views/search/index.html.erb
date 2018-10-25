@@ -1,0 +1,15 @@
+<div class="search-page">
+  <% if @posts.exists? %>
+    <h1>Top Posts</h1>
+  <% else %>
+    <h1>Oop! No matching posts ...</h1>
+  <% end %>
+
+  <div class="user-images">
+    <% @posts.each do |post|%>
+      <div class="wrapper">
+        <%=image_tag post.image %>
+      </div>
+    <% end %>
+  </div>
+</div>
