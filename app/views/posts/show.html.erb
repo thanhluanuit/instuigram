@@ -1,0 +1,20 @@
+<div class="post-show row">
+  <div class="col-md-8">
+    <%=image_tag @post.image, class: 'image' %>
+  </div>
+  <div class="col-md-4">
+    <div class="user">
+      <div class="avatar">
+        <% if @post.user.avatar.attached? %>
+          <%= link_to user_path(@post.user) do %>
+            <%= image_tag @post.user.avatar %>
+          <% end %>
+        <% end %>
+      </div>
+      <%= link_to @post.user.username, user_path(@post.user), class: 'username' %>
+    </div>
+    <div class="description">
+      <%= @post.description %>
+    </div>
+  </div>
+</div>
