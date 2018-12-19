@@ -1,40 +1,11 @@
 <div class="homepage">
   <div class='form-upload'>
-    <%= form_for Post.new do |f| %>
-      <div class="form-group">
-        <%= f.text_field :description %>
-      </div>
-      <div class="form-group">
-        <%= f.file_field :image %>
-      </div>
-      <div class="form-group">
-        <%= f.text_field :user_id, value: current_user.id, class: 'd-none' %>
-      </div>
-      <br>
-      <div class="text-center">
-        <%= f.submit 'Create Post', class: 'btn btn-primary' %>
-      </div>
-    <% end %>
+    <%= render 'upload_form' %>
   </div>
 
   <div class="posts">
     <% @posts.each do |post| %>
-      <section class="post">
-        <div class="user">
-          <div class="avatar">
-            <% if post.user.avatar.attached? %>
-              <%= link_to user_path(post.user) do %>
-                <%= image_tag post.user.avatar %>
-              <% end %>
-            <% end %>
-          </div>
-          <%= link_to post.user.username, user_path(post.user), class: 'username' %>
-        </div>
-        <%= image_tag post.image, class: 'main-image' %>
-        <div class="description">
-          <%= post.description %>
-        </div>
-      </section>
+      <%= render partial: 'post', locals: { post: post } %>
     <% end %>
     <%= paginate @posts %>
   </div>
