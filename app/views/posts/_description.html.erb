@@ -1,0 +1,7 @@
+<% post.description.to_s.split(' ').each do |word| %>
+  <% if word.start_with?('#') %>
+    <%= link_to word, search_path(query: word) %>
+  <%else %>
+    <%= word %>
+  <%end %>
+<% end %>

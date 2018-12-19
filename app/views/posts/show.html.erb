@@ -14,7 +14,7 @@
       <%= link_to @post.user.username, user_path(@post.user), class: 'username' %>
     </div>
     <div class="description">
-      <%= @post.description %>
+      <%= render partial: "description", locals: {post: @post} %>
     </div>
     <div class="delete">
       <% if current_user.posts.exists?(@post.id) %>
