@@ -27,3 +27,17 @@ I’ll guide you step by step learning Ruby on Rails through building the Instag
 - Part 1: [medium.com/luanotes/build-instagram-by-ruby-on-rails-part-1](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-1-fef7837ee399)
 - Part 2: [medium.com/luanotes/build-instagram-by-ruby-on-rails-part-2](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-2-d70b44f5c7e6)
 - Part 3: [medium.com/luanotes/build-instagram-by-ruby-on-rails-part-3](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-3-2cb65dca46d7)
+
+## Main functions:
+
+### Homepage
+![Home page](app/assets/images/home_page.png "Homepage")
+
+### User Profile Page
+![User Profile Page](app/assets/images/user_profile.png "User Profile Page")
+
+### Edit User Page
+![Edit User Page](app/assets/images/edit_user_profile.png "Edit User Page")
+
+### Search Page
+![Search Page](app/assets/images/search_page.png "Search Page")
