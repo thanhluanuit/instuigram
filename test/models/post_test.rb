@@ -78,13 +78,7 @@ class PostTest < ActiveSupport::TestCase
 
   def build_post(user: @user, description: "hello world", attach_image: true)
     post = Post.new(user: user, description: description)
-    if attach_image
-      post.image.attach(
-        io:           File.open(Rails.root.join("test/fixtures/files/test_image.png")),
-        filename:     "test_image.png",
-        content_type: "image/png"
-      )
-    end
+    attach_test_image(post.image) if attach_image
     post
   end
 end

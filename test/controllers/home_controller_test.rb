@@ -15,21 +15,14 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "when authenticated, shows at most 5 posts on the first page" do
+  test "when authenticated, paginates posts 5 per page" do
     sign_in users(:one)
     6.times { |n| create_post!(users(:one), description: "post #{n}") }
 
     get root_path
-
     assert_select "section.post", count: 5
-  end
-
-  test "when authenticated, shows the remaining posts on the second page" do
-    sign_in users(:one)
-    6.times { |n| create_post!(users(:one), description: "post #{n}") }
 
     get root_path(page: 2)
-
     assert_select "section.post", count: 3
   end
 
@@ -37,11 +30,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
   def create_post!(user, description:)
     post = user.posts.new(description: description)
-    post.image.attach(
-      io: File.open(Rails.root.join("test/fixtures/files/test_image.png")),
-      filename: "test_image.png",
-      content_type: "image/png"
-    )
+    attach_test_image(post.image)
     post.save!
     post
   end

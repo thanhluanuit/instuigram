@@ -23,11 +23,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "can have an attached avatar" do
     user = build_user
-    user.avatar.attach(
-      io: File.open(Rails.root.join("test/fixtures/files/test_image.png")),
-      filename: "test_image.png",
-      content_type: "image/png"
-    )
+    attach_test_image(user.avatar)
 
     assert user.avatar.attached?
   end

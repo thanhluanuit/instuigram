@@ -67,4 +67,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Sneaky", users(:one).reload.name
     assert_not_equal "Sneaky", users(:two).reload.name
   end
+
+  test "update, when authenticated with an invalid email, does not persist the change" do
+    sign_in users(:one)
+
+    patch user_path(users(:one)), params: { user: { email: "not-an-email" } }
+
+    assert_not_equal "not-an-email", users(:one).reload.email
+  end
 end
