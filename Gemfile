@@ -11,9 +11,9 @@ gem 'rails', '~> 8.0.5'
 # Use postgres as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '~> 6.0'
+gem 'puma', '~> 8.0'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -32,7 +32,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'devise'
-gem 'bootstrap', '~> 4.1.1'
+gem 'bootstrap', '~> 4.6.1'
 gem 'jquery-rails'
 gem "font-awesome-rails"
 gem 'bootsnap', '>= 1.4.4', require: false
