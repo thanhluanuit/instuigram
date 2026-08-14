@@ -17,6 +17,10 @@
 !/log/.keep
 !/tmp/.keep
 
+# Ignore storage (uploaded files in development, e.g. Active Storage local disk service).
+/storage/*
+!/storage/.keep
+
 /node_modules
 /yarn-error.log
 .idea/

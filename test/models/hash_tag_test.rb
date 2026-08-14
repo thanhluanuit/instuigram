@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class HashTagTest < ActiveSupport::TestCase
   test "is valid with a name" do
@@ -6,7 +6,7 @@ class HashTagTest < ActiveSupport::TestCase
   end
 
   test "has many posts through the :one fixture" do
-    assert_equal [posts(:one)], hash_tags(:one).posts
+    assert_equal [ posts(:one) ], hash_tags(:one).posts
   end
 
   test "destroying a hash_tag does not destroy its post_hash_tags" do

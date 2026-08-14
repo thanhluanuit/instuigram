@@ -56,6 +56,9 @@ jobs:
       - name: Run bundler-audit
         run: bundle exec bundle-audit check --update
 
+      - name: Run RuboCop
+        run: bundle exec rubocop
+
       - name: Set up test database
         run: bin/rails db:schema:load
 

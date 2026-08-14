@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   test "is valid with an email and a password" do
@@ -29,7 +29,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "has many posts through the :one fixture" do
-    assert_equal [posts(:one)], users(:one).posts
+    assert_equal [ posts(:one) ], users(:one).posts
   end
 
   test "destroying a user destroys their posts" do

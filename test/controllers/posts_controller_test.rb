@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
   test "when unauthenticated, redirects to sign in and creates no post" do

@@ -1,6 +1,6 @@
-require File.expand_path('../../config/environment', __FILE__)
-require 'rails/test_help'
-require 'bcrypt'
+require File.expand_path("../../config/environment", __FILE__)
+require "rails/test_help"
+require "bcrypt"
 
 module ActiveStorageTestHelper
   def attach_test_image(attachable)

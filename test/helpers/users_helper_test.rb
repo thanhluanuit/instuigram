@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class UsersHelperTest < ActionView::TestCase
   test "returns the URL unchanged when it is valid" do

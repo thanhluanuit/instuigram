@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class PostHashTagTest < ActiveSupport::TestCase
   test "is valid with a post and a hash_tag" do

@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
   test "with a blank query, shows no matching posts" do
