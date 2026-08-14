@@ -87,6 +87,8 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    brakeman (8.0.6)
+      racc
     builder (3.3.0)
     byebug (13.0.0)
       reline (>= 0.6.0)
@@ -320,6 +322,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.4)
   bootstrap (~> 4.1.1)
+  brakeman
   byebug
   capybara
   devise
