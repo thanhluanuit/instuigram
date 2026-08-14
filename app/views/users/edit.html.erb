@@ -1,17 +1,17 @@
-<div class="user-edit-page">
+<div class="user-edit-page" data-controller="tabs">
   <div class="actions">
     <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-      <a class="nav-link active" data-toggle="pill" href="#v-pills-home" role="tab" aria-selected="true">Edit Profile</a>
-      <a class="nav-link" data-toggle="pill">Change Password</a>
-      <a class="nav-link" data-toggle="pill">Authorized Applications</a>
-      <a class="nav-link" data-toggle="pill">Email and SMS</a>
-      <a class="nav-link" data-toggle="pill">Manage Contacts</a>
-      <a class="nav-link" data-toggle="pill">Privacy and Security</a>
-      <%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: "nav-link" %>
+      <a class="nav-link active" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-home" role="tab" aria-selected="true">Edit Profile</a>
+      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-password" role="tab" aria-selected="false">Change Password</a>
+      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-apps" role="tab" aria-selected="false">Authorized Applications</a>
+      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-contact" role="tab" aria-selected="false">Email and SMS</a>
+      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-contacts" role="tab" aria-selected="false">Manage Contacts</a>
+      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-privacy" role="tab" aria-selected="false">Privacy and Security</a>
+      <%= link_to 'Log Out', destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
     </div>
   </div>
   <div class="details tab-content">
-    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+    <div class="tab-pane fade show active" data-tabs-target="pane" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
       <%= form_with model: current_user, local: true, html: {class: "form-horizontal form-edit-user"} do |f| %>
         <div class="form-group row">
           <div class="col-sm-3 col-form-label">
@@ -80,6 +80,21 @@
           </div>
         </div>
       <% end %>
+    </div>
+    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-password" role="tabpanel">
+      <p>Change Password — coming soon.</p>
+    </div>
+    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-apps" role="tabpanel">
+      <p>Authorized Applications — coming soon.</p>
+    </div>
+    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-contact" role="tabpanel">
+      <p>Email and SMS — coming soon.</p>
+    </div>
+    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-contacts" role="tabpanel">
+      <p>Manage Contacts — coming soon.</p>
+    </div>
+    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-privacy" role="tabpanel">
+      <p>Privacy and Security — coming soon.</p>
     </div>
   </div>
 </div>

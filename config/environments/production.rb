@@ -30,7 +30,10 @@ Rails.application.configure do
 
   # Compress JavaScripts and CSS. This app still uses the classic Sprockets asset
   # pipeline (not Rails 8's default Propshaft), so these Sprockets settings stay.
-  config.assets.js_compressor = :uglifier
+  # Uses terser, not uglifier: uglifier wraps the ES5-only UglifyJS2 and can't parse
+  # the ES6+ syntax (const, spread/rest params) Rails' own bundled rails-ujs and
+  # ActionCable JS ship with, so it aborted assets:precompile outright.
+  config.assets.js_compressor = :terser
   config.assets.compile = false
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.

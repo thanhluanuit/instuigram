@@ -14,13 +14,16 @@ gem "pg"
 gem "puma", "~> 8.0"
 # Use SCSS for stylesheets
 gem "sassc-rails"
-# Use Uglifier as compressor for JavaScript assets
-gem "uglifier", ">= 1.3.0"
+# Use terser as compressor for JavaScript assets (handles ES6+, unlike uglifier)
+gem "terser"
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem "turbolinks", "~> 5"
+# Turbo Drive gives fast page navigation without full reloads. Requires importmap-rails
+# above it in this file for the asset-pipeline (no npm) install path. Read more: https://turbo.hotwired.dev
+gem "importmap-rails"
+gem "turbo-rails"
+gem "stimulus-rails"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 2.5"
 # Use Redis adapter to run Action Cable in production
@@ -33,7 +36,6 @@ gem "jbuilder", "~> 2.5"
 
 gem "devise"
 gem "bootstrap", "~> 4.6.1"
-gem "jquery-rails"
 gem "font-awesome-rails"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "mini_magick"
