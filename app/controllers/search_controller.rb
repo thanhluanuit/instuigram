@@ -1,6 +1,8 @@
 class SearchController < ApplicationController
   def index
-    if params[:query].start_with?('#')
+    if params[:query].blank?
+      @posts = Post.none
+    elsif params[:query].start_with?('#')
       query  = params[:query].gsub('#', '')
       @posts = Post.joins(:hash_tags).where(hash_tags: {name: query})
     else
