@@ -90,30 +90,26 @@ GEM
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
     builder (3.3.0)
-    byebug (11.1.3)
-    capybara (2.18.0)
+    byebug (13.0.0)
+      reline (>= 0.6.0)
+    capybara (3.40.0)
       addressable
+      matrix
       mini_mime (>= 0.1.3)
-      nokogiri (>= 1.3.3)
-      rack (>= 1.0.0)
-      rack-test (>= 0.5.4)
-      xpath (>= 2.0, < 4.0)
+      nokogiri (~> 1.11)
+      rack (>= 1.6.0)
+      rack-test (>= 0.6.3)
+      regexp_parser (>= 1.5, < 3.0)
+      xpath (~> 3.2)
     cgi (0.5.2)
-    coffee-rails (4.2.2)
-      coffee-script (>= 2.2.0)
-      railties (>= 4.0.0)
-    coffee-script (2.4.1)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.12.2)
     concurrent-ruby (1.3.8)
     connection_pool (3.0.2)
     crass (1.0.7)
     date (3.5.1)
-    devise (4.9.4)
+    devise (5.0.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0)
+      railties (>= 7.0)
       responders
       warden (~> 1.2.3)
     drb (2.2.3)
@@ -134,9 +130,9 @@ GEM
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jbuilder (2.13.0)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
+    jbuilder (2.15.1)
+      actionview (>= 7.0.0)
+      activesupport (>= 7.0.0)
     jquery-rails (4.6.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -158,7 +154,7 @@ GEM
       logger
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    logger (1.5.3)
+    logger (1.7.0)
     loofah (2.25.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -169,6 +165,7 @@ GEM
       net-pop
       net-smtp
     marcel (1.2.1)
+    matrix (0.4.3)
     mini_magick (5.3.3)
       logger
     mini_mime (1.1.5)
@@ -197,7 +194,8 @@ GEM
     prettyprint (0.2.0)
     prism (1.9.0)
     public_suffix (5.1.1)
-    puma (3.12.6)
+    puma (6.6.1)
+      nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.24)
     rack-session (1.0.2)
@@ -251,13 +249,14 @@ GEM
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
       tsort
+    regexp_parser (2.12.0)
     reline (0.7.0)
       io-console (~> 0.5)
-    responders (3.1.1)
-      actionpack (>= 5.2)
-      railties (>= 5.2)
+    responders (3.2.0)
+      actionpack (>= 7.0)
+      railties (>= 7.0)
     rexml (3.4.4)
-    rubyzip (2.4.1)
+    rubyzip (3.4.1)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -270,9 +269,11 @@ GEM
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
     securerandom (0.4.1)
-    selenium-webdriver (4.9.0)
+    selenium-webdriver (4.47.0)
+      base64 (~> 0.2)
+      logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 3.0)
+      rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
@@ -282,9 +283,9 @@ GEM
       base64
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.4.2)
-      actionpack (>= 5.2)
-      activesupport (>= 5.2)
+    sprockets-rails (3.5.2)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     thor (1.5.0)
     tilt (2.8.0)
@@ -324,19 +325,17 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   bootstrap (~> 4.1.1)
   byebug
-  capybara (~> 2.13)
-  coffee-rails (~> 4.2)
+  capybara
   devise
   font-awesome-rails
   jbuilder (~> 2.5)
   jquery-rails
   kaminari
   listen (~> 3.5)
-  logger (< 1.6)
   mini_magick
   mutex_m
   pg
-  puma (~> 3.7)
+  puma (~> 6.0)
   rails (~> 7.2.3.2)
   sass-rails (~> 5.0)
   selenium-webdriver
