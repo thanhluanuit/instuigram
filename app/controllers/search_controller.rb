@@ -6,7 +6,7 @@ class SearchController < ApplicationController
       query  = params[:query].gsub('#', '')
       @posts = Post.joins(:hash_tags).where(hash_tags: {name: query})
     else
-      @posts = Post.where("description like ?", "%#{params[:query]}%")
+      @posts = Post.where("description like ?", "%#{Post.sanitize_sql_like(params[:query])}%")
     end
   end
 end
