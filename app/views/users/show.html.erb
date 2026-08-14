@@ -22,7 +22,7 @@
         <li><span>345</span> following</li>
       </ul>
       <h2 class="name"><%=@user.name %></h2>
-      <%=link_to @user.website, @user.website, class: 'website' %>
+      <%= link_to @user.website, external_url(@user.website), class: 'website' %>
     </div>
   </div>
 
