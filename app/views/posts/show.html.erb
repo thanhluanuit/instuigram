@@ -17,7 +17,7 @@
       <%= render partial: "description", locals: {post: @post} %>
     </div>
     <div class="delete">
-      <% if current_user.posts.exists?(@post.id) %>
+      <% if current_user&.posts&.exists?(@post.id) %>
         <%= link_to 'Remove', post_path(@post), method: :delete, data: { confirm: 'Are you sure?' } %>
       <% end %>
     </div>

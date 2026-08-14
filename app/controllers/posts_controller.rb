@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!, except: [:show]
+
   def create
-    Post.create(post_params)
+    current_user.posts.create(post_params)
     redirect_to root_path
   end
 
@@ -18,6 +20,6 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:description, :image, :user_id)
+    params.require(:post).permit(:description, :image)
   end
 end
