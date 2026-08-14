@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.1.6'
+gem 'rails', '~> 7.2.3.2'
 # Rails 6.0/6.1's ActiveSupport::Logger monkey-patches assume the stdlib
 # logger's pre-1.6 internal structure; newer logger gems break boot.
 gem 'logger', '< 1.6'
@@ -59,6 +59,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # Ruby 3.4 removed mutex_m from default gems; spring's watcher still requires it.
+  gem 'mutex_m'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
