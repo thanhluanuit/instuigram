@@ -53,6 +53,9 @@ jobs:
       - name: Run Brakeman
         run: bundle exec brakeman
 
+      - name: Run bundler-audit
+        run: bundle exec bundle-audit check --update
+
       - name: Set up test database
         run: bin/rails db:schema:load
 

@@ -89,6 +89,9 @@ GEM
     brakeman (8.0.6)
       racc
     builder (3.3.0)
+    bundler-audit (0.9.3)
+      bundler (>= 1.2.0)
+      thor (~> 1.0)
     byebug (13.0.0)
       reline (>= 0.6.0)
     capybara (3.40.0)
@@ -322,6 +325,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   bootstrap (~> 4.6.1)
   brakeman
+  bundler-audit
   byebug
   capybara
   devise

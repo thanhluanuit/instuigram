@@ -46,6 +46,7 @@ group :development, :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'brakeman', require: false
+  gem 'bundler-audit', require: false
 end
 
 group :development do
