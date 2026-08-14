@@ -1,4 +1,6 @@
 ## Build Instagram by Ruby on Rails
+[![CI](https://github.com/thanhluanuit/instuigram/actions/workflows/ci.yml/badge.svg)](https://github.com/thanhluanuit/instuigram/actions/workflows/ci.yml)
+
 I’ll guide you step by step learning Ruby on Rails through building the Instagram application.
 
 
