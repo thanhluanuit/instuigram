@@ -42,6 +42,9 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Run Brakeman
+        run: bundle exec brakeman
+
       - name: Set up test database
         run: bin/rails db:schema:load
 
