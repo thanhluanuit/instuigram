@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.6.1'
+gem 'rails', '~> 6.1.7.10'
 # Rails 6.0/6.1's ActiveSupport::Logger monkey-patches assume the stdlib
 # logger's pre-1.6 internal structure; newer logger gems break boot.
 gem 'logger', '< 1.6'
