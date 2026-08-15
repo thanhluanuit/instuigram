@@ -3,6 +3,7 @@
   <head>
     <title>Instagram</title>
     <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
     <%= javascript_importmap_tags %>
@@ -40,7 +41,7 @@
     </nav>
 
     <!--Main content-->
-    <main class="container" style="min-height: 500px;">
+    <main class="container main-content">
       <%= yield %>
     </main>
 
