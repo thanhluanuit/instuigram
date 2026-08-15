@@ -4,9 +4,16 @@
   </div>
 
   <div class="posts">
-    <% @posts.each do |post| %>
-      <%= render partial: 'post', locals: { post: post } %>
+    <% if @posts.any? %>
+      <% @posts.each do |post| %>
+        <%= render partial: 'post', locals: { post: post } %>
+      <% end %>
+      <%= paginate @posts %>
+    <% else %>
+      <div class="empty-state">
+        <i class="fa fa-camera"></i>
+        <p>No posts yet. Share your first photo above.</p>
+      </div>
     <% end %>
-    <%= paginate @posts %>
   </div>
 </div>

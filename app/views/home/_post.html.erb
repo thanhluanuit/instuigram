@@ -9,7 +9,9 @@
     </div>
     <%= link_to post.user.username, user_path(post.user), class: 'username' %>
   </div>
-  <%= image_tag post.image, class: 'main-image' %>
+  <%= link_to post_path(post), class: 'main-image-link' do %>
+    <%= image_tag post.image, class: 'main-image' %>
+  <% end %>
   <div class="description">
     <%= render partial: "posts/description", locals: {post: post} %>
   </div>
