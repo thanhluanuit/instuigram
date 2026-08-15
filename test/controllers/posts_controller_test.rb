@@ -85,6 +85,42 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.reaction-icon", count: 0
   end
 
+  test "shows the post's existing comments" do
+    get post_path(posts(:one))
+
+    assert_select ".comment .text", text: comments(:one).body
+  end
+
+  test "when signed in as the comment's owner, shows a delete icon for that comment" do
+    sign_in users(:two)
+
+    get post_path(posts(:one))
+
+    assert_select "a.delete-comment-icon[aria-label='Delete comment']"
+  end
+
+  test "when signed in as a different user, hides the comment's delete icon" do
+    sign_in users(:one)
+
+    get post_path(posts(:one))
+
+    assert_select "a.delete-comment-icon", count: 0
+  end
+
+  test "when signed in, shows a comment form" do
+    sign_in users(:one)
+
+    get post_path(posts(:one))
+
+    assert_select "form[action=?]", post_comments_path(posts(:one))
+  end
+
+  test "when unauthenticated, hides the comment form" do
+    get post_path(posts(:one))
+
+    assert_select "form[action=?]", post_comments_path(posts(:one)), count: 0
+  end
+
   test "when unauthenticated, redirects to sign in and does not delete the post" do
     assert_no_difference("Post.count") { delete post_path(posts(:one)) }
 

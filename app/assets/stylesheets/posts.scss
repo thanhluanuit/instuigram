@@ -206,7 +206,6 @@
   }
 
   .description{
-    flex: 1;
     font-size: 14px;
     line-height: 1.6;
     color: #262626;
@@ -229,33 +228,6 @@
     margin-top: 20px;
     padding-top: 16px;
     border-top: 1px solid #efefef;
-  }
-
-  .reaction{
-    display: flex;
-    align-items: center;
-
-    .reaction-icon{
-      font-size: 24px;
-      line-height: 1;
-      color: #262626;
-      margin-right: 8px;
-
-      &:hover{
-        color: #8e8e8e;
-        text-decoration: none;
-      }
-
-      &.liked{
-        color: #ed4956;
-      }
-    }
-
-    .reactions-count{
-      font-size: 14px;
-      font-weight: 600;
-      color: #262626;
-    }
   }
 
   .delete{

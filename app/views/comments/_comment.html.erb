@@ -1,0 +1,11 @@
+<div class="comment">
+  <div class="comment-body">
+    <%= link_to comment.user.username, user_path(comment.user), class: "username" %>
+    <span class="text"><%= comment.body %></span>
+  </div>
+  <% if current_user && comment.user_id == current_user.id %>
+    <%= link_to comment_path(comment), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "delete-comment-icon", "aria-label": "Delete comment" do %>
+      <i class="fa fa-trash-o"></i>
+    <% end %>
+  <% end %>
+</div>

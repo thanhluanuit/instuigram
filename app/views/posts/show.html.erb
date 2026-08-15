@@ -26,5 +26,19 @@
         </div>
       <% end %>
     </div>
+    <div class="comments">
+      <% if @post.comments.any? %>
+        <% @post.comments.each do |comment| %>
+          <%= render partial: "comments/comment", locals: { comment: comment } %>
+        <% end %>
+      <% else %>
+        <p class="no-comments">No comments yet.</p>
+      <% end %>
+    </div>
+    <% if current_user %>
+      <div class="comment-form">
+        <%= render partial: "comments/form", locals: { post: @post } %>
+      </div>
+    <% end %>
   </div>
 </div>

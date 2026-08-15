@@ -7,7 +7,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post          = Post.find(params[:id])
+    @post          = Post.includes(comments: :user).find(params[:id])
     @user_reaction = current_user&.reactions&.find_by(reactable: @post)
   end
 
