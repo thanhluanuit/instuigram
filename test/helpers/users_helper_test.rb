@@ -9,6 +9,14 @@ class UsersHelperTest < ActionView::TestCase
     assert_nil external_url("http://a b.com")
   end
 
+  test "returns nil for a javascript: URI" do
+    assert_nil external_url("javascript:alert(document.cookie)")
+  end
+
+  test "returns nil for a data: URI" do
+    assert_nil external_url("data:text/html,<script>alert(1)</script>")
+  end
+
   test "returns an empty string for a blank URL" do
     assert_equal "", external_url("")
   end

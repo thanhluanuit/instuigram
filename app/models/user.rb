@@ -7,5 +7,5 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_one_attached :avatar
 
-  validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
+  validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true
 end

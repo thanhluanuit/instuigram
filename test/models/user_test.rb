@@ -21,6 +21,14 @@ class UserTest < ActiveSupport::TestCase
     assert_not build_user(password: "12345").valid?
   end
 
+  test "is invalid with a javascript: URI as website" do
+    assert_not build_user(website: "javascript:alert(document.cookie)").valid?
+  end
+
+  test "is valid with an http(s) website" do
+    assert build_user(website: "https://example.com").valid?
+  end
+
   test "can have an attached avatar" do
     user = build_user
     attach_test_image(user.avatar)
@@ -42,7 +50,7 @@ class UserTest < ActiveSupport::TestCase
 
   private
 
-  def build_user(email: "new_user@example.com", password: "password123", username: "new_user")
-    User.new(email: email, password: password, username: username)
+  def build_user(email: "new_user@example.com", password: "password123", username: "new_user", website: nil)
+    User.new(email: email, password: password, username: username, website: website)
   end
 end
