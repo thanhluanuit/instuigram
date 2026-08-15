@@ -8,4 +8,5 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true
+  validates :avatar, image: true
 end

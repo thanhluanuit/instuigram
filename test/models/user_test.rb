@@ -36,6 +36,22 @@ class UserTest < ActiveSupport::TestCase
     assert user.avatar.attached?
   end
 
+  test "is invalid with a non-image avatar" do
+    user = build_user
+    attach_non_image_file(user.avatar)
+
+    assert_not user.valid?
+    assert_includes user.errors[:avatar], "must be a PNG, JPEG, or WebP"
+  end
+
+  test "is invalid with an avatar over the size limit" do
+    user = build_user
+    attach_oversized_image(user.avatar)
+
+    assert_not user.valid?
+    assert_includes user.errors[:avatar], "must be smaller than 10MB"
+  end
+
   test "has many posts through the :one fixture" do
     assert_equal [ posts(:one) ], users(:one).posts
   end

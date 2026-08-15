@@ -20,6 +20,22 @@ class PostTest < ActiveSupport::TestCase
     assert_includes post.errors[:image], "can't be blank"
   end
 
+  test "is invalid with a non-image attachment" do
+    post = build_post(attach_image: false)
+    attach_non_image_file(post.image)
+
+    assert_not post.valid?
+    assert_includes post.errors[:image], "must be a PNG, JPEG, or WebP"
+  end
+
+  test "is invalid with an image over the size limit" do
+    post = build_post(attach_image: false)
+    attach_oversized_image(post.image)
+
+    assert_not post.valid?
+    assert_includes post.errors[:image], "must be smaller than 10MB"
+  end
+
   test "is invalid without a user" do
     assert_not build_post(user: nil).valid?
   end

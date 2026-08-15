@@ -6,6 +6,7 @@ class Post < ApplicationRecord
   has_many :hash_tags, through: :post_hash_tags
 
   validate :image_presence
+  validates :image, image: true
   after_commit :create_hash_tags, on: :create
 
   def image_presence

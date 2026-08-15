@@ -10,6 +10,23 @@ module ActiveStorageTestHelper
       content_type: "image/png"
     )
   end
+
+  def attach_non_image_file(attachable)
+    attachable.attach(
+      io: StringIO.new("just some text, not an image"),
+      filename: "not_an_image.txt",
+      content_type: "text/plain"
+    )
+  end
+
+  def attach_oversized_image(attachable)
+    png_signature = "\x89PNG\r\n\x1a\n".b
+    attachable.attach(
+      io: StringIO.new(png_signature + ("a" * 11.megabytes)),
+      filename: "too_big.png",
+      content_type: "image/png"
+    )
+  end
 end
 
 class ActiveSupport::TestCase
