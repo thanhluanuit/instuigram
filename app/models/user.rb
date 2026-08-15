@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :reactions, dependent: :destroy
   has_one_attached :avatar
 
   validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true

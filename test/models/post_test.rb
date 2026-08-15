@@ -90,6 +90,49 @@ class PostTest < ActiveSupport::TestCase
     assert_no_difference("HashTag.count") { post.update!(description: "great #sunset and #mountains") }
   end
 
+  test "has many comments" do
+    comment = posts(:one).comments.create!(user: @user, body: "Nice!")
+
+    assert_includes posts(:one).comments, comment
+  end
+
+  test "has many reactions through the polymorphic reactable association" do
+    reaction = posts(:one).reactions.create!(user: @user, reaction_type: :love)
+
+    assert_includes posts(:one).reactions, reaction
+  end
+
+  test "destroying a post destroys its comments" do
+    post = posts(:two)
+    comment = post.comments.create!(user: @user, body: "Nice!")
+    comment_id = comment.id
+
+    post.destroy
+
+    assert_not Comment.exists?(comment_id)
+  end
+
+  test "destroying a post destroys its reactions" do
+    post = posts(:two)
+    reaction = post.reactions.create!(user: @user, reaction_type: :love)
+    reaction_id = reaction.id
+
+    post.destroy
+
+    assert_not Reaction.exists?(reaction_id)
+  end
+
+  test "destroying a post destroys its comments' reactions" do
+    post = posts(:two)
+    comment = post.comments.create!(user: @user, body: "Nice!")
+    reaction = comment.reactions.create!(user: @user, reaction_type: :haha)
+    reaction_id = reaction.id
+
+    post.destroy
+
+    assert_not Reaction.exists?(reaction_id)
+  end
+
   private
 
   def build_post(user: @user, description: "hello world", attach_image: true)

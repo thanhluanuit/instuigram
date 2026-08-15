@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_08_14_054524) do
+ActiveRecord::Schema[8.0].define(version: 2026_08_15_070007) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_14_054524) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.bigint "user_id", null: false
+    t.text "body", null: false
+    t.integer "reactions_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_comments_on_post_id"
+  end
+
   create_table "hash_tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: nil, null: false
@@ -62,6 +72,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_14_054524) do
     t.integer "user_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "reactions_count", default: 0, null: false
+  end
+
+  create_table "reactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "reactable_type", null: false
+    t.bigint "reactable_id", null: false
+    t.string "reaction_type", default: "like", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reactable_type", "reactable_id"], name: "index_reactions_on_reactable"
+    t.index ["user_id", "reactable_type", "reactable_id"], name: "index_reactions_on_user_id_and_reactable_type_and_reactable_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

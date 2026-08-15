@@ -1,0 +1,9 @@
+one:
+  post: one
+  user: two
+  body: Nice shot!
+
+two:
+  post: two
+  user: one
+  body: Following from here.

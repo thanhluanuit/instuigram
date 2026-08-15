@@ -1,0 +1,9 @@
+one:
+  user: two
+  reactable: one (Post)
+  reaction_type: love
+
+two:
+  user: one
+  reactable: one (Comment)
+  reaction_type: haha

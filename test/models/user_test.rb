@@ -64,6 +64,40 @@ class UserTest < ActiveSupport::TestCase
     assert_not Post.exists?(post_id)
   end
 
+  test "has many comments" do
+    user = users(:one)
+    comment = user.comments.create!(post: posts(:two), body: "Nice!")
+
+    assert_includes user.comments, comment
+  end
+
+  test "has many reactions" do
+    user = users(:one)
+    reaction = user.reactions.create!(reactable: posts(:two), reaction_type: :love)
+
+    assert_includes user.reactions, reaction
+  end
+
+  test "destroying a user destroys their comments" do
+    user = users(:one)
+    comment = user.comments.create!(post: posts(:two), body: "Nice!")
+    comment_id = comment.id
+
+    user.destroy
+
+    assert_not Comment.exists?(comment_id)
+  end
+
+  test "destroying a user destroys their reactions" do
+    user = users(:one)
+    reaction = user.reactions.create!(reactable: posts(:two), reaction_type: :love)
+    reaction_id = reaction.id
+
+    user.destroy
+
+    assert_not Reaction.exists?(reaction_id)
+  end
+
   private
 
   def build_user(email: "new_user@example.com", password: "password123", username: "new_user", website: nil)
