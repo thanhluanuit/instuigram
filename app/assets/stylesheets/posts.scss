@@ -80,51 +80,124 @@
 }
 
 .post-show{
-  margin: 30px 5px 0;
+  margin: 40px auto 0;
+  max-width: 935px;
+  background: #fff;
   border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+  overflow: hidden;
 
   .col-md-8{
     padding: 0;
     .image{
       width: 100%;
+      display: block;
     }
+  }
+
+  .col-md-4{
+    display: flex;
+    flex-direction: column;
+    padding: 24px 24px 20px;
   }
 
   .user{
     display: flex;
-    padding: 10px 0;
+    align-items: center;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
     border-bottom: 1px solid #efefef;
 
     .avatar{
-      width: 40px;
-      height: 40px;
-      margin: 8px;
+      width: 44px;
+      height: 44px;
+      margin: 0 12px 0 0;
+      flex-shrink: 0;
+
       img{
         width: 100%;
         height: 100%;
+        object-fit: cover;
         border: 1px solid #efefef;
         border-radius: 50%;
       }
     }
     .username{
-      padding-top: 15px;
       color: #262626;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
+
       &:hover{
+        color: #262626;
         text-decoration: none;
       }
     }
   }
 
   .description{
-    padding: 15px 0;
-  }
-  .delete{
-    padding-top: 20px;
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #262626;
+
     a{
-      font-size: 15px;
-      text-decoration: underline;
+      color: #00376b;
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .actions{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #efefef;
+  }
+
+  .reaction{
+    display: flex;
+    align-items: center;
+
+    .reaction-icon{
+      font-size: 24px;
+      line-height: 1;
+      color: #262626;
+      margin-right: 8px;
+
+      &:hover{
+        color: #8e8e8e;
+        text-decoration: none;
+      }
+
+      &.liked{
+        color: #ed4956;
+      }
+    }
+
+    .reactions-count{
+      font-size: 14px;
+      font-weight: 600;
+      color: #262626;
+    }
+  }
+
+  .delete{
+    .delete-icon{
+      font-size: 20px;
+      line-height: 1;
+      color: #8e8e8e;
+
+      &:hover{
+        color: #ed4956;
+        text-decoration: none;
+      }
     }
   }
 }

@@ -46,43 +46,43 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "when signed in as the post's owner, shows a Delete link" do
+  test "when signed in as the post's owner, shows a Delete icon" do
     sign_in users(:one)
 
     get post_path(posts(:one))
 
-    assert_select "a", "Delete"
+    assert_select "a.delete-icon[aria-label='Delete']"
   end
 
-  test "when signed in as a different user, hides the Delete link" do
+  test "when signed in as a different user, hides the Delete icon" do
     sign_in users(:two)
 
     get post_path(posts(:one))
 
-    assert_select "a", { text: "Delete", count: 0 }
+    assert_select "a.delete-icon", count: 0
   end
 
-  test "when signed in and not yet reacted, shows a Like link" do
+  test "when signed in and not yet reacted, shows an outline heart Like icon" do
     sign_in users(:one)
 
     get post_path(posts(:two))
 
-    assert_select "a", "Like"
+    assert_select "a.reaction-icon[aria-label='Like']"
+    assert_select "a.reaction-icon.liked", count: 0
   end
 
-  test "when signed in and already reacted, shows an Unlike link" do
+  test "when signed in and already reacted, shows a filled heart Unlike icon" do
     sign_in users(:two)
 
     get post_path(posts(:one))
 
-    assert_select "a", "Unlike"
+    assert_select "a.reaction-icon.liked[aria-label='Unlike']"
   end
 
-  test "when unauthenticated, shows neither Like nor Unlike link" do
+  test "when unauthenticated, shows no reaction icon" do
     get post_path(posts(:one))
 
-    assert_select "a", { text: "Like", count: 0 }
-    assert_select "a", { text: "Unlike", count: 0 }
+    assert_select "a.reaction-icon", count: 0
   end
 
   test "when unauthenticated, redirects to sign in and does not delete the post" do

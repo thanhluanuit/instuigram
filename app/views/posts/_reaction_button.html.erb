@@ -1,9 +1,13 @@
 <div class="reaction">
   <% if current_user %>
     <% if user_reaction %>
-      <%= link_to "Unlike", post_reaction_path(post), data: { turbo_method: :delete } %>
+      <%= link_to post_reaction_path(post), data: { turbo_method: :delete }, class: "reaction-icon liked", "aria-label": "Unlike" do %>
+        <i class="fa fa-heart"></i>
+      <% end %>
     <% else %>
-      <%= link_to "Like", post_reaction_path(post), data: { turbo_method: :post } %>
+      <%= link_to post_reaction_path(post), data: { turbo_method: :post }, class: "reaction-icon", "aria-label": "Like" do %>
+        <i class="fa fa-heart-o"></i>
+      <% end %>
     <% end %>
   <% end %>
   <span class="reactions-count"><%= post.reactions_count %> likes</span>

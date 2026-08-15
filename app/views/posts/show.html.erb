@@ -16,10 +16,14 @@
     <div class="description">
       <%= render partial: "description", locals: {post: @post} %>
     </div>
-    <%= render partial: "reaction_button", locals: { post: @post, user_reaction: @user_reaction } %>
-    <div class="delete">
+    <div class="actions">
+      <%= render partial: "reaction_button", locals: { post: @post, user_reaction: @user_reaction } %>
       <% if current_user&.posts&.exists?(@post.id) %>
-        <%= link_to 'Delete', post_path(@post), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+        <div class="delete">
+          <%= link_to post_path(@post), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "delete-icon", "aria-label": "Delete" do %>
+            <i class="fa fa-trash-o"></i>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
