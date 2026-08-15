@@ -7,7 +7,8 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post          = Post.find(params[:id])
+    @user_reaction = current_user&.reactions&.find_by(reactable: @post)
   end
 
   def destroy

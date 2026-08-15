@@ -1,0 +1,10 @@
+<div class="reaction">
+  <% if current_user %>
+    <% if user_reaction %>
+      <%= link_to "Unlike", post_reaction_path(post), data: { turbo_method: :delete } %>
+    <% else %>
+      <%= link_to "Like", post_reaction_path(post), data: { turbo_method: :post } %>
+    <% end %>
+  <% end %>
+  <span class="reactions-count"><%= post.reactions_count %> likes</span>
+</div>

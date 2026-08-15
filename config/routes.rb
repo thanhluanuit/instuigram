@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   devise_for :users
   resources :users, only: [ :show, :edit, :update ]
-  resources :posts, only: [ :create, :show, :destroy ]
+  resources :posts, only: [ :create, :show, :destroy ] do
+    resource :reaction, only: [ :create, :destroy ]
+  end
   get "search" => "search#index"
 end

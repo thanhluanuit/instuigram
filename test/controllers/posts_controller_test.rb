@@ -46,20 +46,43 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "when signed in as the post's owner, shows a Remove link" do
+  test "when signed in as the post's owner, shows a Delete link" do
     sign_in users(:one)
 
     get post_path(posts(:one))
 
-    assert_select "a", "Remove"
+    assert_select "a", "Delete"
   end
 
-  test "when signed in as a different user, hides the Remove link" do
+  test "when signed in as a different user, hides the Delete link" do
     sign_in users(:two)
 
     get post_path(posts(:one))
 
-    assert_select "a", { text: "Remove", count: 0 }
+    assert_select "a", { text: "Delete", count: 0 }
+  end
+
+  test "when signed in and not yet reacted, shows a Like link" do
+    sign_in users(:one)
+
+    get post_path(posts(:two))
+
+    assert_select "a", "Like"
+  end
+
+  test "when signed in and already reacted, shows an Unlike link" do
+    sign_in users(:two)
+
+    get post_path(posts(:one))
+
+    assert_select "a", "Unlike"
+  end
+
+  test "when unauthenticated, shows neither Like nor Unlike link" do
+    get post_path(posts(:one))
+
+    assert_select "a", { text: "Like", count: 0 }
+    assert_select "a", { text: "Unlike", count: 0 }
   end
 
   test "when unauthenticated, redirects to sign in and does not delete the post" do

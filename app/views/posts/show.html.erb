@@ -16,9 +16,10 @@
     <div class="description">
       <%= render partial: "description", locals: {post: @post} %>
     </div>
+    <%= render partial: "reaction_button", locals: { post: @post, user_reaction: @user_reaction } %>
     <div class="delete">
       <% if current_user&.posts&.exists?(@post.id) %>
-        <%= link_to 'Remove', post_path(@post), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+        <%= link_to 'Delete', post_path(@post), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
       <% end %>
     </div>
   </div>
