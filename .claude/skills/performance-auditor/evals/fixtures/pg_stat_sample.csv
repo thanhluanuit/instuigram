@@ -1,0 +1,7 @@
+query,calls,total_exec_time,mean_exec_time,rows
+"SELECT ""categories"".* FROM ""categories"" WHERE ""categories"".""id"" = $1 LIMIT $2",920000,184000.0,0.20,920000
+"SELECT COUNT(*) FROM ""reviews"" WHERE ""reviews"".""product_id"" = $1",880000,52800.0,0.06,880000
+"SELECT ""products"".* FROM ""products"" WHERE ""products"".""status"" = $1 ORDER BY ""products"".""created_at"" DESC LIMIT $2",37000,8140.0,0.22,925000
+"SELECT ""orders"".* FROM ""orders"" WHERE ""orders"".""user_id"" = $1 ORDER BY ""orders"".""created_at"" DESC",4200,71400.0,17.00,210000
+"UPDATE ""orders"" SET ""total_cents"" = $1, ""updated_at"" = $2 WHERE ""orders"".""id"" = $3",96000,3840.0,0.04,96000
+"SELECT ""users"".* FROM ""users"" WHERE ""users"".""id"" = $1 LIMIT $2",610000,12200.0,0.02,610000

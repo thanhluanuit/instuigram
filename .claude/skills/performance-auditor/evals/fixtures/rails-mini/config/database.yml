@@ -1,0 +1,13 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # PLANT: pool (5) is below RAILS_MAX_THREADS (16) in config/puma.rb.
+  # Threads queue for connections → ConnectionTimeoutError under load.
+  # This is the "what breaks first" answer for eval 2e.
+  pool: 5
+
+production:
+  <<: *default
+  database: railsmini_production
+  username: railsmini
+  password: <%= ENV["RAILSMINI_DATABASE_PASSWORD"] %>

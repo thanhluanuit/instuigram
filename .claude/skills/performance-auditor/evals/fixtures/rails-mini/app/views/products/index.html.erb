@@ -1,0 +1,12 @@
+<h1>Products</h1>
+<ul>
+  <% @products.each do |product| %>
+    <li>
+      <%= product.name %>
+      <%# PLANT: N+1 — category loaded once per row %>
+      <span><%= product.category.name %></span>
+      <%# PLANT: per-row COUNT — counter_cache candidate %>
+      <span><%= product.reviews.count %> reviews</span>
+    </li>
+  <% end %>
+</ul>

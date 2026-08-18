@@ -1,0 +1,110 @@
+{
+  "skill_name": "performance-auditor",
+  "notes": "Fixtures live in evals/fixtures/ — see its README for every planted issue and every deliberate false-positive trap. Copy fixtures/rails-mini/ to a scratch directory and run the skill against it; evals 2 and 3 need it to be a git repo (git init && git add -A && git commit) so diffs resolve. Baseline for each eval is the same prompt with no skill. Assertions are graded against the run's final report plus the transcript, since several test process discipline (what the agent did) rather than report content.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "mode-c-measure-first-under-deadline",
+      "mode": "C",
+      "prompt": "our product search page (/products) has gotten really sluggish over the last month, sales keeps complaining that demos look bad. i'm fairly sure it's the elasticsearch call in app/services/search/ that's doing it. can you look at app/controllers/products_controller.rb and confirm? we ship friday so if you can just fix it while you're in there that'd save me a lot of time",
+      "expected_output": "Isolates the bottleneck before proposing anything. Should ask for a pg_stat_statements export (or run runtime_evidence.py on one, or ask for EXPLAIN output) rather than accepting the user's Elasticsearch hypothesis. Should not edit application code despite the casual 'just fix it' plus deadline pressure — it offers the fix with a before/after measurement plan instead.",
+      "files": ["fixtures/rails-mini/"],
+      "assertions": [
+        {
+          "id": "1a",
+          "text": "Does not modify any file under app/, config/, or db/ (read-only discipline holds under 'just fix it' + Friday deadline)",
+          "why": "This is the skill's core pressure scenario: an explicit-sounding invitation to edit, plus time pressure. Baseline agents typically start editing."
+        },
+        {
+          "id": "1b",
+          "text": "Does not accept the user's Elasticsearch hypothesis as established; requests runtime evidence (pg_stat_statements export / EXPLAIN output) or isolates it before naming a cause",
+          "why": "Measure-first. Confirming the user's guess is the specific failure this skill exists to prevent."
+        },
+        {
+          "id": "1c",
+          "text": "Every finding reported carries a non-empty verify field describing how to prove the fix worked",
+          "why": "Mandatory per the schema and enforced by checkpoint.py."
+        },
+        {
+          "id": "1d",
+          "text": "If a fix is offered, it is offered one at a time with a before/after measurement plan, not as a batch of edits"
+        },
+        {
+          "id": "1e",
+          "text": "Does not rank or conclude from log/development.log, and does not ask for one as the primary evidence",
+          "why": "A dev log is one machine's replayed traffic at toy data volume; treating it as production evidence is how a measure-first review ends up confidently wrong."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "mode-b-audit-sql-schema-format",
+      "mode": "B",
+      "prompt": "can you do a full performance audit of this codebase? we're expecting roughly 3x traffic when the holiday campaign launches next month and i want to know what breaks first. db side matters most to me but flag whatever you find",
+      "expected_output": "Runs a checkpointed sweep in category order. Critically: inventories indexes from db/structure.sql (CREATE INDEX), not db/schema.rb, and does not report tables as unindexed without having actually read the right schema file. Answers 'what breaks first' with a failure mode — here, connection-pool exhaustion (pool 5 vs 4 workers × 16 threads) — not a generic list.",
+      "files": ["fixtures/rails-mini/", "fixtures/pg_stat_sample.csv"],
+      "assertions": [
+        {
+          "id": "2a",
+          "text": "Inventories existing indexes from db/structure.sql (or otherwise confirms the repo's schema format) before reporting any missing-index finding",
+          "why": "Regression test for the bug where 'rg add_index db/schema.rb' returned zero hits in a structure.sql repo and fabricated Critical findings."
+        },
+        {
+          "id": "2b",
+          "text": "Reports zero missing-index findings for products.status and products.category_id, which ARE indexed in db/structure.sql",
+          "why": "The false-positive failure mode. Objectively checkable against the fixture schema."
+        },
+        {
+          "id": "2c",
+          "text": "Reports the genuinely unindexed orders.user_id (and ideally reviews.product_id) as an Index finding",
+          "why": "The true-positive counterpart to 2b — a skill that avoids false positives by reporting nothing is equally useless."
+        },
+        {
+          "id": "2d",
+          "text": "Initializes checkpoint.py and marks categories done, so the run is resumable and diffable",
+          "why": "Mode B's stated value is the re-run diff; skipping state collection forfeits it."
+        },
+        {
+          "id": "2e",
+          "text": "Findings whose traffic/reach cannot be established from code are marked confidence: needs-measurement rather than given a confident Critical",
+          "why": "Tests the anti-inflation rule directly."
+        },
+        {
+          "id": "2f",
+          "text": "Answers the 3x-traffic question by naming connection-pool exhaustion (pool 5 in database.yml vs 4 workers × 16 threads in puma.rb) as what breaks first, rather than only listing code smells",
+          "why": "The user asked what breaks first; the fixture plants an unambiguous answer and system-architecture.md §1 exists to find it."
+        },
+        {
+          "id": "2g",
+          "text": "If runtime_evidence.py is run on the pg_stat fixture, the users.id = $1 shape is NOT promoted into a finding despite being flagged as an N+1 suspect",
+          "why": "Calibration. pg_stat cannot distinguish a per-request current_user load from an N+1; the agent must rule it out by reading code instead of treating tool output as a verdict."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "mode-a-scope-discipline-on-diff",
+      "mode": "A",
+      "prompt": "reviewing the billing PR on this branch before i merge it — can you check just the perf impact of what changed? please don't dump the whole codebase's tech debt on me, i only want to know if this diff makes anything worse than it already was",
+      "expected_output": "Resolves the diff, scans only changed paths, and reports only what the change introduces or worsens. Pre-existing issues in untouched files are out of scope; if one is directly relevant it gets a single line, not a finding.",
+      "files": ["fixtures/rails-mini/"],
+      "assertions": [
+        {
+          "id": "3a",
+          "text": "Every finding's location is a file present in the diff (git diff --name-only against the base branch)",
+          "why": "Objectively checkable. Scope creep is the failure mode the user explicitly pre-empted."
+        },
+        {
+          "id": "3b",
+          "text": "Reports 'no performance regressions found' rather than inventing findings if the diff is genuinely clean",
+          "why": "A reviewer that must always find something is not useful. Tests calibration."
+        },
+        {
+          "id": "3c",
+          "text": "Any security or correctness issue noticed is deferred in one line to the appropriate skill rather than expanded into a finding",
+          "why": "Tests the sibling-skill boundary."
+        }
+      ]
+    }
+  ]
+}

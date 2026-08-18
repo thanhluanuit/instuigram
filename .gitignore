@@ -28,3 +28,6 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Transient ASVS audit run state (resume checkpoints); reports/ and baseline.json are committed.
+/asvs-audit/state/
