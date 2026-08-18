@@ -1,0 +1,16 @@
+class Api::V1::ClientsController < Api::BaseController
+  skip_before_action :authenticate_request!
+
+  rate_limit to: 5, within: 3.minutes, only: :create,
+    with: -> { render json: { message: "Too many attempts. Try again later." }, status: :too_many_requests }
+
+  def create
+    user = User.find_by(email: params[:email])
+    if user&.valid_password?(params[:password])
+      client = user.clients.create!
+      render json: { client_id: client.client_id, client_secret: client.client_secret }, status: :created
+    else
+      render json: { message: "Invalid email or password" }, status: :unauthorized
+    end
+  end
+end

@@ -9,4 +9,12 @@ Rails.application.routes.draw do
   end
   resources :comments, only: [ :destroy ]
   get "search" => "search#index"
+
+  namespace :api do
+    namespace :v1 do
+      resources :clients, only: [ :create ]
+      resource  :oauth,   only: [ :create ], controller: "oauth"
+      resources :posts,   only: [ :index, :show, :create, :destroy ]
+    end
+  end
 end
