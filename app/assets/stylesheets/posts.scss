@@ -7,26 +7,109 @@
     border: 1px solid #dbdbdb;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
-    padding: 24px;
+    padding: 20px 24px;
     margin-bottom: 32px;
 
-    label{
-      font-size: 13px;
-      font-weight: 600;
-      color: #262626;
+    .composer{
+      display: flex;
+      align-items: flex-start;
     }
 
-    input[type='text']{
+    .composer-avatar{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      margin-right: 12px;
+      flex-shrink: 0;
+      overflow: hidden;
+      background: #efefef;
+      color: #8e8e8e;
+      font-size: 20px;
+      border-radius: 50%;
+
+      img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .composer-main{
+      flex: 1;
+      min-width: 0;
+    }
+
+    .composer-input{
       width: 100%;
+      padding: 10px 0;
+      border: none;
+      border-bottom: 1px solid #efefef;
+      font-size: 20px;
+      color: #262626;
+
+      &::placeholder{
+        color: #8e8e8e;
+      }
+
+      &:focus{
+        outline: none;
+        border-bottom-color: #0095f6;
+      }
     }
 
-    .btn-primary{
-      background-color: #0095f6;
-      border-color: #0095f6;
+    .composer-toolbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+    }
 
-      &:hover, &:focus{
+    .composer-actions{
+      display: flex;
+      align-items: center;
+    }
+
+    .composer-icon-btn{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      margin: 0;
+      border-radius: 50%;
+      color: #0095f6;
+      font-size: 18px;
+      cursor: pointer;
+
+      &:hover{
+        background: rgba(0, 149, 246, .1);
+      }
+    }
+
+    .composer-filename{
+      margin-left: 10px;
+      font-size: 13px;
+      color: #8e8e8e;
+    }
+
+    .composer-submit{
+      padding: 8px 20px;
+      border: none;
+      border-radius: 9999px;
+      background-color: #0095f6;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+
+      &:hover:not(:disabled){
         background-color: #1877c9;
-        border-color: #1877c9;
+      }
+
+      &:disabled{
+        background-color: #b2dffc;
+        cursor: not-allowed;
       }
     }
   }

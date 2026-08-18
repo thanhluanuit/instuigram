@@ -1,13 +1,26 @@
-<%= form_for Post.new do |f| %>
-  <div class="form-group">
-    <%= f.label :description, "Caption" %>
-    <%= f.text_field :description, class: 'form-control', placeholder: "Write a caption... #hashtags welcome" %>
+<div class="composer">
+  <div class="composer-avatar">
+    <% if current_user.avatar.attached? %>
+      <%= image_tag current_user.avatar %>
+    <% else %>
+      <i class="fa fa-user"></i>
+    <% end %>
   </div>
-  <div class="form-group">
-    <%= f.label :image, "Photo" %>
-    <%= f.file_field :image, class: 'form-control-file' %>
+  <div class="composer-main" data-controller="composer">
+    <%= form_for Post.new, html: { class: "composer-form" } do |f| %>
+      <%= f.label :description, "Caption", class: "sr-only" %>
+      <%= f.text_field :description, class: 'composer-input', placeholder: "Write a caption... #hashtags welcome" %>
+
+      <div class="composer-toolbar">
+        <div class="composer-actions">
+          <%= f.label :image, class: "composer-icon-btn", "aria-label": "Add a photo" do %>
+            <i class="fa fa-camera"></i>
+          <% end %>
+          <%= f.file_field :image, class: 'sr-only', data: { composer_target: "fileInput", action: "change->composer#updateFilename" } %>
+          <span class="composer-filename" data-composer-target="filename">No photo selected</span>
+        </div>
+        <%= f.submit 'Post', class: 'btn composer-submit', data: { composer_target: "submit" } %>
+      </div>
+    <% end %>
   </div>
-  <div class="text-right">
-    <%= f.submit 'Post', class: 'btn btn-primary' %>
-  </div>
-<% end %>
+</div>
