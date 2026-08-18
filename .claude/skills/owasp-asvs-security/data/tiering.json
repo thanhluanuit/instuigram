@@ -1,0 +1,1312 @@
+{
+  "meta": {
+    "note": "Heuristic seed — REVIEW AND CORRECT BY HAND. Ships as a seed; hand-tuning this map over successive audits is the durable asset. Every 'auto' signal is an exact run_tools.py subcommand.",
+    "tiers": {
+      "auto": "Tool/pattern check settles it; agent runs and interprets.",
+      "inspect": "Agent reads the relevant code and reasons about it.",
+      "manual": "Process/architecture/judgment; not code-verifiable."
+    },
+    "counts": {
+      "auto": 25,
+      "inspect": 171,
+      "manual": 63
+    }
+  },
+  "tiering": {
+    "V1.1.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.1.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.1.3": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.1.4": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.1.5": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.1.6": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.1.7": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.2.1": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.2.2": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.2.3": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.2.4": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.4.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.4.4": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.4.5": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.5.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.5.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.5.3": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.5.4": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.6.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.6.2": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.6.3": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.6.4": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.7.1": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.7.2": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.8.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.8.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.9.1": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.9.2": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V1.10.1": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.11.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.11.2": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.12.2": {
+      "tier": "auto",
+      "signal": "headers",
+      "check": "Run run_tools.py headers <url> and assess CSP/HSTS/etc"
+    },
+    "V1.14.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.14.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V1.14.3": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.14.4": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.14.5": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V1.14.6": {
+      "tier": "manual",
+      "signal": "architecture",
+      "check": "Architecture/design item — confirm with team; carry prior answer forward"
+    },
+    "V2.1.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.6": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.7": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V2.1.8": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.9": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.10": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.11": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.1.12": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.2.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.2.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.2.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.3.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.3.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.4.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.4.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.4.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.4.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.4.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.5.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.5.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.5.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.5.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.5.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.5.6": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.5.7": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.6.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.6.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.6.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.7.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.7.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.7.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.7.4": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V2.7.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.7.6": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.8.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.8.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.8.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.8.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.8.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.8.6": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.8.7": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.9.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V2.9.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.9.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.10.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.10.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.10.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V2.10.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.1.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.2.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.2.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.2.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.2.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.3.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.3.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.3.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.4.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.4.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.4.3": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V3.4.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.4.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.5.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.5.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V3.5.3": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V3.7.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V4.1.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V4.1.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V4.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V4.1.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V4.2.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V4.2.2": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V4.3.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V4.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V4.3.3": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V5.1.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.1.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.1.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.1.5": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V5.2.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V5.2.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.2.3": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.2.4": {
+      "tier": "auto",
+      "signal": "grep-eval",
+      "check": "Run run_tools.py grep-eval for dynamic code execution"
+    },
+    "V5.2.5": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.2.6": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V5.2.7": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.2.8": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.3.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V5.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.3.3": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.3.4": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.3.5": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.3.6": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.3.7": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.3.8": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.3.9": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.3.10": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V5.4.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.4.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.4.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.5.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.5.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V5.5.3": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V5.5.4": {
+      "tier": "auto",
+      "signal": "grep-eval",
+      "check": "Run run_tools.py grep-eval for dynamic code execution"
+    },
+    "V6.1.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.1.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.2.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.2.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.2.3": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V6.2.4": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V6.2.5": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V6.2.6": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.3.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.4.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V6.4.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.1.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.1.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V7.1.3": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V7.1.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.2.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.2.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.3.1": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V7.3.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.3.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.4.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.4.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V7.4.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.1.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.1.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.1.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.2.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.2.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.2.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.3.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.3.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.3.4": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V8.3.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.3.6": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.3.7": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V8.3.8": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V9.1.1": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V9.1.2": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V9.1.3": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V9.2.1": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V9.2.2": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V9.2.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V9.2.4": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V10.2.1": {
+      "tier": "auto",
+      "signal": "bundler-audit",
+      "check": "Run run_tools.py bundler-audit for dependency CVEs"
+    },
+    "V10.2.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V10.3.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V10.3.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V10.3.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V11.1.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V11.1.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V11.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V11.1.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V11.1.5": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V11.1.6": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V11.1.7": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V11.1.8": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V12.1.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V12.1.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V12.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V12.2.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V12.3.1": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V12.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V12.3.3": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V12.3.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V12.3.5": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V12.3.6": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V12.4.1": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V12.4.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V12.5.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V12.5.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V12.6.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.1.1": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V13.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.1.4": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.1.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.2.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.2.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.2.3": {
+      "tier": "inspect",
+      "signal": "brakeman",
+      "check": "Read the relevant code path; Brakeman static analysis assists this class of check"
+    },
+    "V13.2.5": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.2.6": {
+      "tier": "auto",
+      "signal": "tls",
+      "check": "Run run_tools.py tls <host> (confirm full grade via SSL Labs)"
+    },
+    "V13.3.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.4.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V13.4.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.1.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.1.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.1.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.1.4": {
+      "tier": "auto",
+      "signal": "bundler-audit",
+      "check": "Run run_tools.py bundler-audit for dependency CVEs"
+    },
+    "V14.2.1": {
+      "tier": "auto",
+      "signal": "bundler-audit",
+      "check": "Run run_tools.py bundler-audit for dependency CVEs"
+    },
+    "V14.2.2": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V14.2.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.2.4": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V14.2.5": {
+      "tier": "auto",
+      "signal": "bundler-audit",
+      "check": "Run run_tools.py bundler-audit for dependency CVEs"
+    },
+    "V14.2.6": {
+      "tier": "auto",
+      "signal": "bundler-audit",
+      "check": "Run run_tools.py bundler-audit for dependency CVEs"
+    },
+    "V14.3.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.3.3": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.4.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.4.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.4.3": {
+      "tier": "auto",
+      "signal": "headers",
+      "check": "Run run_tools.py headers <url> and assess CSP/HSTS/etc"
+    },
+    "V14.4.4": {
+      "tier": "auto",
+      "signal": "headers",
+      "check": "Run run_tools.py headers <url> and assess CSP/HSTS/etc"
+    },
+    "V14.4.5": {
+      "tier": "auto",
+      "signal": "headers",
+      "check": "Run run_tools.py headers <url> and assess CSP/HSTS/etc"
+    },
+    "V14.4.6": {
+      "tier": "auto",
+      "signal": "headers",
+      "check": "Run run_tools.py headers <url> and assess CSP/HSTS/etc"
+    },
+    "V14.4.7": {
+      "tier": "auto",
+      "signal": "headers",
+      "check": "Run run_tools.py headers <url> and assess CSP/HSTS/etc"
+    },
+    "V14.5.1": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.5.2": {
+      "tier": "inspect",
+      "signal": "code",
+      "check": "Read the relevant code path and assess against the requirement"
+    },
+    "V14.5.3": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    },
+    "V14.5.4": {
+      "tier": "manual",
+      "signal": "process",
+      "check": "Not code-verifiable — confirm with team; carry prior answer forward for sign-off"
+    }
+  }
+}
