@@ -1,0 +1,45 @@
+{
+  "skill_name": "code-reviewer",
+  "evals": [
+    {
+      "id": 1,
+      "name": "money-and-idempotency",
+      "prompt": "Can you review this diff before I merge it? It's from a Rails app that has the agentic-engineering `.claude/rules/` package installed (principles.md, code_style.md, testing.md all present). Just the changed files below, unified diff format:\n\n```diff\ndiff --git a/app/jobs/charge_customer_job.rb b/app/jobs/charge_customer_job.rb\nindex 1234567..89abcde 100644\n--- a/app/jobs/charge_customer_job.rb\n+++ b/app/jobs/charge_customer_job.rb\n@@ -1,10 +1,14 @@\n class ChargeCustomerJob < ApplicationJob\n   queue_as :billing\n+  retry_on Stripe::RateLimitError, wait: :polynomially_longer, attempts: 5\n \n   def perform(order_id)\n     order = Order.find(order_id)\n-    # charging disabled for now\n+    charge = Stripe::Charge.create(\n+      amount: (order.total_price * 100).to_i,\n+      currency: \"usd\",\n+      customer: order.customer.stripe_id\n+    )\n+    order.update!(charged: true, stripe_charge_id: charge.id)\n   end\n end\ndiff --git a/app/models/order.rb b/app/models/order.rb\nindex abc1234..def5678 100644\n--- a/app/models/order.rb\n+++ b/app/models/order.rb\n@@ -4,7 +4,7 @@ class Order < ApplicationRecord\n   belongs_to :customer\n \n   def total_price\n-    line_items.sum(&:price)\n+    line_items.sum { |item| item.price.to_f * item.quantity }\n   end\n end\n```",
+      "expected_output": "Flags two correctness bugs: (1) money math cast to Float via .to_f loses precision / should stay BigDecimal, (2) ChargeCustomerJob#perform has no idempotency guard, so a retry on Stripe::RateLimitError (which the diff just added) can double-charge the customer. Each finding has file:line, a rule citation where applicable, and a concrete code fix. No security or performance deep-dive.",
+      "files": [],
+      "expectations": [
+        "Flags the money-precision bug: total_price now uses .to_f, called out as a Float/precision issue that should use BigDecimal",
+        "Flags the idempotency gap: ChargeCustomerJob#perform has no guard against double-charging on the newly-added retry_on Stripe::RateLimitError",
+        "Each finding cites a specific file:line (app/models/order.rb and/or app/jobs/charge_customer_job.rb with a line reference)",
+        "At least one concrete fenced ```ruby code fix is included, not just prose advice",
+        "Does not go deep on Stripe API security/PCI concerns or performance framing -- stays on correctness"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "controller-duplication",
+      "prompt": "review this PR, anything worth cleaning up? repo has the agentic-engineering .claude/rules/ installed.\n\n```diff\ndiff --git a/app/controllers/orders_controller.rb b/app/controllers/orders_controller.rb\nindex 111..222 100644\n--- a/app/controllers/orders_controller.rb\n+++ b/app/controllers/orders_controller.rb\n@@ -10,6 +10,12 @@ class OrdersController < ApplicationController\n   def show\n     @order = Order.find(params[:id])\n+    if @order.customer.loyalty_tier == \"gold\"\n+      @discounted_total = @order.total_price * 0.9\n+    elsif @order.customer.loyalty_tier == \"silver\"\n+      @discounted_total = @order.total_price * 0.95\n+    else\n+      @discounted_total = @order.total_price\n+    end\n   end\n end\ndiff --git a/app/controllers/invoices_controller.rb b/app/controllers/invoices_controller.rb\nindex 333..444 100644\n--- a/app/controllers/invoices_controller.rb\n+++ b/app/controllers/invoices_controller.rb\n@@ -8,6 +8,12 @@ class InvoicesController < ApplicationController\n   def show\n     @invoice = Invoice.find(params[:id])\n+    if @invoice.customer.loyalty_tier == \"gold\"\n+      @discounted_total = @invoice.total_price * 0.9\n+    elsif @invoice.customer.loyalty_tier == \"silver\"\n+      @discounted_total = @invoice.total_price * 0.95\n+    else\n+      @discounted_total = @invoice.total_price\n+    end\n   end\n end\ndiff --git a/app/controllers/subscriptions_controller.rb b/app/controllers/subscriptions_controller.rb\nindex 555..666 100644\n--- a/app/controllers/subscriptions_controller.rb\n+++ b/app/controllers/subscriptions_controller.rb\n@@ -12,6 +12,12 @@ class SubscriptionsController < ApplicationController\n   def show\n     @subscription = Subscription.find(params[:id])\n+    if @subscription.customer.loyalty_tier == \"gold\"\n+      @discounted_total = @subscription.total_price * 0.9\n+    elsif @subscription.customer.loyalty_tier == \"silver\"\n+      @discounted_total = @subscription.total_price * 0.95\n+    else\n+      @discounted_total = @subscription.total_price\n+    end\n   end\n end\n```",
+      "expected_output": "Identifies the identical loyalty-discount logic duplicated across all three controllers (third occurrence — DRY territory per principles.md), categorizes it as Cleanup (not Correctness, since behavior is fine), cites the rule, and proposes a concrete extraction (e.g. a Customer#discounted_total or a shared concern/service) as real code, not just 'consider refactoring.'",
+      "files": [],
+      "expectations": [
+        "Identifies the same discount logic duplicated across all three controllers (orders, invoices, subscriptions), not just one",
+        "Categorizes the finding as cleanup/simplification rather than framing it as a correctness bug -- the duplicated code isn't broken",
+        "Cites DRY reasoning (mentions duplication/DRY, ideally tied to principles.md's 'duplicate twice, abstract on third' framing)",
+        "Proposes a concrete extraction as real code (a fenced ```ruby block with e.g. a shared method/concern/service), not just 'consider extracting this'"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "fallback-and-lane",
+      "prompt": "Quick review before I push -- this repo doesn't have any special claude rules configured, just a standard Rails app, no linter config either. Can you check this change?\n\n```diff\ndiff --git a/app/controllers/reports_controller.rb b/app/controllers/reports_controller.rb\nindex 777..888 100644\n--- a/app/controllers/reports_controller.rb\n+++ b/app/controllers/reports_controller.rb\n@@ -3,8 +3,14 @@ class ReportsController < ApplicationController\n   def index\n-    @reports = Report.all\n+    @reports = Report.where(\"region = '#{params[:region]}'\")\n+    @previous_report = @reports[params[:page].to_i - 1]\n+    @previous_report_title = @previous_report.title\n   end\n end\n```",
+      "expected_output": "Flags the nil-safety / off-by-one correctness bug: params[:page] defaults to 0 -> index -1 -> Ruby array indexing wraps to the LAST report (or raises NoMethodError on empty results) instead of the intended previous page, with a concrete fix. Mentions the raw SQL string interpolation as a one-line pointer to a security-review skill rather than analyzing it in depth. States it's using the fallback conventions baseline since no .claude/rules/ was found in this repo.",
+      "files": [],
+      "expectations": [
+        "Flags the previous-report indexing bug: params[:page].to_i - 1 defaults to -1 when page is absent, which Ruby array indexing wraps to the LAST report (or nil on empty results) instead of raising or showing the intended page -- and .title is then called with no nil guard",
+        "Provides a concrete fenced ```ruby fix for that correctness bug",
+        "Mentions the raw SQL string interpolation only briefly as a pointer to a security review (e.g. references owasp-top-10-reviewer or 'security review'), without a deep exploit walkthrough or payload examples",
+        "States explicitly that no .claude/rules/ was found and it's using the fallback conventions baseline"
+      ]
+    }
+  ]
+}
