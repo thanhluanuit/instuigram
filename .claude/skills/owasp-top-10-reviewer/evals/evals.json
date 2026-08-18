@@ -1,0 +1,29 @@
+{
+  "skill_name": "owasp-top-10-reviewer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this PR for security issues before I merge: https://github.com/acme/rails-app/pull/482",
+      "expected_output": "PR mode. Reads the diff via GitHub MCP, runs static + inspection scoped to the change, posts inline comments tagged with OWASP 2025 category + severity + fix, and a summary review that requests changes only if Critical/High exist. Does not gate on pre-existing issues the PR didn't introduce.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Audit this Rails app for OWASP Top 10 vulnerabilities and give me a report.",
+      "expected_output": "Repo mode. Runs Brakeman + bundler-audit, sweeps all ten categories by inspection, confirms tool leads in code, and writes owasp-review-<date>.md with findings sorted by severity, category rollup, and recommended manual checks.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Is this controller safe? It does `@order = Order.find(params[:id])` then renders it as JSON for the current user.",
+      "expected_output": "Identifies A01 Broken Access Control / IDOR: unscoped find lets any authenticated user read others' orders. Assigns Critical/High, explains the attack, and gives the scoped-find fix (current_user.orders.find). Stays read-only.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "We just added a Stripe webhook endpoint and a background job that fetches a user-supplied image URL. Any security concerns?",
+      "expected_output": "Flags A08 (webhook signature verification — must verify Stripe HMAC before acting) and A01 SSRF (user-supplied URL fetch needs host allow-listing). Both tool-blind, found by reasoning. Gives concrete Rails remediations.",
+      "files": []
+    }
+  ]
+}

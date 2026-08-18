@@ -1,0 +1,283 @@
+{
+  "version": "owasp-top-10-2025",
+  "released": "2026-01",
+  "mapping_key": "warning_type",
+  "note": "v2. Static mapping keys on Brakeman's `warning_type` field (the documented, human-readable string), NOT `check_name` (the UpperCamelCase class name). Only warning types verified against brakeman warning_types docs are mapped; anything else goes to the 'uncategorized' path in run_static.py for inspection, never silently defaulted. grep_cues are LEADS to confirm in context, not findings. See references/tooling.md and references/owasp-top-10-2025-rails.md.",
+  "path_exclusions": [
+    "spec/",
+    "test/",
+    "vendor/",
+    "node_modules/",
+    "tmp/",
+    "coverage/",
+    "db/schema.rb",
+    "public/assets/"
+  ],
+  "seeds_note": "Do NOT blanket-exclude db/seeds.rb or config/**: real secrets/misconfig live there. Exclude only the noise paths above.",
+  "rails_subsystems_ref": {
+    "file": "references/rails-subsystems.md",
+    "note": "Subsystems Brakeman/core review under-cover but a review pass CAN reach. For multi-tenant apps, review multi-tenancy FIRST — it's usually the highest real risk and is invisible to static tools.",
+    "index": {
+      "multi_tenant_isolation": "A01",
+      "activestorage": "A01/A05/A08",
+      "activejob": "A08/A01/A06",
+      "actionmailer": "A05/A01/A09",
+      "actioncable": "A01/A02",
+      "caching": "A01/A08",
+      "auth_federation_oauth_saml": "A07/A01",
+      "api_hotwire": "A01/A05",
+      "secrets_git_history": "A02/A04 (out of tree — recommend gitleaks/trufflehog)"
+    }
+  },
+  "version_gated_rules": {
+    "note": "These rules are false positives on modern stacks unless the version check fails. run_static.py emits detected ruby/rails versions; gate on them.",
+    "yaml_load": "YAML.load is safe_load by default on Psych 4 (Ruby >= 3.1). Only flag YAML.load if Ruby < 3.1 OR the call is YAML.unsafe_load / Psych.unsafe_load / Marshal.load.",
+    "open_redirect": "redirect_to of user input is default-blocked on Rails >= 7.0 NEW apps (raise_on_open_redirects). Flag only if Rails < 7.0, OR config.action_controller.raise_on_open_redirects is not true (upgraded apps that never opted in), OR allow_other_host: true is passed with user input."
+  },
+  "categories": [
+    {
+      "id": "A01",
+      "name": "Broken Access Control",
+      "tool_coverage": "partial",
+      "brakeman_warning_types": [
+        "Attribute Restriction",
+        "Cross-Site Request Forgery",
+        "Mass Assignment",
+        "Unscoped Find",
+        "Unsafe Redirects",
+        "File Access",
+        "Path Traversal"
+      ],
+      "grep_cues": [
+        "\\.find\\(params\\[",
+        "params\\.permit\\([^)]*(:role|:admin|:user_id|:account_id|:owner_id)",
+        "skip_before_action\\s+:authenticate",
+        "redirect_to\\s+params\\[",
+        "redirect_to\\s+request\\.referer",
+        "allow_other_host:\\s*true",
+        "URI\\.open\\(",
+        "(Net::HTTP|HTTParty|Faraday|RestClient)[^\\n]*params\\[",
+        "default_scope\\b",
+        "\\.unscoped\\b",
+        "(has_one_attached|has_many_attached)\\b",
+        "stream_for\\b|stream_from\\b",
+        "broadcast_(to|replace_to|append_to|update_to)\\b"
+      ],
+      "grep_cue_notes": "Open-redirect cues are version-gated (see version_gated_rules.open_redirect). SSRF cues (URI.open / HTTP clients on user input) are inspection-only — Brakeman's documented warning types do NOT include a stable SSRF type, so never expect it from the static map.",
+      "inspection_only": [
+        "missing policy/authorize call per action",
+        "IDOR via correctly-typed but unscoped find",
+        "admin/Sidekiq/Flipper/PgHero mounts without auth in routes.rb",
+        "SSRF: user-controlled outbound URL without resolve-and-pin host allow-list (see field guide for DNS-rebinding note)",
+        "MULTI-TENANCY: cross-tenant query not scoped through tenant association; default_scope relied on for tenancy (bypassable); CurrentAttributes not reset per request; cross-tenant cache keys (subsystems.md \u00a71)",
+        "ActiveStorage: remote-URL attach SSRF, content-type spoofing, direct-upload/blob-attach authz (subsystems.md \u00a72)",
+        "ActionCable: channel subscribed/stream_for without ownership check (subsystems.md \u00a75)",
+        "Caching: fragment/HTTP caches not keyed by viewer/tenant (subsystems.md \u00a76)"
+      ]
+    },
+    {
+      "id": "A02",
+      "name": "Security Misconfiguration",
+      "tool_coverage": "partial",
+      "brakeman_warning_types": [
+        "Default Routes",
+        "Information Disclosure",
+        "Session Settings"
+      ],
+      "grep_cues": [
+        "origins\\s+['\"]\\*['\"]",
+        "consider_all_requests_local\\s*=\\s*true",
+        "config\\.hosts\\.clear",
+        "mount\\s+(Sidekiq::Web|PgHero|Flipper|LetterOpener)"
+      ],
+      "grep_cue_notes": "CORS is inspection-only: Brakeman has no CORS warning type. Header/CSP posture is inspection-only or an external check against a running host.",
+      "inspection_only": [
+        "force_ssl/HSTS missing in production.rb",
+        "permissive rack-cors (origins '*' with credentials)",
+        "missing security headers/CSP",
+        "filter_parameters gaps (cross-refs A09)",
+        "committed secret_key_base / example creds shipped to prod"
+      ]
+    },
+    {
+      "id": "A03",
+      "name": "Software Supply Chain Failures",
+      "tool_coverage": "strong",
+      "brakeman_warning_types": [
+        "Unmaintained Dependencies"
+      ],
+      "primary_tool": "bundler-audit",
+      "grep_cues": [
+        "gem\\s+['\"][^'\"]+['\"],\\s*(git|github):",
+        "uses:\\s+[^@\\n]+@(main|master)\\b"
+      ],
+      "dedup_note": "bundler-audit CVE advisories and Brakeman 'Unmaintained Dependencies' can both fire on the same gem — dedup by gem name, keep the CVE (higher signal).",
+      "inspection_only": [
+        "known-CVE gems (bundler-audit)",
+        "unpinned gems",
+        "git:/github: gem sources",
+        "no Dependabot/CI scanning",
+        "unpinned GitHub Actions",
+        "advisory DB stale (bundler-audit run without --update)"
+      ]
+    },
+    {
+      "id": "A04",
+      "name": "Cryptographic Failures",
+      "tool_coverage": "partial",
+      "brakeman_warning_types": [
+        "Weak Hash",
+        "SSL Verification Bypass"
+      ],
+      "grep_cues": [
+        "Digest::(MD5|SHA1)",
+        "OpenSSL::Cipher[^\\n]*ECB",
+        "rand\\([^)]*\\)",
+        "OpenSSL::SSL::VERIFY_NONE"
+      ],
+      "grep_cue_notes": "rand( is a broad lead: flag only when the value is used as a security token/secret; SecureRandom.rand and non-security rand are fine. (No lookbehind — filter in review, not in the pattern.)",
+      "inspection_only": [
+        "passwords not via has_secure_password (bcrypt) / argon2 gem",
+        "sensitive attrs not using ActiveRecord encrypts / Lockbox",
+        "static IV or hardcoded key",
+        "secrets in source"
+      ]
+    },
+    {
+      "id": "A05",
+      "name": "Injection",
+      "tool_coverage": "strong",
+      "brakeman_warning_types": [
+        "SQL Injection",
+        "Cross Site Scripting",
+        "Cross Site Scripting (Content Tag)",
+        "Cross Site Scripting (JSON)",
+        "Command Injection",
+        "Dangerous Evaluation",
+        "Dangerous Send",
+        "Dynamic Render Paths",
+        "Remote Code Execution",
+        "Format Validation",
+        "Mail Link"
+      ],
+      "grep_cues": [
+        "where\\(['\"][^?]*#\\{",
+        "find_by_sql\\(['\"][^?]*#\\{",
+        "order\\(params\\[",
+        "(system|exec)\\(['\"][^)]*#\\{",
+        "`[^`]*#\\{",
+        "%x\\[",
+        "\\.html_safe\\b",
+        "\\braw\\(",
+        "(instance_eval|class_eval|\\beval)\\(",
+        "(constantize|const_get)",
+        "\\.(send|public_send)\\(params\\[",
+        "format:\\s*\\{\\s*with:\\s*/\\^"
+      ],
+      "grep_cue_notes": "The `format: { with: /^ ... $/ }` cue is the anchor bug (Format Validation): ^ and $ match line boundaries, so a newline bypasses validation — use \\A and \\z. Brakeman also flags this as Format Validation.",
+      "inspection_only": [
+        "dynamic render of user-controlled template",
+        "ReDoS from user-compiled regex",
+        "LIKE-wildcard injection: parameterized query still needs sanitize_sql_like on the term"
+      ]
+    },
+    {
+      "id": "A06",
+      "name": "Insecure Design",
+      "tool_coverage": "weak",
+      "brakeman_warning_types": [
+        "Denial of Service"
+      ],
+      "grep_cues": [],
+      "grep_cue_notes": "Brakeman 'Denial of Service' (e.g. symbol/regex DoS) maps here as a resource-exhaustion design gap; it has no cleaner Top 10:2025 home. Most of A06 is reasoning, not tools.",
+      "inspection_only": [
+        "no rate limiting/rack-attack on auth/reset/expensive endpoints",
+        "client-trusted price/quantity/total",
+        "no account lockout",
+        "no idempotency on payments",
+        "missing re-auth on sensitive actions",
+        "unbounded mass operations"
+      ]
+    },
+    {
+      "id": "A07",
+      "name": "Authentication Failures",
+      "tool_coverage": "partial",
+      "brakeman_warning_types": [
+        "Authentication",
+        "Basic Authentication"
+      ],
+      "grep_cues": [
+        "token\\s*==\\s*params\\[",
+        "==\\s*params\\[:token\\]"
+      ],
+      "grep_cue_notes": "Timing-unsafe compares. Use ActiveSupport::SecurityUtils.secure_compare / fixed_length_secure_compare.",
+      "inspection_only": [
+        "no reset_session on login (session fixation)",
+        "user enumeration in login/reset responses",
+        "non-expiring or reusable reset/confirmation tokens",
+        "tokens generated with rand instead of SecureRandom",
+        "no MFA for privileged accounts"
+      ]
+    },
+    {
+      "id": "A08",
+      "name": "Software or Data Integrity Failures",
+      "tool_coverage": "partial",
+      "brakeman_warning_types": [
+        "Unsafe Deserialization",
+        "Remote Execution in YAML.load",
+        "Session Manipulation"
+      ],
+      "grep_cues": [
+        "cookies\\[[^\\]]+\\]\\s*=",
+        "Marshal\\.load\\(",
+        "YAML\\.unsafe_load\\(",
+        "Psych\\.unsafe_load\\("
+      ],
+      "grep_cue_notes": "YAML.load is NOT cued here on modern stacks — it is safe_load by default on Psych 4 (Ruby >= 3.1). Cue the genuinely-unsafe unsafe_load / Marshal.load. See version_gated_rules.yaml_load.",
+      "inspection_only": [
+        "webhook controller acting on payload without HMAC signature verification (Stripe/GitHub/Twilio/Shopify)",
+        "trust-bearing values in unsigned cookies (use cookies.signed/.encrypted)",
+        "ActiveJob: untrusted data into job args that get deserialized; Marshal-based Rails cache with a writable store (subsystems.md \u00a73, \u00a76)"
+      ]
+    },
+    {
+      "id": "A09",
+      "name": "Security Logging & Alerting Failures",
+      "tool_coverage": "none",
+      "brakeman_warning_types": [],
+      "grep_cues": [
+        "filter_parameters"
+      ],
+      "inspection_only": [
+        "auth/authorization events not logged",
+        "filter_parameters incomplete (password/token/secret/ssn/card)",
+        "no error tracking/alerting integration (Sentry/Honeybadger/Datadog)",
+        "no audit log on sensitive models",
+        "PII/tokens written to logs"
+      ]
+    },
+    {
+      "id": "A10",
+      "name": "Mishandling of Exceptional Conditions",
+      "tool_coverage": "weak",
+      "brakeman_warning_types": [
+        "Divide By Zero"
+      ],
+      "grep_cues": [
+        "rescue\\s+nil\\b",
+        "rescue\\s+false\\b",
+        "rescue\\s+Exception\\b"
+      ],
+      "grep_cue_notes": "Broad multiline rescues (rescue => e followed by an empty/permissive body) are NOT reliably grep-able line-by-line — run these with `rg -U` (multiline) or review rescue blocks in auth/authz/payment paths by hand. Brakeman 'Divide By Zero' is a concrete unhandled-exception signal mapped here.",
+      "inspection_only": [
+        "fail-open rescue in auth/authz/payment path",
+        "success returned on partial failure",
+        "no transaction rollback on error",
+        "TOCTOU/race without DB constraint or lock",
+        "unbounded retry loops"
+      ]
+    }
+  ]
+}

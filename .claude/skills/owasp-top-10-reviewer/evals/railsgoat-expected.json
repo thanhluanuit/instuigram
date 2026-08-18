@@ -1,0 +1,158 @@
+{
+  "benchmark": "railsgoat",
+  "source": "OWASP/railsgoat spec/vulnerabilities/ (main = Rails 8) + wiki extras",
+  "mapped_to": "owasp-top-10-2025",
+  "interpretation": "RailsGoat exercises the classic injection/IDOR/mass-assignment/auth surface — i.e. this skill's STRONG tier. High recall here validates that tier ONLY. It does NOT measure the subsystem/design gaps (multi-tenancy, SSRF, webhooks, exceptional conditions, logging) — RailsGoat plants none of those. Report the score as 'strong-tier recall', never as overall coverage.",
+  "detection_expectation": {
+    "must": "deterministic tool signal — a miss is a real defect in the skill",
+    "should": "tool may catch; inspection must — a miss means the inspection pass failed",
+    "may": "inspection-only and context-dependent — a miss is a known limitation, track it"
+  },
+  "vulns": [
+    {
+      "id": "sql_injection",
+      "ref": "spec/sql_injection_spec.rb",
+      "owasp_2025": "A05",
+      "desc": "SQL injection via string concatenation in user update",
+      "mechanism": "brakeman",
+      "brakeman_warning_type": "SQL Injection",
+      "expected": "must"
+    },
+    {
+      "id": "command_injection",
+      "ref": "spec/command_injection_spec.rb",
+      "owasp_2025": "A05",
+      "desc": "OS command injection",
+      "mechanism": "brakeman",
+      "brakeman_warning_type": "Command Injection",
+      "expected": "must"
+    },
+    {
+      "id": "xss",
+      "ref": "wiki A3 XSS",
+      "owasp_2025": "A05",
+      "desc": "Reflected/stored XSS in views",
+      "mechanism": "brakeman",
+      "brakeman_warning_type": "Cross Site Scripting",
+      "expected": "must"
+    },
+    {
+      "id": "mass_assignment",
+      "ref": "spec/mass_assignment_spec.rb",
+      "owasp_2025": "A01",
+      "desc": "Privilege escalation via mass assignment (user role/admin)",
+      "mechanism": "brakeman",
+      "brakeman_warning_type": "Mass Assignment",
+      "expected": "must"
+    },
+    {
+      "id": "known_vuln_components",
+      "ref": "wiki A9 / Gemfile.lock",
+      "owasp_2025": "A03",
+      "desc": "Gems with known CVEs",
+      "mechanism": "bundler-audit",
+      "brakeman_warning_type": null,
+      "expected": "must"
+    },
+    {
+      "id": "unvalidated_redirect",
+      "ref": "spec/unvalidated_redirects_spec.rb",
+      "owasp_2025": "A01",
+      "desc": "Open redirect via user-supplied URL",
+      "mechanism": "brakeman",
+      "brakeman_warning_type": "Unsafe Redirects",
+      "expected": "should",
+      "note": "version-gated: Brakeman flags on RailsGoat's older Rails; on Rails >=7 confirm framework default"
+    },
+    {
+      "id": "metaprogramming",
+      "ref": "wiki Extras Metaprogramming",
+      "owasp_2025": "A05",
+      "desc": "Unsafe reflection / send with user input",
+      "mechanism": "brakeman",
+      "brakeman_warning_type": "Dangerous Send",
+      "expected": "should"
+    },
+    {
+      "id": "password_hashing",
+      "ref": "spec/password_hashing_spec.rb",
+      "owasp_2025": "A04",
+      "desc": "Weak/insecure password hashing",
+      "mechanism": "inspection",
+      "brakeman_warning_type": "Weak Hash",
+      "expected": "should"
+    },
+    {
+      "id": "insecure_dor",
+      "ref": "spec/insecure_dor_spec.rb",
+      "owasp_2025": "A01",
+      "desc": "IDOR — unscoped access to another user's object",
+      "mechanism": "inspection",
+      "brakeman_warning_type": null,
+      "expected": "should"
+    },
+    {
+      "id": "url_access_control",
+      "ref": "spec/url_access_spec.rb",
+      "owasp_2025": "A01",
+      "desc": "Missing function-level access control (force-browse to privileged action)",
+      "mechanism": "inspection",
+      "brakeman_warning_type": null,
+      "expected": "should"
+    },
+    {
+      "id": "csrf",
+      "ref": "spec/csrf_spec.rb",
+      "owasp_2025": "A01",
+      "desc": "CSRF protection disabled/missing on state-changing action",
+      "mechanism": "inspection",
+      "brakeman_warning_type": "Cross-Site Request Forgery",
+      "expected": "should"
+    },
+    {
+      "id": "broken_auth",
+      "ref": "spec/broken_auth_spec.rb",
+      "owasp_2025": "A07",
+      "desc": "Broken authentication / session management",
+      "mechanism": "inspection",
+      "brakeman_warning_type": null,
+      "expected": "should"
+    },
+    {
+      "id": "password_complexity",
+      "ref": "spec/password_complexity_spec.rb",
+      "owasp_2025": "A07",
+      "desc": "No password complexity policy",
+      "mechanism": "inspection",
+      "brakeman_warning_type": null,
+      "expected": "may"
+    },
+    {
+      "id": "sensitive_data_exposure",
+      "ref": "spec/sensitive_data_exposure.rb",
+      "owasp_2025": "A04",
+      "desc": "Sensitive data exposed / insufficiently protected",
+      "mechanism": "inspection",
+      "brakeman_warning_type": null,
+      "expected": "may"
+    },
+    {
+      "id": "security_misconfiguration",
+      "ref": "wiki A5",
+      "owasp_2025": "A02",
+      "desc": "Security misconfiguration (verbose errors, defaults, headers)",
+      "mechanism": "inspection",
+      "brakeman_warning_type": "Information Disclosure",
+      "expected": "may"
+    },
+    {
+      "id": "logic_flaws",
+      "ref": "wiki Extras Logic Flaws",
+      "owasp_2025": "A06",
+      "desc": "Business-logic flaw",
+      "mechanism": "inspection",
+      "brakeman_warning_type": null,
+      "expected": "may"
+    }
+  ]
+}
