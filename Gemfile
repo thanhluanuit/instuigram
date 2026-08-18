@@ -36,7 +36,7 @@ gem "bcrypt", "~> 3.1.7"
 
 gem "devise"
 gem "jwt"
-gem "bootstrap", "~> 4.6.1"
+gem "bootstrap", "~> 5.3.8"
 gem "font-awesome-rails"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "mini_magick"

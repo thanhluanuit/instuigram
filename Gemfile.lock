@@ -75,8 +75,6 @@ GEM
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    autoprefixer-rails (10.4.21.0)
-      execjs (~> 2)
     base64 (0.3.0)
     bcrypt (3.1.22)
     benchmark (0.5.0)
@@ -84,9 +82,8 @@ GEM
     bindex (0.8.1)
     bootsnap (1.25.0)
       msgpack (~> 1.5)
-    bootstrap (4.6.2.1)
-      autoprefixer-rails (>= 9.1.0)
-      popper_js (>= 1.16.1, < 2)
+    bootstrap (5.3.8)
+      popper_js (>= 2.11.8, < 3)
     brakeman (8.0.6)
       racc
     builder (3.3.0)
@@ -202,7 +199,7 @@ GEM
       racc
     pg (1.6.3-x86_64-darwin)
     pg (1.6.3-x86_64-linux)
-    popper_js (1.16.1)
+    popper_js (2.11.8)
     pp (0.6.4)
       prettyprint
     prettyprint (0.2.0)
@@ -372,7 +369,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.4)
-  bootstrap (~> 4.6.1)
+  bootstrap (~> 5.3.8)
   brakeman
   bullet
   bundler-audit
