@@ -13,6 +13,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "avoids N+1 queries when rendering multiple posts in the grid" do
+    create_post!(users(:one), description: "second post")
+
+    assert_queries_count(6) { get user_path(users(:one)) }
+
+    assert_response :success
+  end
+
   test "when signed in as the profile owner, shows an Edit Profile link" do
     sign_in users(:one)
 

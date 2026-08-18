@@ -33,4 +33,14 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "h1", "Oop! No matching posts ..."
   end
+
+  test "avoids N+1 queries when rendering multiple matching posts" do
+    create_post!(users(:one), description: "shared marker one")
+    create_post!(users(:two), description: "shared marker two")
+
+    assert_queries_count(4) { get search_path(query: "shared marker") }
+
+    assert_select "h1", "Top Posts"
+    assert_select ".user-images .wrapper", count: 2
+  end
 end

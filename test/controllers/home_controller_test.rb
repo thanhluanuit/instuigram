@@ -15,6 +15,12 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "renders the feed with a bounded number of queries regardless of post count" do
+    sign_in users(:one)
+
+    assert_queries_count(10) { get root_path }
+  end
+
   test "when authenticated, paginates posts 5 per page" do
     sign_in users(:one)
     6.times { |n| create_post!(users(:one), description: "post #{n}") }
@@ -24,14 +30,5 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     get root_path(page: 2)
     assert_select "section.post", count: 3
-  end
-
-  private
-
-  def create_post!(user, description:)
-    post = user.posts.new(description: description)
-    attach_test_image(post.image)
-    post.save!
-    post
   end
 end

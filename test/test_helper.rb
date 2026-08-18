@@ -29,10 +29,20 @@ module ActiveStorageTestHelper
   end
 end
 
+module PostTestHelper
+  def create_post!(user, description:)
+    post = user.posts.new(description: description)
+    attach_test_image(post.image)
+    post.save!
+    post
+  end
+end
+
 class ActiveSupport::TestCase
   parallelize(workers: :number_of_processors)
   fixtures :all
   include ActiveStorageTestHelper
+  include PostTestHelper
 end
 
 class ActionDispatch::IntegrationTest
