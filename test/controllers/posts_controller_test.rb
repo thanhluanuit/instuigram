@@ -18,6 +18,14 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
+  test "when authenticated with valid params, enqueues a published_post email to the owner" do
+    sign_in users(:one)
+
+    post posts_path, params: valid_post_params
+
+    assert_enqueued_email_with(PostMailer, :published_post, args: [ Post.last ])
+  end
+
   test "when authenticated, ignores a client-supplied user_id and attributes the post to current_user" do
     sign_in users(:one)
 
@@ -36,6 +44,14 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:one)
 
     assert_no_difference("Post.count") do
+      post posts_path, params: { post: { description: "no image attached" } }
+    end
+  end
+
+  test "when authenticated without an image, enqueues no email" do
+    sign_in users(:one)
+
+    assert_no_enqueued_emails do
       post posts_path, params: { post: { description: "no image attached" } }
     end
   end

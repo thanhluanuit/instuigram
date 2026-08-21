@@ -1,0 +1,7 @@
+<p>Hi <%= @post.user.username %>,</p>
+
+<p>Your post is live:</p>
+
+<blockquote><%= @post.description %></blockquote>
+
+<p><%= link_to "View your post", post_url(@post) %></p>
