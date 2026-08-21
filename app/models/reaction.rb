@@ -8,14 +8,15 @@ class Reaction < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: [ :reactable_type, :reactable_id ] }
 
-  after_commit :broadcast_reactions_count
+  after_commit :broadcast_reaction_changes
 
   private
 
-  def broadcast_reactions_count
+  def broadcast_reaction_changes
     return unless reactable_type == "Post"
 
     PostChannel.broadcast_to(reactable, reactions_count: reactable.reload.reactions_count)
+    PostChannel.broadcast_to([ reactable, user ], liked: !destroyed?)
   rescue ActiveRecord::RecordNotFound
   end
 end

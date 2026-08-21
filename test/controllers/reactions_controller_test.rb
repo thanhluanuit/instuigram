@@ -62,4 +62,20 @@ class ReactionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to post_path(posts(:two))
   end
+
+  test "when creating from a referring page, redirects back there instead of the post" do
+    sign_in users(:one)
+
+    post post_reaction_path(posts(:two)), headers: { "HTTP_REFERER" => root_path }
+
+    assert_redirected_to root_path
+  end
+
+  test "when destroying from a referring page, redirects back there instead of the post" do
+    sign_in users(:two)
+
+    delete post_reaction_path(posts(:one)), headers: { "HTTP_REFERER" => root_path }
+
+    assert_redirected_to root_path
+  end
 end

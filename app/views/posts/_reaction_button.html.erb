@@ -1,14 +1,16 @@
-<div class="reaction">
-  <% if current_user %>
-    <% if user_reaction %>
-      <%= link_to post_reaction_path(post), data: { turbo_method: :delete }, class: "reaction-icon liked", "aria-label": "Unlike" do %>
-        <i class="fa fa-heart"></i>
-      <% end %>
-    <% else %>
-      <%= link_to post_reaction_path(post), data: { turbo_method: :post }, class: "reaction-icon", "aria-label": "Like" do %>
-        <i class="fa fa-heart-o"></i>
+<%= turbo_frame_tag dom_id(post, :reaction) do %>
+  <div class="reaction" data-controller="reactions" data-reactions-post-id-value="<%= post.id %>">
+    <% if current_user %>
+      <% if user_reaction %>
+        <%= link_to post_reaction_path(post), data: { turbo_method: :delete, reactions_target: "icon" }, class: "reaction-icon liked", "aria-label": "Unlike" do %>
+          <i class="fa fa-heart"></i>
+        <% end %>
+      <% else %>
+        <%= link_to post_reaction_path(post), data: { turbo_method: :post, reactions_target: "icon" }, class: "reaction-icon", "aria-label": "Like" do %>
+          <i class="fa fa-heart-o"></i>
+        <% end %>
       <% end %>
     <% end %>
-  <% end %>
-  <%= render partial: "posts/reactions_count", locals: { post: post } %>
-</div>
+    <%= render partial: "posts/reactions_count", locals: { post: post } %>
+  </div>
+<% end %>

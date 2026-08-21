@@ -17,4 +17,5 @@
       <%= render partial: "posts/description", locals: {post: post} %>
     </div>
   <% end %>
+  <%= render partial: "posts/reaction_button", locals: { post: post, user_reaction: user_reaction } %>
 </section>

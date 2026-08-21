@@ -6,13 +6,13 @@ class ReactionsController < ApplicationController
     reaction = current_user.reactions.find_or_initialize_by(reactable: @post)
     reaction.update(reaction_params)
 
-    redirect_to post_path(@post)
+    redirect_back(fallback_location: post_path(@post))
   end
 
   def destroy
     current_user.reactions.find_by(reactable: @post)&.destroy
 
-    redirect_to post_path(@post)
+    redirect_back(fallback_location: post_path(@post))
   end
 
   private

@@ -96,6 +96,27 @@ class ReactionTest < ActiveSupport::TestCase
     end
   end
 
+  test "creating a reaction on a post broadcasts the reacting user's own liked state" do
+    assert_broadcast_on(user_reaction_stream(posts(:two), @user), liked: true) do
+      build_reaction(reactable: posts(:two)).save!
+    end
+  end
+
+  test "destroying a reaction on a post broadcasts the reacting user's own unliked state" do
+    reaction = build_reaction(reactable: posts(:two))
+    reaction.save!
+
+    assert_broadcast_on(user_reaction_stream(posts(:two), @user), liked: false) do
+      reaction.destroy
+    end
+  end
+
+  test "reacting to a post does not broadcast a liked state to a different user's stream" do
+    assert_no_broadcasts(user_reaction_stream(posts(:two), users(:two))) do
+      build_reaction(reactable: posts(:two)).save!
+    end
+  end
+
   private
 
   def build_reaction(user: @user, reactable: @post, reaction_type: :like)
@@ -104,5 +125,9 @@ class ReactionTest < ActiveSupport::TestCase
 
   def post_stream(reactable)
     PostChannel.broadcasting_for(reactable)
+  end
+
+  def user_reaction_stream(reactable, user)
+    PostChannel.broadcasting_for([ reactable, user ])
   end
 end
