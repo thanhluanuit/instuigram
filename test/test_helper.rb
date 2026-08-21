@@ -36,14 +36,24 @@ module PostTestHelper
     post.save!
     post
   end
+
+  def index_all_posts!
+    Post.find_each { |post| post.__elasticsearch__.index_document }
+    Post.__elasticsearch__.refresh_index!
+  end
 end
 
 class ActiveSupport::TestCase
   parallelize(workers: :number_of_processors)
+  parallelize_setup do |worker|
+    ENV["ELASTICSEARCH_TEST_WORKER_NUMBER"] = worker.to_s
+    Post.__elasticsearch__.create_index!(force: true)
+  end
   fixtures :all
   include ActiveStorageTestHelper
   include PostTestHelper
   include ActionCable::TestHelper
+  include ActiveJob::TestHelper
 end
 
 class ActionDispatch::IntegrationTest

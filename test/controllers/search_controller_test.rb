@@ -1,6 +1,8 @@
 require "test_helper"
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
+  setup { index_all_posts! }
+
   test "with a blank query, shows no matching posts" do
     get search_path
 
@@ -35,10 +37,13 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "avoids N+1 queries when rendering multiple matching posts" do
-    create_post!(users(:one), description: "shared marker one")
-    create_post!(users(:two), description: "shared marker two")
+    perform_enqueued_jobs do
+      create_post!(users(:one), description: "shared marker one")
+      create_post!(users(:two), description: "shared marker two")
+    end
+    Post.__elasticsearch__.refresh_index!
 
-    assert_queries_count(4) { get search_path(query: "shared marker") }
+    assert_queries_count(3) { get search_path(query: "shared marker") }
 
     assert_select "h1", "Top Posts"
     assert_select ".user-images .wrapper", count: 2

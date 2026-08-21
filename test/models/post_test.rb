@@ -90,6 +90,42 @@ class PostTest < ActiveSupport::TestCase
     assert_no_difference("HashTag.count") { post.update!(description: "great #sunset and #mountains") }
   end
 
+  test "enqueues an IndexPostJob for the saved post when created" do
+    post = build_post(description: "great #sunset")
+
+    assert_enqueued_with(job: IndexPostJob) { post.save! }
+  end
+
+  test "does not enqueue an IndexPostJob when an existing post is updated" do
+    post = build_post(description: "great #sunset")
+    post.save!
+
+    assert_no_enqueued_jobs(only: IndexPostJob) { post.update!(description: "updated") }
+  end
+
+  test "enqueues a DeindexPostJob for the destroyed post" do
+    post = build_post(description: "great #sunset")
+    post.save!
+
+    assert_enqueued_with(job: DeindexPostJob, args: [ post.id ]) { post.destroy }
+  end
+
+  test "builds an indexed document from the id, description, created_at, and hashtag names" do
+    post = build_post(description: "great #sunset at the #beach")
+    post.save!
+
+    document = post.as_indexed_json
+
+    assert_equal post.id, document["id"]
+    assert_equal "great #sunset at the #beach", document["description"]
+    assert_equal post.created_at.as_json, document["created_at"]
+    assert_equal %w[beach sunset], document["hashtag_names"].sort
+  end
+
+  test "search returns nil for a blank query" do
+    assert_nil Post.search("")
+  end
+
   test "has many comments" do
     comment = posts(:one).comments.create!(user: @user, body: "Nice!")
 

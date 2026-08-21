@@ -1,13 +1,10 @@
 class SearchController < ApplicationController
   def index
-    if params[:query].blank?
-      @posts = Post.none
-    elsif params[:query].start_with?("#")
-      query  = params[:query].gsub("#", "")
-      @posts = Post.includes(image_attachment: :blob).joins(:hash_tags).where(hash_tags: { name: query })
+    response = Post.search(params[:query])
+    @posts = if response
+      response.page(params[:page]).per(5).records(includes: { image_attachment: :blob })
     else
-      @posts = Post.includes(image_attachment: :blob)
-                   .where("description like ?", "%#{Post.sanitize_sql_like(params[:query])}%")
+      Kaminari.paginate_array([]).page(params[:page])
     end
   end
 end
