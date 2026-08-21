@@ -110,6 +110,8 @@ surrounding file.
 
 ## Comments & docs
 
-- Comment the *why*, not the *what*. Delete commented-out code — git remembers.
-- A public method with non-obvious behavior gets a one-line doc comment.
-- Match the file's existing comment density; don't over-annotate.
+- **No comments in code, including "why" comments.** Rely on naming and
+  commit/PR descriptions to carry that context instead. Delete
+  commented-out code — git remembers.
+- Match the file's existing comment density when editing a file that
+  predates this rule; don't add new comments to it either.

@@ -12,8 +12,10 @@ style rule and a principle conflict, the principle wins.
 - Prefer built-in Rails idioms (validations, associations, scopes, ActiveJob,
   ActionMailer, Active Storage) over hand-rolled infrastructure. Reach for a
   gem or a custom abstraction only when Rails genuinely doesn't cover the case.
-- If you must override a Rails default, leave a one-line comment saying why —
-  an unexplained override reads as an oversight to the next person who finds it.
+- If you must override a Rails default, explain why in the commit message or
+  PR description — an unexplained override reads as an oversight to the next
+  person who finds it, and this project doesn't use code comments to carry
+  that context (see [`code_style.md`](code_style.md)).
 
 ## DRY — but not at the cost of the wrong abstraction
 
