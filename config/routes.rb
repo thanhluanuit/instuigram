@@ -1,7 +1,12 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   root to: "home#index"
 
   devise_for :users
+
+  mount Sidekiq::Web => "/sidekiq"
+
   resources :users, only: [ :show, :edit, :update ]
   resources :posts, only: [ :create, :show, :destroy ] do
     resources :comments, only: [ :create ]

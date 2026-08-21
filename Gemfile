@@ -41,6 +41,7 @@ gem "font-awesome-rails"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "mini_magick"
 gem "kaminari"
+gem "sidekiq", "~> 8.0"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -58,6 +59,7 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console", ">= 3.3.0"
   gem "listen", "~> 3.5"
+  gem "letter_opener"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
   gem "spring-watcher-listen", "~> 2.0.0"
