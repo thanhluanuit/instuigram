@@ -25,8 +25,11 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
   end
 
-  # Change to :null_store to avoid any caching.
-  config.cache_store = :memory_store
+  # Redis-backed cache store — real Redis in dev too (same instance already
+  # required for Sidekiq), gated by the bin/rails dev:cache toggle above.
+  # Separate logical DB (2) from Sidekiq/ActionCable's DB 1 — see
+  # production.rb for the full rationale.
+  config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_CACHE_URL", "redis://localhost:6379/2") }
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
@@ -77,5 +80,15 @@ Rails.application.configure do
     Bullet.console = true
     Bullet.rails_logger = true
     Bullet.add_footer = true
+
+    # home/_post.html.erb wraps in `cache post do`, so on a cache HIT the
+    # eager-loaded post.user/post.image (and their attachment blobs) are
+    # never touched — Bullet reads that as unused eager loading, but it's
+    # the opposite: zero queries beat the N+1 the includes prevents on a
+    # cache MISS. Safelist this specific known-safe pattern rather than
+    # dropping the includes HomeController#index still needs.
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "Post", association: :user
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "Post", association: :image_attachment
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "ActiveStorage::Attachment", association: :blob
   end
 end

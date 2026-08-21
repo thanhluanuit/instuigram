@@ -9,8 +9,8 @@
 ## Data
 
 - **Primary database**: PostgreSQL (see `config/database.yml`; no version-specific SQL, so any reasonably modern Postgres works)
-- **Cache / sessions**: Rails defaults, not explicitly configured — dev uses `:memory_store`, production has no `cache_store` set and uses Rails' default cookie-based session
-- **Background jobs**: none — no queue adapter configured
+- **Cache / sessions**: `config.cache_store = :redis_cache_store` in both development and production (`config/environments/{development,production}.rb`), pointed at `ENV.fetch("REDIS_CACHE_URL", "redis://localhost:6379/2")` — DB 2, kept separate from Sidekiq/ActionCable's DB 1 to avoid cache keys colliding with queue/pub-sub data. Deliberately not DB 0 either: on a shared local Redis instance, DB 0 is Sidekiq's own out-of-the-box default, so it's the index most likely to already be claimed by an unrelated project. Test stays `:null_store`. Sessions use Rails' default cookie-based session, not explicitly configured.
+- **Background jobs**: Sidekiq (`gem "sidekiq"`, `config.active_job.queue_adapter = :sidekiq` in `config/application.rb`), backed by the same Redis server via `ENV.fetch("REDIS_URL", "redis://localhost:6379/1")` (`config/initializers/sidekiq.rb`)
 - **Search**: none — hashtag/description search in `SearchController` is a plain `LIKE` query
 
 ## Application

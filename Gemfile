@@ -26,8 +26,8 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 2.5"
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
+# Redis client — backs the Redis cache store, Sidekiq's queues, and the production ActionCable adapter (config/cable.yml).
+gem "redis", "~> 6.0"
 # Use ActiveModel has_secure_password
 gem "bcrypt", "~> 3.1.7"
 
