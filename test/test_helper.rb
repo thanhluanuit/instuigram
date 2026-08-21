@@ -43,6 +43,7 @@ class ActiveSupport::TestCase
   fixtures :all
   include ActiveStorageTestHelper
   include PostTestHelper
+  include ActionCable::TestHelper
 end
 
 class ActionDispatch::IntegrationTest

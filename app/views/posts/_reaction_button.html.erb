@@ -10,5 +10,5 @@
       <% end %>
     <% end %>
   <% end %>
-  <span class="reactions-count"><%= post.reactions_count %> likes</span>
+  <%= render partial: "posts/reactions_count", locals: { post: post } %>
 </div>

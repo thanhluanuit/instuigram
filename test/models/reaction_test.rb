@@ -75,9 +75,34 @@ class ReactionTest < ActiveSupport::TestCase
     end
   end
 
+  test "creating a reaction on a post broadcasts the new reactions_count to PostChannel" do
+    assert_broadcast_on(post_stream(posts(:two)), reactions_count: 1) do
+      build_reaction(reactable: posts(:two)).save!
+    end
+  end
+
+  test "destroying a reaction on a post broadcasts the new reactions_count to PostChannel" do
+    reaction = build_reaction(reactable: posts(:two))
+    reaction.save!
+
+    assert_broadcast_on(post_stream(posts(:two)), reactions_count: 0) do
+      reaction.destroy
+    end
+  end
+
+  test "creating a reaction on a comment does not broadcast to PostChannel" do
+    assert_no_broadcasts(post_stream(comments(:two))) do
+      build_reaction(reactable: comments(:two)).save!
+    end
+  end
+
   private
 
   def build_reaction(user: @user, reactable: @post, reaction_type: :like)
     Reaction.new(user: user, reactable: reactable, reaction_type: reaction_type)
+  end
+
+  def post_stream(reactable)
+    PostChannel.broadcasting_for(reactable)
   end
 end

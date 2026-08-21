@@ -7,4 +7,15 @@ class Reaction < ApplicationRecord
   enum :reaction_type, REACTION_TYPES, default: :like
 
   validates :user_id, uniqueness: { scope: [ :reactable_type, :reactable_id ] }
+
+  after_commit :broadcast_reactions_count
+
+  private
+
+  def broadcast_reactions_count
+    return unless reactable_type == "Post"
+
+    PostChannel.broadcast_to(reactable, reactions_count: reactable.reload.reactions_count)
+  rescue ActiveRecord::RecordNotFound
+  end
 end
