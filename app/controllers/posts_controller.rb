@@ -2,11 +2,8 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: [ :show ]
 
   def create
-    post = current_user.posts.create(post_params)
-    if post.persisted?
-      PostMailer.published_post(post).deliver_later
-      log_event(event_type: :post_created, subject: post)
-    end
+    post = Posts::Create.call(user: current_user, post_params: post_params)
+    log_event(event_type: :post_created, subject: post) if post.persisted?
     redirect_to root_path
   end
 
