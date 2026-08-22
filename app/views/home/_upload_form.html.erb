@@ -8,7 +8,7 @@
   </div>
   <div class="composer-main" data-controller="composer">
     <%= form_for Post.new, html: { class: "composer-form" } do |f| %>
-      <%= f.label :description, "Caption", class: "sr-only" %>
+      <%= f.label :description, "Caption", class: "visually-hidden" %>
       <%= f.text_field :description, class: 'composer-input', placeholder: "Write a caption... #hashtags welcome" %>
 
       <div class="composer-toolbar">
@@ -16,7 +16,7 @@
           <%= f.label :image, class: "composer-icon-btn", "aria-label": "Add a photo" do %>
             <i class="fa fa-camera"></i>
           <% end %>
-          <%= f.file_field :image, class: 'sr-only', data: { composer_target: "fileInput", action: "change->composer#updateFilename" } %>
+          <%= f.file_field :image, class: 'visually-hidden', data: { composer_target: "fileInput", action: "change->composer#updateFilename" } %>
           <span class="composer-filename" data-composer-target="filename">No photo selected</span>
         </div>
         <%= f.submit 'Post', class: 'btn composer-submit', data: { composer_target: "submit" } %>

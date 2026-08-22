@@ -23,7 +23,7 @@
 - **Rendering**: server-rendered ERB views (no ViewComponent) with Turbo Drive (`turbo-rails`) for page acceleration and Stimulus (`stimulus-rails`) for the small amount of client-side behavior (e.g. `app/javascript/controllers/tabs_controller.js`). No jQuery — dropped along with Bootstrap's JS bundle; Bootstrap is CSS-only now.
 - **Asset pipeline**: Sprockets owns CSS (classic Rails asset pipeline, not Propshaft/webpacker/jsbundling — `package.json` has no dependencies) and non-JS assets; `importmap-rails` owns all JS (Turbo, Stimulus, app controllers) — added because `turbo-rails`'s no-npm install path requires it. The two coexist normally; this isn't a conflict, just two asset-delivery mechanisms doing different jobs.
 - **JS compressor**: `terser`, not `uglifier` — `uglifier` wraps the ES5-only UglifyJS2 and can't parse the ES6+ syntax Rails' own bundled JS (rails-ujs historically, ActionCable) ships with; it aborted `assets:precompile` outright. `terser` handles modern JS natively.
-- **CSS**: SCSS via `sassc-rails`, with Bootstrap 4.6.x
+- **CSS**: SCSS via `sassc-rails`, with Bootstrap 5.3.x
 
 ## Testing & quality
 

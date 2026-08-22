@@ -20,8 +20,8 @@
           </a>
         </div>
         <div class="m-auto">
-          <%= form_with url: search_path, method: :get, local: true, class: 'form-inline search-form' do |form| %>
-            <%= form.text_field :query, value: params[:query], class: 'form-control mr-sm-2', placeholder: '#search' %>
+          <%= form_with url: search_path, method: :get, local: true, class: 'd-flex search-form' do |form| %>
+            <%= form.text_field :query, value: params[:query], class: 'form-control w-auto me-sm-2', placeholder: '#search' %>
           <% end %>
         </div>
         <div class="user-section">
