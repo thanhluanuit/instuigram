@@ -67,6 +67,19 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal "New Name", users(:one).reload.name
   end
 
+  test "update, when authenticated with valid params, logs a profile_updated event" do
+    sign_in users(:one)
+
+    assert_difference("EventLog.count", 1) do
+      patch user_path(users(:one)), params: { user: { name: "New Name" } }
+    end
+
+    event_log = EventLog.last
+    assert_equal "profile_updated", event_log.event_type
+    assert_equal users(:one), event_log.subject
+    assert_equal users(:one), event_log.user
+  end
+
   test "update, when authenticated, ignores the url's user id and only ever updates current_user" do
     sign_in users(:one)
 
@@ -79,7 +92,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "update, when authenticated with an invalid email, does not persist the change" do
     sign_in users(:one)
 
-    patch user_path(users(:one)), params: { user: { email: "not-an-email" } }
+    assert_no_difference("EventLog.count") do
+      patch user_path(users(:one)), params: { user: { email: "not-an-email" } }
+    end
 
     assert_not_equal "not-an-email", users(:one).reload.email
   end

@@ -2,7 +2,7 @@ require "test_helper"
 
 class CommentsControllerTest < ActionDispatch::IntegrationTest
   test "when unauthenticated, redirects to sign in and creates no comment" do
-    assert_no_difference("Comment.count") do
+    assert_no_difference([ "Comment.count", "EventLog.count" ]) do
       post post_comments_path(posts(:one)), params: { comment: { body: "Nice!" } }
     end
 
@@ -23,10 +23,23 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to post_path(posts(:two))
   end
 
+  test "when authenticated with a valid body, logs a comment_created event" do
+    sign_in users(:one)
+
+    assert_difference("EventLog.count", 1) do
+      post post_comments_path(posts(:two)), params: { comment: { body: "Nice!" } }
+    end
+
+    event_log = EventLog.last
+    assert_equal "comment_created", event_log.event_type
+    assert_equal Comment.last, event_log.subject
+    assert_equal users(:one), event_log.user
+  end
+
   test "when authenticated with a blank body, creates no comment" do
     sign_in users(:one)
 
-    assert_no_difference("Comment.count") do
+    assert_no_difference([ "Comment.count", "EventLog.count" ]) do
       post post_comments_path(posts(:two)), params: { comment: { body: "" } }
     end
   end
