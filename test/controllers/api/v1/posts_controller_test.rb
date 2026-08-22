@@ -22,14 +22,14 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes ids, posts(:two).id
   end
 
-  test "index paginates results to 25 per page" do
-    26.times { |n| create_post!(@user, description: "post #{n}") }
+  test "index paginates results to 10 per page" do
+    10.times { |n| create_post!(@user, description: "post #{n}") }
 
     get api_v1_posts_path, headers: auth_headers
 
     assert_response :success
     body = JSON.parse(response.body)
-    assert_equal 25, body["posts"].size
+    assert_equal 10, body["posts"].size
     assert_equal 1, body["current_page"]
     assert_equal 2, body["total_pages"]
   end

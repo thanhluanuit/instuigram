@@ -2,7 +2,7 @@ class Api::V1::PostsController < Api::BaseController
   def index
     posts = current_user_api.posts.includes(:hash_tags, image_attachment: :blob)
                                    .order(created_at: :desc)
-                                   .page(params[:page]).per(25)
+                                   .page(params[:page]).per(10)
     render json: {
       posts: posts.map { |post| post_json(post) },
       current_page: posts.current_page,
