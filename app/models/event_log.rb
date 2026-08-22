@@ -8,7 +8,9 @@ class EventLog < ApplicationRecord
   }.freeze
 
   belongs_to :user
-  belongs_to :subject, polymorphic: true
+  belongs_to :subject, polymorphic: true, optional: true
 
   enum :event_type, EVENT_TYPES
+
+  validates :subject_type, :subject_id, presence: true
 end

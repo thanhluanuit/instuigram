@@ -27,7 +27,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:one)
 
     assert_difference("EventLog.count", 1) do
-      post post_comments_path(posts(:two)), params: { comment: { body: "Nice!" } }
+      perform_enqueued_jobs { post post_comments_path(posts(:two)), params: { comment: { body: "Nice!" } } }
     end
 
     event_log = EventLog.last

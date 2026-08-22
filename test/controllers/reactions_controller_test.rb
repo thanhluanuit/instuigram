@@ -22,7 +22,7 @@ class ReactionsControllerTest < ActionDispatch::IntegrationTest
   test "when authenticated, logs a reaction_created event for a first-time reaction" do
     sign_in users(:one)
 
-    assert_difference("EventLog.count", 1) { post post_reaction_path(posts(:two)) }
+    assert_difference("EventLog.count", 1) { perform_enqueued_jobs { post post_reaction_path(posts(:two)) } }
 
     event_log = EventLog.last
     assert_equal "reaction_created", event_log.event_type

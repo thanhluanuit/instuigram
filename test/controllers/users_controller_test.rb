@@ -71,7 +71,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:one)
 
     assert_difference("EventLog.count", 1) do
-      patch user_path(users(:one)), params: { user: { name: "New Name" } }
+      perform_enqueued_jobs { patch user_path(users(:one)), params: { user: { name: "New Name" } } }
     end
 
     event_log = EventLog.last

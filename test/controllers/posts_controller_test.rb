@@ -29,7 +29,9 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   test "when authenticated with valid params, logs a post_created event" do
     sign_in users(:one)
 
-    assert_difference("EventLog.count", 1) { post posts_path, params: valid_post_params }
+    assert_difference("EventLog.count", 1) do
+      perform_enqueued_jobs { post posts_path, params: valid_post_params }
+    end
 
     event_log = EventLog.last
     assert_equal "post_created", event_log.event_type
@@ -166,7 +168,9 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   test "when signed in as the post's owner, logs a post_destroyed event" do
     sign_in users(:one)
 
-    assert_difference("EventLog.count", 1) { delete post_path(posts(:one)) }
+    assert_difference("EventLog.count", 1) do
+      perform_enqueued_jobs { delete post_path(posts(:one)) }
+    end
 
     event_log = EventLog.last
     assert_equal "post_destroyed", event_log.event_type

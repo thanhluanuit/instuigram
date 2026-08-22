@@ -4,9 +4,11 @@ class ApplicationController < ActionController::Base
   private
 
   def log_event(event_type:, subject:)
-    current_user.event_logs.create!(
+    LogEventJob.perform_later(
+      user_id: current_user.id,
       event_type: event_type,
-      subject: subject,
+      subject_type: subject.class.name,
+      subject_id: subject.id,
       ip_address: request.remote_ip,
       user_agent: request.user_agent
     )
