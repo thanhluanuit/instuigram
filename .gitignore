@@ -31,3 +31,6 @@
 
 # Transient ASVS audit run state (resume checkpoints); reports/ and baseline.json are committed.
 /asvs-audit/state/
+
+# Local git worktrees used for isolated feature/upgrade work.
+/.worktrees/
