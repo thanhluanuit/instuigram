@@ -16,7 +16,7 @@
         <div class="row mb-3">
           <div class="col-sm-3 col-form-label">
             <% if current_user.avatar.attached? %>
-              <%= image_tag current_user.avatar, class: 'avatar' %>
+              <%= image_tag current_user.avatar.variant(resize_to_fill: [ 76, 76 ]), class: 'avatar' %>
             <%end %>
           </div>
           <div class="col-sm-9">

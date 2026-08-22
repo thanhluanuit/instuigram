@@ -40,6 +40,7 @@ gem "bootstrap", "~> 5.3.8"
 gem "font-awesome-rails"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "mini_magick"
+gem "image_processing"
 gem "kaminari"
 gem "sidekiq", "~> 8.0"
 gem "elasticsearch-model", "~> 8.0"

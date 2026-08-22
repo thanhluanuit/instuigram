@@ -30,12 +30,12 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select ".reaction-icon.liked", count: 1
   end
 
-  test "when authenticated, paginates posts 5 per page" do
+  test "when authenticated, paginates posts 10 per page" do
     sign_in users(:one)
-    6.times { |n| create_post!(users(:one), description: "post #{n}") }
+    11.times { |n| create_post!(users(:one), description: "post #{n}") }
 
     get root_path
-    assert_select "section.post", count: 5
+    assert_select "section.post", count: 10
 
     get root_path(page: 2)
     assert_select "section.post", count: 3

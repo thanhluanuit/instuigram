@@ -17,9 +17,21 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     get api_v1_posts_path, headers: auth_headers
 
     assert_response :success
-    ids = JSON.parse(response.body).map { |post| post["id"] }
+    ids = JSON.parse(response.body)["posts"].map { |post| post["id"] }
     assert_includes ids, posts(:one).id
     assert_not_includes ids, posts(:two).id
+  end
+
+  test "index paginates results to 10 per page" do
+    10.times { |n| create_post!(@user, description: "post #{n}") }
+
+    get api_v1_posts_path, headers: auth_headers
+
+    assert_response :success
+    body = JSON.parse(response.body)
+    assert_equal 10, body["posts"].size
+    assert_equal 1, body["current_page"]
+    assert_equal 2, body["total_pages"]
   end
 
   test "show returns the post's attributes" do

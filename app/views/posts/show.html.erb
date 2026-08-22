@@ -1,13 +1,13 @@
 <div class="post-show row">
   <div class="col-md-8">
-    <%=image_tag @post.image, class: 'image' %>
+    <%=image_tag @post.image.variant(resize_to_limit: [ 600, 600 ]), class: 'image' %>
   </div>
   <div class="col-md-4">
     <div class="user">
       <div class="avatar">
         <% if @post.user.avatar.attached? %>
           <%= link_to user_path(@post.user) do %>
-            <%= image_tag @post.user.avatar %>
+            <%= image_tag @post.user.avatar.variant(resize_to_fill: [ 88, 88 ]) %>
           <% end %>
         <% end %>
       </div>

@@ -4,14 +4,14 @@
       <div class="avatar">
         <% if post.user.avatar.attached? %>
           <%= link_to user_path(post.user) do %>
-            <%= image_tag post.user.avatar %>
+            <%= image_tag post.user.avatar.variant(resize_to_fill: [ 72, 72 ]) %>
           <% end %>
         <% end %>
       </div>
       <%= link_to post.user.username, user_path(post.user), class: 'username' %>
     </div>
     <%= link_to post_path(post), class: 'main-image-link' do %>
-      <%= image_tag post.image, class: 'main-image' %>
+      <%= image_tag post.image.variant(resize_to_limit: [ 600, 600 ]), class: 'main-image' %>
     <% end %>
     <div class="description">
       <%= render partial: "posts/description", locals: {post: post} %>
