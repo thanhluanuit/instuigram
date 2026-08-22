@@ -3,7 +3,7 @@
 ## Runtime
 
 - **Ruby**: 3.3.11 (pinned in `.ruby-version` / `.ruby-gemset`, managed via RVM)
-- **Rails**: 8.0.5.1 (`config.load_defaults 8.0`)
+- **Rails**: 8.1.3.1 (`config.load_defaults 8.1`)
 - **Package manager**: Bundler 2.4.22
 
 ## Data

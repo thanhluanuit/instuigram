@@ -10,28 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_08_18_144548) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_18_144548) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", precision: nil, null: false
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum"
+    t.string "content_type"
     t.datetime "created_at", precision: nil, null: false
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -43,83 +43,83 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_18_144548) do
   end
 
   create_table "clients", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.string "client_id", null: false
     t.string "client_secret_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["client_id"], name: "index_clients_on_client_id", unique: true
     t.index ["user_id"], name: "index_clients_on_user_id"
   end
 
   create_table "comments", force: :cascade do |t|
-    t.bigint "post_id", null: false
-    t.bigint "user_id", null: false
     t.text "body", null: false
-    t.integer "reactions_count", default: 0, null: false
     t.datetime "created_at", null: false
+    t.bigint "post_id", null: false
+    t.integer "reactions_count", default: 0, null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
   end
 
   create_table "hash_tags", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", precision: nil, null: false
+    t.string "name"
     t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "post_hash_tags", force: :cascade do |t|
-    t.bigint "post_id"
-    t.bigint "hash_tag_id"
     t.datetime "created_at", precision: nil, null: false
+    t.bigint "hash_tag_id"
+    t.bigint "post_id"
     t.datetime "updated_at", precision: nil, null: false
     t.index ["hash_tag_id"], name: "index_post_hash_tags_on_hash_tag_id"
     t.index ["post_id"], name: "index_post_hash_tags_on_post_id"
   end
 
   create_table "posts", force: :cascade do |t|
-    t.string "description"
-    t.integer "user_id"
     t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.string "description"
     t.integer "reactions_count", default: 0, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.integer "user_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "reactions", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "reactable_type", null: false
-    t.bigint "reactable_id", null: false
-    t.string "reaction_type", default: "like", null: false
     t.datetime "created_at", null: false
+    t.bigint "reactable_id", null: false
+    t.string "reactable_type", null: false
+    t.string "reaction_type", default: "like", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["reactable_type", "reactable_id"], name: "index_reactions_on_reactable"
     t.index ["user_id", "reactable_type", "reactable_id"], name: "index_reactions_on_user_id_and_reactable_type_and_reactable_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: nil
-    t.datetime "remember_created_at", precision: nil
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at", precision: nil
-    t.datetime "last_sign_in_at", precision: nil
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
+    t.text "bio"
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "confirmation_token"
     t.datetime "confirmed_at", precision: nil
-    t.datetime "confirmation_sent_at", precision: nil
-    t.string "unconfirmed_email"
     t.datetime "created_at", precision: nil, null: false
+    t.datetime "current_sign_in_at", precision: nil
+    t.inet "current_sign_in_ip"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "gender"
+    t.datetime "last_sign_in_at", precision: nil
+    t.inet "last_sign_in_ip"
+    t.string "name"
+    t.integer "phone"
+    t.datetime "remember_created_at", precision: nil
+    t.datetime "reset_password_sent_at", precision: nil
+    t.string "reset_password_token"
+    t.integer "sign_in_count", default: 0, null: false
+    t.string "unconfirmed_email"
     t.datetime "updated_at", precision: nil, null: false
     t.string "username"
-    t.string "name"
     t.string "website"
-    t.text "bio"
-    t.integer "phone"
-    t.string "gender"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
