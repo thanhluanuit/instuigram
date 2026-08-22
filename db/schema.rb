@@ -63,14 +63,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_22_011423) do
   end
 
   create_table "event_logs", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "event_type", null: false
-    t.string "subject_type", null: false
-    t.bigint "subject_id", null: false
-    t.inet "ip_address", null: false
-    t.string "user_agent"
     t.datetime "created_at", null: false
+    t.string "event_type", null: false
+    t.inet "ip_address", null: false
+    t.bigint "subject_id", null: false
+    t.string "subject_type", null: false
     t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.bigint "user_id", null: false
     t.index ["subject_type", "subject_id"], name: "index_event_logs_on_subject"
     t.index ["user_id"], name: "index_event_logs_on_user_id"
   end

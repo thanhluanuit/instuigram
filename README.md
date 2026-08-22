@@ -17,13 +17,17 @@ I’ll guide you step by step learning Ruby on Rails through building the Instag
 
 ## Tech Stacks
 - Back-end:
-    - Ruby 2.4
-    - Rails 5.2.x
-    - Database: Postgres 9.6
-    - Gems: Devise, Kaminari, Bootstrap
+    - Ruby 3.3.11
+    - Rails 8.1.3.1
+    - Database: PostgreSQL
+    - Cache / sessions: Redis (`redis_cache_store`)
+    - Background jobs: Sidekiq
+    - Search: Elasticsearch 8.x (`elasticsearch-model` + `elasticsearch-rails`), run locally via `docker compose up -d`
+    - Gems: Devise, Kaminari, Active Storage
 - Front-end:
-    - HTML, CSS, Javascript, jQuery
-    - Bootstrap (3.x or 4.x)
+    - HTML, CSS, Javascript, Turbo + Stimulus (via importmap-rails)
+    - Bootstrap 4.6.x
+    - SCSS via Sprockets
 
 ## Table of Contents:
 - Part 1: [medium.com/luanotes/build-instagram-by-ruby-on-rails-part-1](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-1-fef7837ee399)
