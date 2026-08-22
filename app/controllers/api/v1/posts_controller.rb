@@ -1,7 +1,13 @@
 class Api::V1::PostsController < Api::BaseController
   def index
-    posts = current_user_api.posts.includes(:hash_tags, image_attachment: :blob).order(created_at: :desc)
-    render json: posts.map { |post| post_json(post) }
+    posts = current_user_api.posts.includes(:hash_tags, image_attachment: :blob)
+                                   .order(created_at: :desc)
+                                   .page(params[:page]).per(25)
+    render json: {
+      posts: posts.map { |post| post_json(post) },
+      current_page: posts.current_page,
+      total_pages: posts.total_pages
+    }
   end
 
   def show

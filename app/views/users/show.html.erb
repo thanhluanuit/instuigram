@@ -3,7 +3,7 @@
     <div class="col-md-4 avatar">
       <div class="wrapper">
         <% if @user.avatar.attached? %>
-          <%= image_tag @user.avatar %>
+          <%= image_tag @user.avatar.variant(resize_to_fill: [ 280, 280 ]) %>
         <%end %>
       </div>
     </div>
@@ -17,7 +17,7 @@
         <% end %>
       </div>
       <ul class="posts">
-        <li><span><%= @posts.count %></span> posts</li>
+        <li><span><%= @posts.total_count %></span> posts</li>
         <li><span>195</span> followers</li>
         <li><span>345</span> following</li>
       </ul>
@@ -49,9 +49,11 @@
     <% @posts.each do |post|%>
       <div class="wrapper">
         <%=link_to post_path(post) do %>
-          <%=image_tag post.image %>
+          <%=image_tag post.image.variant(resize_to_fill: [ 293, 293 ]), loading: "lazy" %>
         <% end %>
       </div>
     <% end %>
   </div>
+
+  <%= paginate @posts %>
 </div>

@@ -21,6 +21,15 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "paginates the post grid to 12 per page" do
+    13.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    get user_path(users(:one))
+
+    assert_select ".user-images .wrapper", 12
+    assert_select ".pagination"
+  end
+
   test "when signed in as the profile owner, shows an Edit Profile link" do
     sign_in users(:one)
 

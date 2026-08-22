@@ -17,6 +17,7 @@
 
 - **Authentication**: Devise (`database_authenticatable, registerable, recoverable, rememberable, trackable, validatable`; confirmable intentionally not enabled)
 - **Authorization**: none — no Pundit/CanCanCan; done ad hoc in controllers (e.g. scoping `current_user.posts.find(...)`)
+- **Image variants**: Active Storage variants (`.variant(resize_to_limit: ...)` / `resize_to_fill: ...`) via `gem "image_processing"` + `gem "mini_magick"`, with `config.active_storage.variant_processor = :mini_magick` in `config/application.rb` — Rails' own default is `:vips`, which needs the `ruby-vips` gem this app doesn't have; `mini_magick` shells out to the ImageMagick `mogrify`/`convert` binaries instead.
 
 ## Frontend
 
