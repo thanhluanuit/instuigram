@@ -363,10 +363,10 @@ GEM
       logger (>= 1.7.0)
       rack (>= 3.2.0)
       redis-client (>= 0.29.0)
-    spring (2.1.1)
-    spring-watcher-listen (2.0.1)
+    spring (4.7.0)
+    spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
-      spring (>= 1.2, < 3.0)
+      spring (>= 4)
     sprockets (4.3.0)
       concurrent-ruby (~> 1.1)
       logger
@@ -396,11 +396,10 @@ GEM
     useragent (0.16.11)
     warden (1.2.9)
       rack (>= 2.0.9)
-    web-console (4.2.1)
-      actionview (>= 6.0.0)
-      activemodel (>= 6.0.0)
+    web-console (4.3.0)
+      actionview (>= 8.0.0)
       bindex (>= 0.4.0)
-      railties (>= 6.0.0)
+      railties (>= 8.0.0)
     websocket (1.2.11)
     websocket-driver (0.8.2)
       base64
@@ -445,7 +444,7 @@ DEPENDENCIES
   selenium-webdriver
   sidekiq (~> 8.0)
   spring
-  spring-watcher-listen (~> 2.0.0)
+  spring-watcher-listen (~> 2.1.0)
   stimulus-rails
   terser
   turbo-rails
