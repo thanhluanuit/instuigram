@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_22_011423) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_22_072835) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -60,6 +60,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_22_011423) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "event_logs", force: :cascade do |t|
@@ -77,17 +78,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_22_011423) do
 
   create_table "hash_tags", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
-    t.string "name"
+    t.string "name", null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.index ["name"], name: "index_hash_tags_on_name", unique: true
   end
 
   create_table "post_hash_tags", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
-    t.bigint "hash_tag_id"
-    t.bigint "post_id"
+    t.bigint "hash_tag_id", null: false
+    t.bigint "post_id", null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["hash_tag_id"], name: "index_post_hash_tags_on_hash_tag_id"
-    t.index ["post_id"], name: "index_post_hash_tags_on_post_id"
+    t.index ["post_id", "hash_tag_id"], name: "index_post_hash_tags_on_post_id_and_hash_tag_id", unique: true
   end
 
   create_table "posts", force: :cascade do |t|
@@ -95,7 +97,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_22_011423) do
     t.string "description"
     t.integer "reactions_count", default: 0, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "user_id"
+    t.integer "user_id", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -141,5 +143,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_22_011423) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "clients", "users"
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
   add_foreign_key "event_logs", "users"
+  add_foreign_key "post_hash_tags", "hash_tags"
+  add_foreign_key "post_hash_tags", "posts"
+  add_foreign_key "posts", "users"
+  add_foreign_key "reactions", "users"
 end
