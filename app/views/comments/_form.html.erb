@@ -1,8 +1,8 @@
 <%= form_for [ post, Comment.new ] do |f| %>
-  <div class="form-group">
+  <div class="mb-3">
     <%= f.text_field :body, class: 'form-control', placeholder: "Add a comment..." %>
   </div>
-  <div class="text-right">
+  <div class="text-end">
     <%= f.submit "Comment", class: "btn btn-primary btn-sm" %>
   </div>
 <% end %>

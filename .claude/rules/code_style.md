@@ -100,7 +100,7 @@ surrounding file.
   (`data-controller`, `data-action`, `data-*-target`).
 - **JavaScript**: no inline `<script>` handlers; use `const`/`let` (never `var`);
   keep DOM lookups scoped to the Stimulus controller's element.
-- **CSS**: this project uses Bootstrap 4.6.x (CSS only, no jQuery) with SCSS
+- **CSS**: this project uses Bootstrap 5.3.x (CSS only, no jQuery) with SCSS
   via `sass-rails` — see [`technical_stack.md`](technical_stack.md). Prefer
   Bootstrap utility/component classes over custom rules; when you do need
   custom SCSS, scope it with BEM-style naming rather than deep nesting or
