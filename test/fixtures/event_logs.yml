@@ -1,0 +1,6 @@
+one:
+  user: one
+  event_type: post_created
+  subject: one (Post)
+  ip_address: 127.0.0.1
+  user_agent: Rails Testing

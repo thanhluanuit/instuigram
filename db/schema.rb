@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_18_144548) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_22_011423) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -60,6 +60,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_144548) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
+  end
+
+  create_table "event_logs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "event_type", null: false
+    t.string "subject_type", null: false
+    t.bigint "subject_id", null: false
+    t.inet "ip_address", null: false
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subject_type", "subject_id"], name: "index_event_logs_on_subject"
+    t.index ["user_id"], name: "index_event_logs_on_user_id"
   end
 
   create_table "hash_tags", force: :cascade do |t|
@@ -128,4 +141,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_144548) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "clients", "users"
+  add_foreign_key "event_logs", "users"
 end

@@ -3,7 +3,10 @@ class PostsController < ApplicationController
 
   def create
     post = current_user.posts.create(post_params)
-    PostMailer.published_post(post).deliver_later if post.persisted?
+    if post.persisted?
+      PostMailer.published_post(post).deliver_later
+      log_event(event_type: :post_created, subject: post)
+    end
     redirect_to root_path
   end
 
@@ -14,7 +17,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post = current_user.posts.find(params[:id])
-    @post.destroy
+    log_event(event_type: :post_destroyed, subject: @post) if @post.destroy
 
     redirect_to user_path(current_user)
   end

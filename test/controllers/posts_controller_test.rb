@@ -2,7 +2,7 @@ require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
   test "when unauthenticated, redirects to sign in and creates no post" do
-    assert_no_difference("Post.count") { post posts_path, params: valid_post_params }
+    assert_no_difference([ "Post.count", "EventLog.count" ]) { post posts_path, params: valid_post_params }
 
     assert_redirected_to new_user_session_path
   end
@@ -24,6 +24,20 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     post posts_path, params: valid_post_params
 
     assert_enqueued_email_with(PostMailer, :published_post, args: [ Post.last ])
+  end
+
+  test "when authenticated with valid params, logs a post_created event" do
+    sign_in users(:one)
+
+    assert_difference("EventLog.count", 1) do
+      perform_enqueued_jobs { post posts_path, params: valid_post_params }
+    end
+
+    event_log = EventLog.last
+    assert_equal "post_created", event_log.event_type
+    assert_equal Post.last, event_log.subject
+    assert_equal users(:one), event_log.user
+    assert_not_nil event_log.ip_address
   end
 
   test "when authenticated, ignores a client-supplied user_id and attributes the post to current_user" do
@@ -138,7 +152,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "when unauthenticated, redirects to sign in and does not delete the post" do
-    assert_no_difference("Post.count") { delete post_path(posts(:one)) }
+    assert_no_difference([ "Post.count", "EventLog.count" ]) { delete post_path(posts(:one)) }
 
     assert_redirected_to new_user_session_path
   end
@@ -151,10 +165,24 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_path(users(:one))
   end
 
+  test "when signed in as the post's owner, logs a post_destroyed event" do
+    sign_in users(:one)
+
+    assert_difference("EventLog.count", 1) do
+      perform_enqueued_jobs { delete post_path(posts(:one)) }
+    end
+
+    event_log = EventLog.last
+    assert_equal "post_destroyed", event_log.event_type
+    assert_equal "Post", event_log.subject_type
+    assert_equal posts(:one).id, event_log.subject_id
+    assert_equal users(:one), event_log.user
+  end
+
   test "when signed in as a different user, responds not found and does not delete the post" do
     sign_in users(:two)
 
-    delete post_path(posts(:one))
+    assert_no_difference("EventLog.count") { delete post_path(posts(:one)) }
 
     assert_response :not_found
     assert Post.exists?(posts(:one).id)

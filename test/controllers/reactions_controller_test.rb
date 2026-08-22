@@ -2,7 +2,7 @@ require "test_helper"
 
 class ReactionsControllerTest < ActionDispatch::IntegrationTest
   test "when unauthenticated, redirects to sign in and creates no reaction" do
-    assert_no_difference("Reaction.count") { post post_reaction_path(posts(:one)) }
+    assert_no_difference([ "Reaction.count", "EventLog.count" ]) { post post_reaction_path(posts(:one)) }
 
     assert_redirected_to new_user_session_path
   end
@@ -19,10 +19,29 @@ class ReactionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to post_path(posts(:two))
   end
 
+  test "when authenticated, logs a reaction_created event for a first-time reaction" do
+    sign_in users(:one)
+
+    assert_difference("EventLog.count", 1) { perform_enqueued_jobs { post post_reaction_path(posts(:two)) } }
+
+    event_log = EventLog.last
+    assert_equal "reaction_created", event_log.event_type
+    assert_equal Reaction.last, event_log.subject
+    assert_equal users(:one), event_log.user
+  end
+
   test "when already reacted, reacting again does not create a second reaction" do
     sign_in users(:two)
 
     assert_no_difference("Reaction.count") { post post_reaction_path(posts(:one)) }
+  end
+
+  test "when already reacted, changing the reaction_type does not log a new reaction_created event" do
+    sign_in users(:two)
+
+    assert_no_difference("EventLog.count") do
+      post post_reaction_path(posts(:one)), params: { reaction_type: "love" }
+    end
   end
 
   test "when a valid reaction_type param is given, uses it instead of the default" do
