@@ -6,11 +6,14 @@ paths:
 # Testing
 
 This project uses Minitest (Rails' default) with fixtures — not RSpec, not
-FactoryBot (see [`technical_stack.md`](technical_stack.md)). There's no
-coverage tool, and CI (`.github/workflows/ci.yml`) only runs the suite as-is
-without measuring coverage, so the suite itself is the only safety net;
-these rules capture the conventions that keep it worth trusting, and match
-what `test/` already does.
+FactoryBot (see [`technical_stack.md`](technical_stack.md)). SimpleCov
+measures coverage locally (`coverage/index.html`, generated on every
+`bin/rails test` run), report-only — CI (`.github/workflows/ci.yml`) prints
+the summary percentage to the `test` job's log but doesn't enforce a
+threshold. A coverage number isn't the safety net, though — it can't tell you
+whether an executed line was actually *asserted on*, so the suite's own
+quality is still what's worth trusting; these rules capture the conventions
+that keep it worth trusting, and match what `test/` already does.
 
 ## Coverage & intent
 

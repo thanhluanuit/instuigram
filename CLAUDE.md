@@ -30,7 +30,7 @@ bin/rails db:migrate RAILS_ENV=test  # migrate the test database
 bin/rails elasticsearch:reindex # create the Post index and backfill existing posts
 bin/rails server                # run the app (default http://localhost:3000)
 bin/rails console               # REPL
-bin/rails test                  # run the Minitest suite (test/)
+bin/rails test                  # run the Minitest suite (test/); generates coverage/index.html via SimpleCov
 bin/rails test test/models/post_test.rb            # run a single test file
 bin/rails test test/models/post_test.rb:7          # run a single test at a line
 bin/rails test:system           # run Capybara/Selenium system tests

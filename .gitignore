@@ -34,3 +34,6 @@
 
 # Local git worktrees used for isolated feature/upgrade work.
 /.worktrees/
+
+# SimpleCov coverage reports.
+/coverage/
