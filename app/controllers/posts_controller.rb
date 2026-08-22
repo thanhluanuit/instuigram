@@ -3,8 +3,12 @@ class PostsController < ApplicationController
 
   def create
     post = Posts::Create.call(user: current_user, post_params: post_params)
-    log_event(event_type: :post_created, subject: post) if post.persisted?
-    redirect_to root_path
+    if post.persisted?
+      log_event(event_type: :post_created, subject: post)
+      redirect_to root_path
+    else
+      redirect_to root_path, alert: post.errors.full_messages.to_sentence
+    end
   end
 
   def show

@@ -42,6 +42,9 @@
 
     <!--Main content-->
     <main class="container main-content">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-<%= type == "alert" ? "danger" : "success" %>"><%= message %></div>
+      <% end %>
       <%= yield %>
     </main>
 

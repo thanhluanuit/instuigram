@@ -4,9 +4,12 @@ class CommentsController < ApplicationController
   def create
     post = Post.find(params[:post_id])
     comment = current_user.comments.create(comment_params.merge(post: post))
-    log_event(event_type: :comment_created, subject: comment) if comment.persisted?
-
-    redirect_to post_path(post)
+    if comment.persisted?
+      log_event(event_type: :comment_created, subject: comment)
+      redirect_to post_path(post)
+    else
+      redirect_to post_path(post), alert: comment.errors.full_messages.to_sentence
+    end
   end
 
   def destroy

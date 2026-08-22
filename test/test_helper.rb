@@ -41,6 +41,7 @@ module PostTestHelper
   end
 
   def index_all_posts!
+    Post.__elasticsearch__.create_index!(force: true)
     Post.find_each { |post| post.__elasticsearch__.index_document }
     Post.__elasticsearch__.refresh_index!
   end

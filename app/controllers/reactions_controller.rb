@@ -5,10 +5,12 @@ class ReactionsController < ApplicationController
   def create
     reaction = current_user.reactions.find_or_initialize_by(reactable: @post)
     was_new_record = reaction.new_record?
-    reaction.update(reaction_params)
-    log_event(event_type: :reaction_created, subject: reaction) if was_new_record && reaction.persisted?
-
-    redirect_back(fallback_location: post_path(@post))
+    if reaction.update(reaction_params)
+      log_event(event_type: :reaction_created, subject: reaction) if was_new_record
+      redirect_back(fallback_location: post_path(@post))
+    else
+      redirect_back(fallback_location: post_path(@post), alert: reaction.errors.full_messages.to_sentence)
+    end
   end
 
   def destroy

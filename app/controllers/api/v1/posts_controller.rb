@@ -16,8 +16,8 @@ class Api::V1::PostsController < Api::BaseController
   end
 
   def create
-    post = current_user_api.posts.new(post_params)
-    if post.save
+    post = Posts::Create.call(user: current_user_api, post_params: post_params)
+    if post.persisted?
       render json: post_json(post), status: :created
     else
       render json: { message: post.errors.full_messages.to_sentence }, status: :unprocessable_entity
@@ -40,7 +40,7 @@ class Api::V1::PostsController < Api::BaseController
     {
       id: post.id,
       description: post.description,
-      image_url: post.image.attached? ? Rails.application.routes.url_helpers.rails_blob_url(post.image, host: request.base_url) : nil,
+      image_url: post.image.attached? ? Rails.application.routes.url_helpers.rails_blob_url(post.image) : nil,
       hash_tags: post.hash_tags.map(&:name),
       created_at: post.created_at
     }
