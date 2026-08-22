@@ -4,7 +4,7 @@ class Post < ApplicationRecord
   belongs_to :user
   has_one_attached :image
 
-  has_many :post_hash_tags
+  has_many :post_hash_tags, dependent: :destroy
   has_many :hash_tags, through: :post_hash_tags
   has_many :comments, dependent: :destroy
   has_many :reactions, as: :reactable, dependent: :destroy
@@ -18,8 +18,8 @@ class Post < ApplicationRecord
   end
 
   def create_hash_tags
-    extract_name_hash_tags.each do |name|
-      hash_tags.create(name: name)
+    extract_name_hash_tags.uniq.each do |name|
+      hash_tags << HashTag.find_or_create_by(name: name)
     end
   end
 

@@ -9,9 +9,9 @@ class HashTagTest < ActiveSupport::TestCase
     assert_equal [ posts(:one) ], hash_tags(:one).posts
   end
 
-  test "destroying a hash_tag does not destroy its post_hash_tags" do
+  test "destroying a hash_tag destroys its post_hash_tags" do
     hash_tag = hash_tags(:one)
 
-    assert_no_difference("PostHashTag.count") { hash_tag.destroy }
+    assert_difference("PostHashTag.count", -1) { hash_tag.destroy }
   end
 end
