@@ -40,7 +40,7 @@ class Api::V1::PostsController < Api::BaseController
     {
       id: post.id,
       description: post.description,
-      image_url: post.image.attached? ? Rails.application.routes.url_helpers.rails_blob_path(post.image, only_path: true) : nil,
+      image_url: post.image.attached? ? Rails.application.routes.url_helpers.rails_blob_url(post.image, host: request.base_url) : nil,
       hash_tags: post.hash_tags.map(&:name),
       created_at: post.created_at
     }
