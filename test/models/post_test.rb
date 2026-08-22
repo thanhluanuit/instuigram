@@ -64,17 +64,30 @@ class PostTest < ActiveSupport::TestCase
     assert_empty post.extract_name_hash_tags
   end
 
-  test "creates a HashTag for each unique #word when saved" do
-    post = build_post(description: "great #sunset at the #beach")
+  test "creates a HashTag for each new #word when saved" do
+    post = build_post(description: "great #mountains and the #ocean")
 
     assert_difference("HashTag.count", 2) { post.save! }
   end
 
   test "associates the saved post with the extracted hash tags" do
-    post = build_post(description: "great #sunset at the #beach")
+    post = build_post(description: "great #mountains and the #ocean")
     post.save!
 
-    assert_equal %w[beach sunset], post.hash_tags.pluck(:name).sort
+    assert_equal %w[mountains ocean], post.hash_tags.pluck(:name).sort
+  end
+
+  test "reuses an existing HashTag instead of creating a duplicate" do
+    post = build_post(description: "great #sunset")
+
+    assert_no_difference("HashTag.count") { post.save! }
+    assert_equal [ hash_tags(:one) ], post.hash_tags
+  end
+
+  test "does not create duplicate post_hash_tags when a tag repeats in the description" do
+    post = build_post(description: "so good #sunset #sunset")
+
+    assert_difference("PostHashTag.count", 1) { post.save! }
   end
 
   test "creates no HashTag records when the description has no tags" do

@@ -18,8 +18,8 @@ class Post < ApplicationRecord
   end
 
   def create_hash_tags
-    extract_name_hash_tags.each do |name|
-      hash_tags.create(name: name)
+    extract_name_hash_tags.uniq.each do |name|
+      hash_tags << HashTag.find_or_create_by(name: name)
     end
   end
 
