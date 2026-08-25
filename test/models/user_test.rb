@@ -29,6 +29,17 @@ class UserTest < ActiveSupport::TestCase
     assert build_user(website: "https://example.com").valid?
   end
 
+  test "defaults to non-admin" do
+    assert_not build_user.admin?
+  end
+
+  test "can be marked as admin" do
+    user = build_user
+    user.admin = true
+
+    assert user.admin?
+  end
+
   test "can have an attached avatar" do
     user = build_user
     attach_test_image(user.avatar)

@@ -7,3 +7,9 @@ two:
   email: user_two@instuigram.com
   encrypted_password: <%= BCrypt::Password.create('password123') %>
   username: user_two
+
+admin:
+  email: admin@instuigram.com
+  encrypted_password: <%= BCrypt::Password.create('password123') %>
+  username: admin_user
+  admin: true
