@@ -3,7 +3,7 @@
     <div class="ig-explore-header">
       <% if @posts.any? %>
         <h1>Top Posts</h1>
-        <p class="ig-explore-meta ig-muted"><%= pluralize(@posts.size, "post") %></p>
+        <p class="ig-explore-meta ig-muted"><%= pluralize(@posts.total_count, "post") %></p>
       <% else %>
         <h1>Oop! No matching posts ...</h1>
         <p class="ig-explore-meta ig-muted">Nothing indexed under that tag yet.</p>
