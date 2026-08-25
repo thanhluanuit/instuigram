@@ -1,19 +1,29 @@
-<div class="search-page">
-  <% if @posts.any? %>
-    <h1>Top Posts</h1>
-  <% else %>
-    <h1>Oop! No matching posts ...</h1>
-  <% end %>
+<div class="classical-ds ig-page-with-aside">
+  <div class="ig-explore-page">
+    <div class="ig-explore-header">
+      <% if @posts.any? %>
+        <h1>Top Posts</h1>
+        <p class="ig-explore-meta ig-muted"><%= pluralize(@posts.size, "post") %></p>
+      <% else %>
+        <h1>Oop! No matching posts ...</h1>
+        <p class="ig-explore-meta ig-muted">Nothing indexed under that tag yet.</p>
+      <% end %>
+    </div>
 
-  <div class="user-images">
-    <% @posts.each do |post|%>
-      <div class="wrapper">
-        <%=link_to post_path(post) do %>
-          <%=image_tag post.image.variant(resize_to_fill: [ 293, 293 ]), loading: "lazy" %>
-        <% end %>
-      </div>
-    <% end %>
+    <div class="user-images ig-tile-grid">
+      <% @posts.each do |post| %>
+        <div class="wrapper ig-tile">
+          <%= link_to post_path(post) do %>
+            <%= image_tag post.image.variant(resize_to_fill: [ 293, 293 ]), loading: "lazy", class: "ig-tile-image" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="ig-pagination">
+      <%= paginate @posts %>
+    </div>
   </div>
 
-  <%= paginate @posts %>
+  <%= render "shared/discover_sidebar", trending_hash_tags: @trending_hash_tags, suggested_users: @suggested_users %>
 </div>

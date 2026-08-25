@@ -18,16 +18,16 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   test "renders the feed with a bounded number of queries regardless of post count" do
     sign_in users(:one)
 
-    assert_queries_count(11) { get root_path }
+    assert_queries_count(13) { get root_path }
   end
 
-  test "shows the filled heart only for posts the signed-in user has reacted to" do
+  test "shows the liked state only for posts the signed-in user has reacted to" do
     sign_in users(:two)
 
     get root_path
 
-    assert_select ".reaction-icon", count: 2
-    assert_select ".reaction-icon.liked", count: 1
+    assert_select ".ig-like-btn", count: 2
+    assert_select ".ig-like-btn.liked", count: 1
   end
 
   test "when authenticated, paginates posts 10 per page" do

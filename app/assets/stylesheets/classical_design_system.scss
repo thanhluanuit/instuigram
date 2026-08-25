@@ -1,0 +1,221 @@
+// "Classical" design system for the Home feed and Explore pages, adapted from
+// the claude.ai/design mockup ("Instuigram Mockups"). Every rule here is
+// nested under .classical-ds so it can never collide with Bootstrap's
+// identically-named classes (.btn, .card, .nav, .input, .tag) used by the
+// rest of the app — only elements that opt into .classical-ds get this look.
+.classical-ds {
+  --color-bg: #f3f2f2;
+  --color-surface: #eae9e9;
+  --color-text: #201f1d;
+  --color-accent: #b68235;
+  --color-accent-2: #ac803e;
+  --color-divider: color-mix(in srgb, #201f1d 16%, transparent);
+  --color-accent-700: #7d5411;
+
+  --font-heading: "Cormorant Garamond", system-ui, sans-serif;
+  --font-heading-weight: 600;
+  --font-body: "Lora", system-ui, sans-serif;
+
+  --space-1: 4.6px;
+  --space-2: 9.2px;
+  --space-3: 13.8px;
+  --space-4: 18.4px;
+  --space-6: 27.6px;
+  --space-8: 36.8px;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+
+  a { color: var(--color-accent); text-decoration: none; text-underline-offset: 3px; }
+  a:hover { color: var(--color-accent-2); }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+    line-height: 1.15; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+  }
+  h1 { font-size: 32px; }
+  .ig-muted { color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+
+  // — buttons —
+  .ig-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer; text-decoration: none;
+    font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+    font-size: 14px; line-height: 1.2; color: var(--color-text);
+    background: transparent; border: 1px solid transparent;
+    padding: var(--space-2) calc(var(--space-3) * 1.2);
+    border-radius: var(--radius-md);
+  }
+  .ig-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .ig-btn-primary { color: var(--color-accent); border-color: var(--color-accent); }
+  .ig-btn-primary:hover { background: color-mix(in srgb, var(--color-accent) 12%, transparent); color: var(--color-accent); }
+  .ig-btn-secondary { border-color: var(--color-divider); }
+  .ig-btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+  .ig-btn-ghost { color: var(--color-accent); padding-inline: var(--space-1); }
+  .ig-btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+
+  // — inputs —
+  .ig-input {
+    width: 100%; min-height: 36px; padding: 6px 10px; font: inherit;
+    font-size: 14px; color: var(--color-text); caret-color: var(--color-accent);
+    background: transparent;
+    border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+  }
+  .ig-input:hover { border-color: color-mix(in srgb, var(--color-text) 45%, transparent); }
+  .ig-input:focus-visible { border-color: var(--color-accent); outline: none; }
+
+  // — avatar — .ig-avatar is the circular frame; .ig-avatar-fallback (an
+  // initial letter) or .ig-avatar-img always renders nested inside it.
+  .ig-avatar {
+    width: 38px; height: 38px; flex: none; border-radius: 50%;
+    display: grid; place-items: center; overflow: hidden;
+    background: var(--color-surface); border: 1px solid var(--color-divider);
+  }
+  .ig-avatar-img { width: 100%; height: 100%; object-fit: cover; }
+  .ig-avatar-fallback {
+    font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+    font-size: 15px; color: var(--color-text); text-decoration: none;
+  }
+
+  // — top bar (brand, search, auth — every breakpoint) —
+  &.ig-topbar {
+    border-bottom: 1px solid var(--color-divider);
+    padding: var(--space-3) var(--space-4);
+  }
+  .ig-topbar-inner { display: flex; align-items: center; gap: var(--space-4); max-width: 1244px; margin: 0 auto; }
+  .ig-topbar-brand {
+    font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+    font-size: 22px; color: var(--color-text); margin-right: var(--space-2);
+  }
+  .ig-topbar-search { flex: 1; max-width: 260px; margin-left: auto; }
+  .ig-topbar-auth { flex: none; }
+
+  // — page shell: left rail + main content —
+  &.ig-shell { display: flex; max-width: 1244px; margin: 0 auto; align-items: stretch; }
+  &.ig-shell > main { flex: 1; min-width: 0; }
+  .ig-rail {
+    width: 196px; flex: none; align-self: flex-start; position: sticky; top: 0;
+    padding: var(--space-4) 0; display: flex; flex-direction: column; gap: var(--space-4);
+  }
+  .ig-rail-nav { display: flex; flex-direction: column; }
+  .ig-rail-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px var(--space-4); font-family: var(--font-heading); font-size: 15px;
+    color: var(--color-text); border-left: 2px solid transparent;
+  }
+  .ig-rail-link.is-active { color: var(--color-accent); border-left-color: var(--color-accent); }
+  .ig-rail-compose { margin: 0 var(--space-4); }
+
+  // — mobile tab bar —
+  &.ig-tabbar {
+    display: none;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    justify-content: space-around; align-items: center;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    background: var(--color-bg); border-top: 1px solid var(--color-divider);
+  }
+  .ig-tab {
+    width: 52px; height: 44px; display: grid; place-items: center;
+    color: var(--color-text);
+  }
+  .ig-tab.is-active { color: var(--color-accent); }
+  .ig-tab svg { display: block; }
+
+  // — page shell: main content + rising-tags/suggested sidebar —
+  .ig-page-with-aside { display: flex; gap: var(--space-6); max-width: 1000px; margin: 0 auto; align-items: flex-start; }
+  .ig-aside {
+    width: 244px; flex: none; padding: var(--space-6) 0 var(--space-6) var(--space-4);
+    border-left: 1px solid var(--color-divider);
+  }
+  .ig-aside-heading { margin: var(--space-4) 0 var(--space-2); }
+  .ig-aside-heading:first-child { margin-top: 0; }
+  .ig-aside-tag {
+    display: flex; justify-content: space-between; padding: 6px 0;
+    border-bottom: 1px solid var(--color-divider); font-size: 13px; color: var(--color-text);
+  }
+  .ig-aside-person { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; color: var(--color-text); }
+  .ig-aside-person .ig-avatar { width: 30px; height: 30px; }
+
+  // — feed —
+  .ig-feed-page { flex: 1; min-width: 0; max-width: 620px; padding: var(--space-6) var(--space-2); }
+  .ig-composer-card {
+    border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4); margin-bottom: var(--space-6);
+  }
+  .ig-composer { display: flex; gap: var(--space-3); align-items: center; width: 100%; }
+  .ig-composer-main { flex: 1; min-width: 0; }
+  .ig-composer-form { display: flex; flex-direction: column; gap: var(--space-2); }
+  .ig-composer-input { border: 0; border-bottom: 1px solid var(--color-divider); border-radius: 0; padding: var(--space-1) 0; }
+  .ig-composer-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .ig-composer-actions { display: flex; align-items: center; gap: var(--space-2); }
+  .ig-composer-filename { font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+
+  // Each post is a bordered card, at every breakpoint — keeps posts feeling
+  // like separate, self-contained items rather than one continuous stream.
+  .ig-post {
+    border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+    overflow: hidden; margin-bottom: var(--space-6); background: transparent;
+  }
+  .ig-post-header {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-divider);
+  }
+  .ig-post-identity { display: flex; flex-direction: column; gap: 1px; margin-right: auto; }
+  .ig-username { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 16px; color: var(--color-text); }
+  .ig-username:hover { color: var(--color-text); }
+  .ig-name { font-size: 11.5px; color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+  .ig-timestamp { font-size: 11.5px; color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+  .ig-post-image-link { display: block; line-height: 0; }
+  .ig-post-image { width: 100%; display: block; }
+  .ig-post-caption { padding: var(--space-3) var(--space-4); font-size: 14.5px; line-height: 1.7; }
+  .ig-post-caption a { font-size: 12.5px; color: var(--color-accent-700); }
+
+  // — post footer: like toggle + reaction/comment counts (feed only; post
+  // detail keeps its own simple icon-only button) —
+  .ig-post-footer {
+    display: flex; align-items: center; gap: var(--space-3); font-size: 13px;
+    padding: var(--space-2) var(--space-4) var(--space-3); border-top: 1px solid var(--color-divider);
+  }
+  .ig-like-btn { display: inline-flex; align-items: center; gap: 6px; color: var(--color-text); font-family: var(--font-heading); font-size: 14px; }
+  .ig-like-btn .ig-like-icon { fill: none; }
+  .ig-like-btn.liked { color: var(--color-accent); }
+  .ig-like-btn.liked .ig-like-icon { fill: currentColor; }
+
+  .ig-empty-state { text-align: center; padding: var(--space-8) var(--space-2); color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+
+  // — pagination (styles Kaminari's default markup) —
+  .ig-pagination nav.pagination {
+    display: flex; justify-content: center; align-items: center; gap: 6px;
+    list-style: none; padding: var(--space-4) 0 0; margin: 0;
+  }
+  .ig-pagination .page {
+    display: inline-block; min-width: 28px; padding: 5px 10px;
+    border-radius: var(--radius-md); font-size: 12.5px; text-align: center;
+    color: var(--color-text);
+  }
+  .ig-pagination a.page:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+  .ig-pagination .page.current { border: 1px solid var(--color-accent); color: var(--color-accent); }
+  .ig-pagination .page.disabled { color: color-mix(in srgb, var(--color-text) 30%, transparent); }
+
+  // — explore —
+  .ig-explore-page { flex: 1; min-width: 0; padding: var(--space-6) var(--space-2); }
+  .ig-explore-header { margin-bottom: var(--space-4); }
+  .ig-explore-meta { font-size: 13px; margin: 0; }
+  .ig-tile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .ig-tile-image { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-sm); }
+
+  @media (max-width: 640px) {
+    .ig-topbar-search { max-width: none; margin-left: 0; }
+    .ig-rail { display: none; }
+    &.ig-tabbar { display: flex; }
+    .ig-page-with-aside { display: block; }
+    .ig-aside { display: none; }
+    .ig-feed-page, .ig-explore-page { max-width: none; padding-bottom: 76px; }
+    .ig-tile-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  }
+}

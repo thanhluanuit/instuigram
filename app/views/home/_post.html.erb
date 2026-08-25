@@ -1,21 +1,29 @@
-<section class="post">
+<section class="post ig-post">
   <% cache post do %>
-    <div class="user">
-      <div class="avatar">
+    <header class="ig-post-header">
+      <div class="ig-avatar">
         <% if post.user.avatar.attached? %>
           <%= link_to user_path(post.user) do %>
-            <%= image_tag post.user.avatar.variant(resize_to_fill: [ 72, 72 ]) %>
+            <%= image_tag post.user.avatar.variant(resize_to_fill: [ 72, 72 ]), class: "ig-avatar-img" %>
           <% end %>
+        <% else %>
+          <%= link_to post.user.username.first.upcase, user_path(post.user), class: "ig-avatar-fallback" %>
         <% end %>
       </div>
-      <%= link_to post.user.username, user_path(post.user), class: 'username' %>
-    </div>
-    <%= link_to post_path(post), class: 'main-image-link' do %>
-      <%= image_tag post.image.variant(resize_to_limit: [ 600, 600 ]), class: 'main-image' %>
+      <div class="ig-post-identity">
+        <%= link_to post.user.username, user_path(post.user), class: 'ig-username' %>
+        <% if post.user.name.present? %>
+          <span class="ig-name"><%= post.user.name %></span>
+        <% end %>
+      </div>
+      <span class="ig-timestamp"><%= time_ago_in_words(post.created_at) %> ago</span>
+    </header>
+    <%= link_to post_path(post), class: 'ig-post-image-link' do %>
+      <%= image_tag post.image.variant(resize_to_limit: [ 600, 600 ]), class: 'ig-post-image' %>
     <% end %>
-    <div class="description">
+    <div class="ig-post-caption">
       <%= render partial: "posts/description", locals: {post: post} %>
     </div>
   <% end %>
-  <%= render partial: "posts/reaction_button", locals: { post: post, user_reaction: user_reaction } %>
+  <%= render partial: "posts/post_footer", locals: { post: post, user_reaction: user_reaction } %>
 </section>

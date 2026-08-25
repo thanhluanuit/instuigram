@@ -1,0 +1,16 @@
+<%= turbo_frame_tag dom_id(post, :reaction) do %>
+  <div class="ig-post-footer" data-controller="post-footer" data-post-footer-post-id-value="<%= post.id %>">
+    <%= link_to post_reaction_path(post),
+          data: {
+            turbo_method: user_reaction ? :delete : :post,
+            post_footer_target: "button"
+          },
+          class: class_names("ig-like-btn", "liked" => user_reaction),
+          "aria-label": user_reaction ? "Unlike" : "Like" do %>
+      <svg class="ig-like-icon" width="15" height="15" viewBox="0 0 20 20"><path d="M10 17S2.5 12.4 2.5 7.6A4.1 4.1 0 0110 5a4.1 4.1 0 017.5 2.6C17.5 12.4 10 17 10 17z" stroke="currentColor" stroke-width="1.4"></path></svg>
+      <span data-post-footer-target="label"><%= user_reaction ? "Unlike" : "Like" %></span>
+    <% end %>
+    <span class="ig-muted" data-post-footer-target="count"><%= pluralize(post.reactions_count, "reaction") %></span>
+    <span class="ig-muted"><%= pluralize(post.comments_count, "comment") %></span>
+  </div>
+<% end %>

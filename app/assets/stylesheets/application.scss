@@ -1,5 +1,6 @@
 @import "bootstrap";
 @import "font-awesome";
+@import "classical_design_system";
 @import "users";
 @import "posts";
 @import "comments";
@@ -13,24 +14,6 @@
   min-height: 500px;
 }
 
-.navbar{
-  border-bottom: 1px solid rgba(0,0,0,.0975);
-}
-.user-section{
-  a{
-    padding-left: 15px;
-  }
-  i.fa{
-    font-size: 22px;
-    color: #000000d4;
-  }
-}
-.search-form{
-  input{
-    font-size: 13px;
-    text-align: center;
-  }
-}
 .footer{
   font-size: 12px;
   padding-top: 30px;
@@ -44,12 +27,5 @@
   }
   p{
     color: #999;
-  }
-}
-
-.search-page{
-  h1{
-    font-size: 24px;
-    padding: 25px 0 0 30px;
   }
 }

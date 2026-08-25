@@ -13,4 +13,9 @@ class User < ApplicationRecord
 
   validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true
   validates :avatar, image: true
+
+  def self.suggested_for(user, limit: 3)
+    scope = includes(avatar_attachment: :blob).order(Arel.sql("RANDOM()")).limit(limit)
+    user ? scope.where.not(id: user.id) : scope
+  end
 end

@@ -1,25 +1,25 @@
-<div class="composer">
-  <div class="composer-avatar">
+<div class="ig-composer">
+  <div class="ig-avatar">
     <% if current_user.avatar.attached? %>
-      <%= image_tag current_user.avatar.variant(resize_to_fill: [ 76, 76 ]) %>
+      <%= image_tag current_user.avatar.variant(resize_to_fill: [ 76, 76 ]), class: "ig-avatar-img" %>
     <% else %>
-      <i class="fa fa-user"></i>
+      <span class="ig-avatar-fallback"><%= current_user.username.first.upcase %></span>
     <% end %>
   </div>
-  <div class="composer-main" data-controller="composer">
-    <%= form_for Post.new, html: { class: "composer-form" } do |f| %>
+  <div class="ig-composer-main" data-controller="composer">
+    <%= form_for Post.new, html: { class: "ig-composer-form" } do |f| %>
       <%= f.label :description, "Caption", class: "visually-hidden" %>
-      <%= f.text_field :description, class: 'composer-input', placeholder: "Write a caption... #hashtags welcome" %>
+      <%= f.text_field :description, class: 'ig-input ig-composer-input', placeholder: "Write a caption, add #tags…" %>
 
-      <div class="composer-toolbar">
-        <div class="composer-actions">
-          <%= f.label :image, class: "composer-icon-btn", "aria-label": "Add a photo" do %>
-            <i class="fa fa-camera"></i>
+      <div class="ig-composer-toolbar">
+        <div class="ig-composer-actions">
+          <%= f.label :image, class: "ig-btn ig-btn-secondary", "aria-label": "Add a photo" do %>
+            Image
           <% end %>
           <%= f.file_field :image, class: 'visually-hidden', data: { composer_target: "fileInput", action: "change->composer#updateFilename" } %>
-          <span class="composer-filename" data-composer-target="filename">No photo selected</span>
+          <span class="ig-composer-filename" data-composer-target="filename">No photo selected</span>
         </div>
-        <%= f.submit 'Post', class: 'btn composer-submit', data: { composer_target: "submit" } %>
+        <%= f.submit 'Share', class: 'ig-btn ig-btn-primary', data: { composer_target: "submit" } %>
       </div>
     <% end %>
   </div>

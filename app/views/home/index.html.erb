@@ -1,19 +1,22 @@
-<div class="homepage">
-  <div class='form-upload'>
-    <%= render 'upload_form' %>
-  </div>
+<div class="classical-ds ig-page-with-aside">
+  <div class="ig-feed-page">
+    <div class="ig-composer-card" id="ig-composer">
+      <%= render 'upload_form' %>
+    </div>
 
-  <div class="posts">
     <% if @posts.any? %>
       <% @posts.each do |post| %>
         <%= render partial: 'post', locals: { post: post, user_reaction: @user_reactions[post.id] } %>
       <% end %>
-      <%= paginate @posts %>
+      <div class="ig-pagination">
+        <%= paginate @posts %>
+      </div>
     <% else %>
-      <div class="empty-state">
-        <i class="fa fa-camera"></i>
+      <div class="ig-empty-state">
         <p>No posts yet. Share your first photo above.</p>
       </div>
     <% end %>
   </div>
+
+  <%= render "shared/discover_sidebar", trending_hash_tags: @trending_hash_tags, suggested_users: @suggested_users %>
 </div>

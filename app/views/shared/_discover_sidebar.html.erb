@@ -1,0 +1,26 @@
+<aside class="ig-aside">
+  <% if trending_hash_tags.any? %>
+    <h6 class="ig-aside-heading">Rising tags</h6>
+    <% trending_hash_tags.each do |hash_tag| %>
+      <%= link_to search_path(query: "##{hash_tag.name}"), class: "ig-aside-tag" do %>
+        <span>#<%= hash_tag.name %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if suggested_users.any? %>
+    <h6 class="ig-aside-heading">Suggested</h6>
+    <% suggested_users.each do |user| %>
+      <%= link_to user_path(user), class: "ig-aside-person" do %>
+        <span class="ig-avatar">
+          <% if user.avatar.attached? %>
+            <%= image_tag user.avatar.variant(resize_to_fill: [ 60, 60 ]), class: "ig-avatar-img" %>
+          <% else %>
+            <span class="ig-avatar-fallback"><%= user.username.first.upcase %></span>
+          <% end %>
+        </span>
+        <span><%= user.username %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+</aside>
