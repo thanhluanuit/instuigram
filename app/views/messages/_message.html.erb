@@ -1,0 +1,9 @@
+<div id="<%= dom_id(message) %>" class="chat-message" data-sender-id="<%= message.user_id %>">
+  <div class="chat-message__bubble">
+    <span class="chat-message__author"><%= message.user.username %></span>
+    <p class="chat-message__body"><%= message.body %></p>
+    <time class="chat-message__time" datetime="<%= message.created_at.iso8601 %>">
+      <%= l message.created_at, format: :short %>
+    </time>
+  </div>
+</div>

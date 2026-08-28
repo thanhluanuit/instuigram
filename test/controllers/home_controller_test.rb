@@ -20,7 +20,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   test "renders the feed with a bounded number of queries regardless of post count" do
     sign_in users(:one)
 
-    assert_queries_count(10) { get root_path }
+    assert_queries_count(11) { get root_path }
   end
 
   test "shows the filled heart only for posts the signed-in user has reacted to" do

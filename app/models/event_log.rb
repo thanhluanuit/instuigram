@@ -4,7 +4,8 @@ class EventLog < ApplicationRecord
     post_destroyed: "post_destroyed",
     profile_updated: "profile_updated",
     comment_created: "comment_created",
-    reaction_created: "reaction_created"
+    reaction_created: "reaction_created",
+    message_sent: "message_sent"
   }.freeze
 
   belongs_to :user

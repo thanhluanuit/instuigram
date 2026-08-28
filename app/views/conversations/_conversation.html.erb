@@ -1,0 +1,18 @@
+<% other = conversation.other_participant(current_user) %>
+<% unread = conversation.participant_for(current_user).unread_count %>
+<% last = conversation.last_message %>
+<%= link_to conversation_path(conversation), id: dom_id(conversation), class: "conversation-row" do %>
+  <div class="conversation-row__avatar">
+    <%= render "users/avatar_with_presence", user: other, size: 56 %>
+  </div>
+
+  <div class="conversation-row__body">
+    <span class="conversation-row__name"><%= other&.username %></span>
+    <span class="conversation-row__preview">
+      <span class="conversation-row__sender"><%= "#{last.user.username}:" if last %></span>
+      <span class="conversation-row__text"><%= last&.body %></span>
+    </span>
+  </div>
+
+  <span class="conversation-row__unread <%= "is-hidden" unless unread.positive? %>"><%= unread %></span>
+<% end %>

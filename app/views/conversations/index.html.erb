@@ -1,0 +1,15 @@
+<section class="conversations">
+  <div class="conversations__header">
+    <h1 class="conversations__title">Messages</h1>
+    <%= link_to "New message", new_conversation_path, class: "message-user" %>
+  </div>
+
+  <% if @conversations.any? %>
+    <div class="conversations__list">
+      <%= render partial: "conversations/conversation", collection: @conversations, as: :conversation %>
+    </div>
+    <%= paginate @conversations %>
+  <% else %>
+    <p class="conversations__empty">No messages yet. Start a <%= link_to "new message", new_conversation_path %>.</p>
+  <% end %>
+</section>

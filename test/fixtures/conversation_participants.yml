@@ -1,0 +1,19 @@
+one_in_one_and_two:
+  conversation: one_and_two
+  user: one
+  unread_count: 0
+
+two_in_one_and_two:
+  conversation: one_and_two
+  user: two
+  unread_count: 3
+
+one_in_one_and_admin:
+  conversation: one_and_admin
+  user: one
+  unread_count: 1
+
+admin_in_one_and_admin:
+  conversation: one_and_admin
+  user: admin
+  unread_count: 0

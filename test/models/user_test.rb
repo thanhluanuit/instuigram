@@ -109,6 +109,63 @@ class UserTest < ActiveSupport::TestCase
     assert_not Reaction.exists?(reaction_id)
   end
 
+  test "online? is true when last seen within the last minute" do
+    users(:one).update_column(:last_seen_at, 30.seconds.ago)
+
+    assert_predicate users(:one).reload, :online?
+  end
+
+  test "online? is false when last seen more than a minute ago" do
+    users(:one).update_column(:last_seen_at, 2.minutes.ago)
+
+    assert_not users(:one).reload.online?
+  end
+
+  test "online? is false when the user has never been seen" do
+    assert_not users(:one).online?
+  end
+
+  test "unread_messages_count sums unread counts across all conversations" do
+    assert_equal 1, users(:one).unread_messages_count
+  end
+
+  test "destroying a user destroys the conversations they were part of" do
+    conversation_id = conversations(:one_and_two).id
+
+    users(:two).destroy
+
+    assert_not Conversation.exists?(conversation_id)
+  end
+
+  test "destroying a user leaves conversations they were not part of intact" do
+    conversation_id = conversations(:one_and_admin).id
+
+    users(:two).destroy
+
+    assert Conversation.exists?(conversation_id)
+  end
+
+  test "destroying a user destroys the messages and participants of their conversations" do
+    assert_difference("Message.count", -3) do
+      assert_difference("ConversationParticipant.count", -2) do
+        users(:two).destroy
+      end
+    end
+  end
+
+  test "matching_username finds users whose username contains the query, case-insensitively" do
+    assert_includes User.matching_username("USER_T"), users(:two)
+    assert_not_includes User.matching_username("USER_T"), users(:admin)
+  end
+
+  test "matching_username returns everyone when the query is blank" do
+    assert_equal User.count, User.matching_username("  ").count
+  end
+
+  test "matching_username treats wildcard characters as literal text" do
+    assert_empty User.matching_username("%")
+  end
+
   private
 
   def build_user(email: "new_user@example.com", password: "password123", username: "new_user", website: nil)

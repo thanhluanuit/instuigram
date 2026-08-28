@@ -1,0 +1,3 @@
+<%= turbo_stream.append dom_id(message.conversation, :messages) do %>
+  <%= render partial: "messages/message", locals: { message: message } %>
+<% end %>
