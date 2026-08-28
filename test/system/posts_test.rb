@@ -19,6 +19,7 @@ class PostsTest < ApplicationSystemTestCase
     find("section.post", text: posts(:one).description).find(".main-image-link").click
 
     accept_confirm { find(".delete-icon").click }
+    assert_current_path user_path(users(:one))
 
     visit root_path
 
