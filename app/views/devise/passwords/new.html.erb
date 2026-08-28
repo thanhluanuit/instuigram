@@ -1,0 +1,24 @@
+<div class="auth-card">
+  <div class="auth-lock"><i class="fa fa-lock"></i></div>
+  <h1 class="auth-heading">Trouble logging in?</h1>
+  <p class="auth-tagline">
+    Enter your email and we'll send you a link to get back into your account.
+  </p>
+
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "auth-form" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                      class: "form-control", placeholder: "Email" %>
+
+    <%= f.submit "Send Login Link", class: "btn btn-primary auth-submit" %>
+  <% end %>
+
+  <div class="auth-divider"><span>OR</span></div>
+
+  <%= link_to "Create New Account", new_registration_path(resource_name), class: "auth-muted-link" %>
+</div>
+
+<div class="auth-card auth-card-secondary">
+  <%= link_to "Back To Login", new_session_path(resource_name) %>
+</div>
