@@ -2,8 +2,7 @@ require "application_system_test_case"
 
 class CommentsTest < ApplicationSystemTestCase
   setup do
-    attach_test_image(posts(:one).image)
-    attach_test_image(posts(:two).image)
+    attach_images_to_all_posts!
     sign_in_as users(:one)
     assert_selector "section.post", count: 2
     wait_for_page_to_settle
