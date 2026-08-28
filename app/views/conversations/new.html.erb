@@ -10,10 +10,7 @@
       <% @users.each do |user| %>
         <div class="conversation-row">
           <%= link_to user_path(user), class: "conversation-row__avatar" do %>
-            <% if user.avatar.attached? %>
-              <%= image_tag user.avatar.variant(resize_to_fill: [ 56, 56 ]) %>
-            <% end %>
-            <span class="presence-dot <%= "is-online" if user.online? %>" data-presence-user-id="<%= user.id %>"></span>
+            <%= render "users/avatar_with_presence", user: user, size: 56 %>
           <% end %>
 
           <div class="conversation-row__body">

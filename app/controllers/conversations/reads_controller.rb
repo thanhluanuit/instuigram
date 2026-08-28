@@ -3,7 +3,7 @@ class Conversations::ReadsController < ApplicationController
 
   def create
     conversation = current_user.conversations.find(params[:conversation_id])
-    conversation.participant_for(current_user).update!(unread_count: 0)
+    conversation.mark_read_for(current_user)
 
     head :no_content
   end

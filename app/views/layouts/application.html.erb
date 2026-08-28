@@ -32,11 +32,10 @@
           <a><i class="fa fa-compass"></i></a>
           <a><i class="fa fa-heart"></i></a>
           <% if user_signed_in? %>
+            <% unread = current_user.unread_messages_count %>
             <a href="<%= conversations_path %>" class="messages-link">
               <i class="fa fa-paper-plane"></i>
-              <span id="unread-badge" class="unread-badge <%= "is-hidden" if current_user.unread_messages_count.zero? %>">
-                <%= current_user.unread_messages_count %>
-              </span>
+              <span id="unread-badge" class="unread-badge <%= "is-hidden" if unread.zero? %>"><%= unread %></span>
             </a>
             <a href="<%= user_path(current_user)%>">
               <i class="fa fa-user"></i>

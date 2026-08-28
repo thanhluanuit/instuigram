@@ -4,6 +4,20 @@ $chat-border: #efefef;
 $chat-blue: #0095f6;
 $chat-online: #2ecc71;
 
+@mixin avatar-circle($size) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background: $chat-border;
+
+  img {
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
 .is-hidden {
   display: none;
 }
@@ -101,18 +115,7 @@ $chat-online: #2ecc71;
 .conversation-row__avatar {
   position: relative;
   flex: 0 0 56px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: $chat-border;
-  overflow: visible;
-
-  img {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+  @include avatar-circle(56px);
 }
 
 .conversation-row__body {
@@ -176,17 +179,7 @@ $chat-online: #2ecc71;
 
 .chat__avatar {
   position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: $chat-border;
-
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+  @include avatar-circle(40px);
 }
 
 .chat__identity {

@@ -16,7 +16,7 @@ class ConversationsController < ApplicationController
                                 .find(params[:id])
     @messages     = @conversation.messages.includes(:user).chronological.last(50)
 
-    @conversation.participant_for(current_user).update!(unread_count: 0)
+    @conversation.mark_read_for(current_user)
   end
 
   def new

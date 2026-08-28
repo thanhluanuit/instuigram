@@ -8,10 +8,7 @@
     <%= link_to conversations_path, class: "chat__back" do %>&larr;<% end %>
 
     <div class="chat__avatar">
-      <% if other&.avatar&.attached? %>
-        <%= image_tag other.avatar.variant(resize_to_fill: [ 40, 40 ]) %>
-      <% end %>
-      <span class="presence-dot <%= "is-online" if other&.online? %>" data-presence-user-id="<%= other&.id %>"></span>
+      <%= render "users/avatar_with_presence", user: other, size: 40 %>
     </div>
 
     <div class="chat__identity">

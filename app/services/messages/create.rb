@@ -11,10 +11,10 @@ class Messages::Create < BaseService
     message = conversation.messages.new(user: user, body: body)
 
     Message.transaction do
-      break unless message.save
-
-      conversation.update_columns(last_message_id: message.id, last_message_at: message.created_at)
-      update_unread_counts(message)
+      if message.save
+        conversation.update_columns(last_message_id: message.id, last_message_at: message.created_at)
+        update_unread_counts
+      end
     end
 
     broadcast(message) if message.persisted?
@@ -26,11 +26,10 @@ class Messages::Create < BaseService
 
   attr_reader :conversation, :user, :body
 
-  def update_unread_counts(message)
-    conversation.conversation_participants.where.not(user_id: message.user_id)
+  def update_unread_counts
+    conversation.conversation_participants.where.not(user_id: user.id)
                 .update_all("unread_count = unread_count + 1")
-    conversation.conversation_participants.where(user_id: message.user_id)
-                .update_all(unread_count: 0)
+    conversation.conversation_participants.where(user_id: user.id).update_all(unread_count: 0)
   end
 
   def broadcast(message)
@@ -48,16 +47,15 @@ class Messages::Create < BaseService
 
   def broadcast_inbox(message)
     participants = conversation.conversation_participants.includes(:user).to_a
-    totals = ConversationParticipant.where(user_id: participants.map(&:user_id))
-                                    .group(:user_id).sum(:unread_count)
+    totals = ConversationParticipant.unread_totals_for(participants.map(&:user_id))
 
     participants.each do |participant|
       InboxChannel.broadcast_to(participant.user,
                                 conversation_id: conversation.id,
                                 unread_count:    participant.unread_count,
-                                total_unread:    totals[participant.user_id].to_i,
+                                total_unread:    totals[participant.user_id],
                                 preview:         message.body,
-                                sender:          message.user.username)
+                                sender:          user.username)
     end
   end
 end

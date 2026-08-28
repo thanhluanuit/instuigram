@@ -6,13 +6,9 @@ export default class extends Controller {
   static values = { conversationId: Number, currentUserId: Number, readUrl: String }
 
   connect() {
-    this.markOwnMessages()
-    this.scrollToBottom()
+    this.refresh()
 
-    this.observer = new MutationObserver(() => {
-      this.markOwnMessages()
-      this.scrollToBottom()
-    })
+    this.observer = new MutationObserver(() => this.refresh())
     this.observer.observe(this.listTarget, { childList: true })
 
     this.subscription = consumer.subscriptions.create(
@@ -32,6 +28,11 @@ export default class extends Controller {
 
     window.Turbo.renderStreamMessage(data)
     this.markRead()
+  }
+
+  refresh() {
+    this.markOwnMessages()
+    this.scrollToBottom()
   }
 
   clearComposer() {

@@ -16,6 +16,10 @@ class Conversation < ApplicationRecord
   end
 
   def participant_for(user)
-    conversation_participants.find_by(user: user)
+    conversation_participants.detect { |participant| participant.user_id == user.id }
+  end
+
+  def mark_read_for(user)
+    participant_for(user).update!(unread_count: 0)
   end
 end
