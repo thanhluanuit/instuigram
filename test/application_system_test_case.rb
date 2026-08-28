@@ -3,7 +3,7 @@ require "test_helper"
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include ActionView::RecordIdentifier
 
-  driven_by :selenium, using: :chrome, screen_size: [ 1400, 1400 ] do |options|
+  driven_by :selenium, using: ENV["HEADED"].present? ? :chrome : :headless_chrome, screen_size: [ 1400, 1400 ] do |options|
     options.add_argument("--disable-features=PasswordLeakDetection")
     options.add_preference("profile.password_manager_leak_detection", false)
     options.add_preference("profile.password_manager_enabled", false)
