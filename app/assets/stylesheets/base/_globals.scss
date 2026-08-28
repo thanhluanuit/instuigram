@@ -1,0 +1,17 @@
+.container {
+  max-width: 1000px;
+}
+
+.main-content {
+  min-height: 500px;
+}
+
+%link-accent {
+  color: #00376b;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

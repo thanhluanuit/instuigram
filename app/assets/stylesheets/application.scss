@@ -1,58 +1,19 @@
+@import "tokens";
+@import "bootstrap_overrides";
 @import "bootstrap";
 @import "font-awesome";
-@import "auth";
-@import "users";
-@import "posts";
-@import "comments";
-@import "reactions";
-@import "modal";
-@import "chats";
 
-.container{
-  max-width: 1000px;
-}
+@import "base/globals";
 
-.main-content{
-  min-height: 500px;
-}
+@import "components/navbar";
+@import "components/footer";
+@import "components/comment";
+@import "components/reaction";
+@import "components/modal";
 
-.navbar{
-  border-bottom: 1px solid rgba(0,0,0,.0975);
-}
-.user-section{
-  a{
-    padding-left: 15px;
-  }
-  i.fa{
-    font-size: 22px;
-    color: #000000d4;
-  }
-}
-.search-form{
-  input{
-    font-size: 13px;
-    text-align: center;
-  }
-}
-.footer{
-  font-size: 12px;
-  padding-top: 30px;
-  ul{
-    padding-left: 0;
-    > li{
-      display: inline;
-      padding-right: 15px;
-      color: #003569;
-    }
-  }
-  p{
-    color: #999;
-  }
-}
-
-.search-page{
-  h1{
-    font-size: 24px;
-    padding: 25px 0 0 30px;
-  }
-}
+@import "pages/auth";
+@import "pages/home";
+@import "pages/post";
+@import "pages/profile";
+@import "pages/search";
+@import "pages/chat";
