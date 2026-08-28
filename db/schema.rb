@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_25_093442) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_035953) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,6 +63,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_093442) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "conversation_participants", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "unread_count", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["conversation_id", "user_id"], name: "index_conversation_participants_on_conversation_id_and_user_id", unique: true
+    t.index ["user_id", "unread_count"], name: "index_conversation_participants_on_user_id_and_unread_count"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "last_message_at"
+    t.bigint "last_message_id"
+    t.string "participants_key", null: false
+    t.datetime "updated_at", null: false
+    t.index ["last_message_id"], name: "index_conversations_on_last_message_id"
+    t.index ["participants_key"], name: "index_conversations_on_participants_key", unique: true
+  end
+
   create_table "event_logs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "event_type", null: false
@@ -81,6 +101,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_093442) do
     t.string "name", null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["name"], name: "index_hash_tags_on_name", unique: true
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["conversation_id", "created_at"], name: "index_messages_on_conversation_id_and_created_at"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "post_hash_tags", force: :cascade do |t|
@@ -124,6 +154,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_093442) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "gender"
+    t.datetime "last_seen_at"
     t.datetime "last_sign_in_at", precision: nil
     t.inet "last_sign_in_ip"
     t.string "name"
@@ -146,7 +177,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_093442) do
   add_foreign_key "clients", "users"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "conversation_participants", "conversations"
+  add_foreign_key "conversation_participants", "users"
+  add_foreign_key "conversations", "messages", column: "last_message_id", on_delete: :nullify
   add_foreign_key "event_logs", "users"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users"
   add_foreign_key "post_hash_tags", "hash_tags"
   add_foreign_key "post_hash_tags", "posts"
   add_foreign_key "posts", "users"
