@@ -1,0 +1,9 @@
+<div id="<%= dom_id(post, :comments) %>" class="comments">
+  <% if post.comments.any? %>
+    <% post.comments.each do |comment| %>
+      <%= render partial: "comments/comment", locals: { comment: comment } %>
+    <% end %>
+  <% else %>
+    <p class="no-comments">No comments yet.</p>
+  <% end %>
+</div>
