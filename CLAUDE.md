@@ -33,7 +33,7 @@ bin/rails console               # REPL
 bin/rails test                  # run the Minitest suite (test/); generates coverage/index.html via SimpleCov
 bin/rails test test/models/post_test.rb            # run a single test file
 bin/rails test test/models/post_test.rb:7          # run a single test at a line
-bin/rails test:system           # run Capybara/Selenium system tests
+bin/rails test:system           # run Capybara/Selenium system tests (headless; HEADED=1 for a real window)
 ```
 
 - **RuboCop**: `rubocop-rails-omakase` (Rails 8's own default style, inherited wholesale in `.rubocop.yml` with no project-specific overrides) — run `bundle exec rubocop` (`-A` to autofix).
@@ -42,6 +42,8 @@ bin/rails test:system           # run Capybara/Selenium system tests
 ## CI
 
 GitHub Actions (`.github/workflows/ci.yml`) runs on every push/PR to `master`: runs `bundle exec brakeman`, `bundle exec bundle-audit check --update`, and `bundle exec rubocop` as standalone jobs, then a `test` job that spins up `postgres:15`, `redis:7` and `elasticsearch:8.19.11` service containers before `bin/rails db:schema:load` against `test_instuigram` and `bin/rails test`. Redis is required because `SidekiqWebTest` renders the Sidekiq::Web dashboard, which reads Redis directly — the rest of the test env doesn't need it (Action Cable uses the `async` adapter, the cache store is `:null_store`, and `ActiveJob::TestHelper` swaps in the `:test` queue adapter).
+
+A separate `system_test` job runs `bin/rails test:system` — Rails' default test glob excludes `test/system`, so the `test` job never touched them and the whole system suite silently rotted until this job existed. It needs only `postgres:15` and `elasticsearch:8.19.11` (no Redis — nothing in a system test reaches it), plus `imagemagick`, which the `test` job does *not* need: a real browser actually fetches the `/rails/active_storage/representations/...` URLs that `image_tag post.image.variant(...)` emits, whereas a controller test only asserts on the URL string. Failure screenshots (`tmp/screenshots`) upload as an artifact — headless failures are undebuggable without them. The driver is headless by default; `HEADED=1 bin/rails test:system` opens a real Chrome window locally.
 
 ## Git conventions
 

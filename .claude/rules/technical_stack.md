@@ -29,6 +29,7 @@
 ## Testing & quality
 
 - **Test framework**: Minitest (Rails default) — `test/` has `models`, `controllers`, `integration`, `system`, `mailers`, `helpers`
+- **System tests**: Capybara + Selenium, headless Chrome by default (`HEADED=1` for a real window), run in CI by their own `system_test` job via `bin/rails test:system` — `bin/rails test` excludes `test/system` by Rails' default glob, so the two jobs cover disjoint sets
 - **Coverage**: SimpleCov (`SimpleCov.start "rails"` in `test/test_helper.rb`, before any app code loads), report-only — generates `coverage/index.html` locally on every `bin/rails test` run and prints the summary % to CI's `test` job log; no enforced minimum yet.
 - **Factories / fixtures**: fixtures (`test/fixtures/*.yml`) — no FactoryBot
 - **Linters**: RuboCop, via `rubocop-rails-omakase` (Rails 8's own default style — inherited wholesale in `.rubocop.yml` via `inherit_gem`, no project-specific overrides yet). Run locally with `bundle exec rubocop` (`-A` to autofix); enforced as a CI step. No ERB Lint.
