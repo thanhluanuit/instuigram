@@ -1,3 +1,13 @@
+%link-accent {
+  color: #00376b;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .homepage {
   max-width: 630px;
   margin: 40px auto;
@@ -173,13 +183,7 @@
         color: #262626;
 
         a {
-          color: #00376b;
-          font-weight: 600;
-          text-decoration: none;
-
-          &:hover {
-            text-decoration: underline;
-          }
+          @extend %link-accent;
         }
       }
 
@@ -207,6 +211,33 @@
         margin: 0;
         font-size: 15px;
       }
+    }
+  }
+
+  .feed-sentinel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 0;
+    color: #8e8e8e;
+    font-size: 14px;
+
+    &__end {
+      margin: 0;
+    }
+
+    &__loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__spinner i {
+      font-size: 20px;
+    }
+
+    &__link {
+      @extend %link-accent;
     }
   }
 
@@ -308,13 +339,7 @@
     color: #262626;
 
     a {
-      color: #00376b;
-      font-weight: 600;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
+      @extend %link-accent;
     }
   }
 

@@ -127,4 +127,33 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     get root_path
   end
+
+  test "the feed sentinel links to the next page when more posts remain" do
+    sign_in users(:one)
+    11.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    get root_path
+
+    assert_select "#feed_sentinel a[href=?]", root_path(page: 2)
+  end
+
+  test "the feed sentinel shows an end state on the last page" do
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select "#feed_sentinel a", false
+    assert_select "#feed_sentinel", text: /caught up/i
+  end
+
+  test "requesting a page as turbo stream appends posts and replaces the sentinel" do
+    sign_in users(:one)
+    11.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    get root_path(page: 2), as: :turbo_stream
+
+    assert_turbo_stream action: "append", target: "posts"
+    assert_turbo_stream action: "replace", target: "feed_sentinel"
+    assert_select "turbo-stream[action=append][target=posts] section.post", count: 3
+  end
 end

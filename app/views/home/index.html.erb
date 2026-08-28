@@ -3,17 +3,17 @@
     <%= render 'upload_form' %>
   </div>
 
-  <div class="posts">
-    <% if @posts.load.any? %>
+  <% if @posts.load.any? %>
+    <div class="posts" id="posts">
       <% @posts.each do |post| %>
         <%= render partial: 'post', locals: { post: post, user_reaction: @user_reactions[post.id] } %>
       <% end %>
-      <%= paginate @posts %>
-    <% else %>
-      <div class="empty-state">
-        <i class="fa fa-camera"></i>
-        <p>No posts yet. Share your first photo above.</p>
-      </div>
-    <% end %>
-  </div>
+    </div>
+    <%= render "feed_sentinel", posts: @posts %>
+  <% else %>
+    <div class="empty-state">
+      <i class="fa fa-camera"></i>
+      <p>No posts yet. Share your first photo above.</p>
+    </div>
+  <% end %>
 </div>
