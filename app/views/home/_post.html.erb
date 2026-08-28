@@ -10,5 +10,8 @@
       <%= render partial: "posts/description", locals: {post: post} %>
     </div>
   <% end %>
-  <%= render partial: "posts/reaction_button", locals: { post: post, user_reaction: user_reaction, frame_id: dom_id(post, :reaction) } %>
+  <div class="actions">
+    <%= render partial: "posts/reaction_button", locals: { post: post, user_reaction: user_reaction, frame_id: dom_id(post, :reaction) } %>
+    <%= render partial: "posts/comment_button", locals: { post: post } %>
+  </div>
 </section>
