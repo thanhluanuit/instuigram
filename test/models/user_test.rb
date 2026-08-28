@@ -153,6 +153,19 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test "matching_username finds users whose username contains the query, case-insensitively" do
+    assert_includes User.matching_username("USER_T"), users(:two)
+    assert_not_includes User.matching_username("USER_T"), users(:admin)
+  end
+
+  test "matching_username returns everyone when the query is blank" do
+    assert_equal User.count, User.matching_username("  ").count
+  end
+
+  test "matching_username treats wildcard characters as literal text" do
+    assert_empty User.matching_username("%")
+  end
+
   private
 
   def build_user(email: "new_user@example.com", password: "password123", username: "new_user", website: nil)

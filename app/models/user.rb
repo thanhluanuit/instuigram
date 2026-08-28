@@ -19,6 +19,12 @@ class User < ApplicationRecord
 
   before_destroy :destroy_conversations
 
+  scope :matching_username, ->(query) {
+    next all if query.blank?
+
+    where("username ILIKE ?", "%#{sanitize_sql_like(query)}%")
+  }
+
   def online?
     last_seen_at.present? && last_seen_at > 1.minute.ago
   end
