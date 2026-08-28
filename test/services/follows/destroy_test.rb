@@ -25,6 +25,18 @@ class Follows::DestroyTest < ActiveSupport::TestCase
     assert_no_difference("Follow.count") { assert_nil destroy_follow }
   end
 
+  test "broadcasts a count refresh to both users' profile streams" do
+    Follows::Create.call(follower: @follower, followed: @followed)
+
+    assert_enqueued_jobs 2, only: Turbo::Streams::ActionBroadcastJob do
+      destroy_follow
+    end
+  end
+
+  test "unfollowing someone you do not follow broadcasts nothing" do
+    assert_no_enqueued_jobs(only: Turbo::Streams::ActionBroadcastJob) { destroy_follow }
+  end
+
   private
 
   def destroy_follow(follower: @follower, followed: @followed)

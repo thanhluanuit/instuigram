@@ -24,6 +24,18 @@ class Follows::CreateTest < ActiveSupport::TestCase
     assert_not follow.previously_new_record?
   end
 
+  test "broadcasts a count refresh to both users' profile streams" do
+    assert_enqueued_jobs 2, only: Turbo::Streams::ActionBroadcastJob do
+      create_follow
+    end
+  end
+
+  test "following again broadcasts nothing" do
+    create_follow
+
+    assert_no_enqueued_jobs(only: Turbo::Streams::ActionBroadcastJob) { create_follow }
+  end
+
   test "returns the winning row when a concurrent request wins the insert race" do
     follow = losing_the_insert_race { create_follow }
 

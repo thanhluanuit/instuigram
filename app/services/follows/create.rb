@@ -7,7 +7,9 @@ class Follows::Create < BaseService
   end
 
   def call
-    find_follow || create_follow
+    follow = find_follow || create_follow
+    broadcast_counts if follow&.previously_new_record?
+    follow
   end
 
   private
@@ -22,5 +24,9 @@ class Follows::Create < BaseService
     Follow.create!(follower: follower, followed: followed)
   rescue ActiveRecord::RecordNotUnique
     find_follow
+  end
+
+  def broadcast_counts
+    Follows::BroadcastCounts.call(follower: follower, followed: followed)
   end
 end
