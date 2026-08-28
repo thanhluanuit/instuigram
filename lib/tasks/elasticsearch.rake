@@ -12,7 +12,7 @@ namespace :elasticsearch do
   desc "Recreate the Post index and reindex every post"
   task reindex: :environment do
     Post.__elasticsearch__.create_index!(force: true)
-    Post.find_each { |post| post.__elasticsearch__.index_document }
+    Post.import(force: false, batch_size: 1000)
     Post.__elasticsearch__.refresh_index!
     puts "Reindexed #{Post.count} posts into #{Post.index_name}"
   end

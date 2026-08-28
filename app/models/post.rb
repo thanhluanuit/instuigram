@@ -4,6 +4,8 @@ class Post < ApplicationRecord
   belongs_to :user
   has_one_attached :image
 
+  scope :created_recently, -> { order(created_at: :desc) }
+
   has_many :post_hash_tags, dependent: :destroy
   has_many :hash_tags, through: :post_hash_tags
   has_many :comments, dependent: :destroy

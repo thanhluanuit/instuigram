@@ -3,8 +3,9 @@ class UsersController < ApplicationController
 
   def show
     @user  = User.find(params[:id])
-    @posts = @user.posts.includes(image_attachment: :blob).order(created_at: :desc)
-                   .page(params[:page]).per(10)
+    @posts = @user.posts.includes(image_attachment: :blob)
+                  .created_recently
+                  .page(params[:page]).per(10)
   end
 
   def edit

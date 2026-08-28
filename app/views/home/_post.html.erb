@@ -1,14 +1,7 @@
 <section class="post">
   <% cache post do %>
     <div class="user">
-      <div class="avatar">
-        <% if post.user.avatar.attached? %>
-          <%= link_to user_path(post.user) do %>
-            <%= image_tag post.user.avatar.variant(resize_to_fill: [ 72, 72 ]) %>
-          <% end %>
-        <% end %>
-      </div>
-      <%= link_to post.user.username, user_path(post.user), class: 'username' %>
+      <%= render partial: "posts/user_header", locals: { user: post.user, avatar_size: 72 } %>
     </div>
     <%= link_to post_path(post), class: 'main-image-link' do %>
       <%= image_tag post.image.variant(resize_to_limit: [ 600, 600 ]), class: 'main-image' %>

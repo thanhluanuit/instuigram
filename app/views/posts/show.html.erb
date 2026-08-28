@@ -4,21 +4,14 @@
   </div>
   <div class="col-md-4">
     <div class="user">
-      <div class="avatar">
-        <% if @post.user.avatar.attached? %>
-          <%= link_to user_path(@post.user) do %>
-            <%= image_tag @post.user.avatar.variant(resize_to_fill: [ 88, 88 ]) %>
-          <% end %>
-        <% end %>
-      </div>
-      <%= link_to @post.user.username, user_path(@post.user), class: 'username' %>
+      <%= render partial: "posts/user_header", locals: { user: @post.user, avatar_size: 88 } %>
     </div>
     <div class="description">
       <%= render partial: "description", locals: {post: @post} %>
     </div>
     <div class="actions">
       <%= render partial: "reaction_button", locals: { post: @post, user_reaction: @user_reaction } %>
-      <% if current_user&.posts&.exists?(@post.id) %>
+      <% if current_user && current_user.id == @post.user_id %>
         <div class="delete">
           <%= link_to post_path(@post), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "delete-icon", "aria-label": "Delete" do %>
             <i class="fa fa-trash-o"></i>

@@ -1,0 +1,11 @@
+<div class="user-images">
+  <% posts.each do |post| %>
+    <div class="wrapper">
+      <%= link_to post_path(post) do %>
+        <%= image_tag post.image.variant(resize_to_fill: [ 293, 293 ]), loading: "lazy" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate posts %>

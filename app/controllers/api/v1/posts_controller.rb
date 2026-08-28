@@ -1,8 +1,7 @@
 class Api::V1::PostsController < Api::BaseController
   def index
     posts = current_user_api.posts.includes(:hash_tags, image_attachment: :blob)
-                                   .order(created_at: :desc)
-                                   .page(params[:page]).per(10)
+                                   .created_recently.page(params[:page]).per(10)
     render json: {
       posts: posts.map { |post| post_json(post) },
       current_page: posts.current_page,
@@ -41,7 +40,7 @@ class Api::V1::PostsController < Api::BaseController
       id: post.id,
       description: post.description,
       image_url: post.image.attached? ? Rails.application.routes.url_helpers.rails_blob_url(post.image) : nil,
-      hash_tags: post.hash_tags.map(&:name),
+      hash_tags: post.hashtag_names,
       created_at: post.created_at
     }
   end

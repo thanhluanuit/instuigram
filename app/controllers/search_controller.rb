@@ -4,7 +4,7 @@ class SearchController < ApplicationController
     @posts = if search_response
       search_response.page(search_params[:page]).per(10).records(includes: { image_attachment: :blob })
     else
-      Kaminari.paginate_array([]).page(search_params[:page]).per(10)
+      Post.none.created_recently.page(search_params[:page]).per(10)
     end
   end
 
