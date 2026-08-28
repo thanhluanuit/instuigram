@@ -48,11 +48,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     sign_in_and_absorb_trackable_update users(:one)
     11.times { |n| create_post!(users(:one), description: "post #{n}") }
 
-    assert_queries_count(10) { get root_path }
+    assert_queries_count(9) { get root_path }
 
     create_post!(users(:one), description: "one more post")
 
-    assert_queries_count(10) { get root_path }
+    assert_queries_count(9) { get root_path }
   end
 
   test "shows the newest post first" do
