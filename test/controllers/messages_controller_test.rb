@@ -21,6 +21,18 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "message_sent", EventLog.last.event_type
   end
 
+  test "the sender receives the new message without relying on the broadcast" do
+    sign_in users(:one)
+
+    post conversation_messages_path(conversations(:one_and_two)),
+         params: { message: { body: "hi" } },
+         as: :turbo_stream
+
+    assert_response :success
+    assert_includes response.body, ActionView::RecordIdentifier.dom_id(Message.last)
+    assert_includes response.body, "hi"
+  end
+
   test "when not a participant, responds not found and creates no message" do
     sign_in users(:admin)
 

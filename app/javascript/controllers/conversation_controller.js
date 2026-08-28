@@ -27,6 +27,9 @@ export default class extends Controller {
   }
 
   received(data) {
+    const id = data.match(/id="(message_\d+)"/)?.[1]
+    if (id && document.getElementById(id)) return
+
     window.Turbo.renderStreamMessage(data)
     this.markRead()
   }
