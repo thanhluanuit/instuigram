@@ -1,14 +1,7 @@
 <div class="user-edit-page" data-controller="tabs">
   <div class="actions">
-    <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-      <a class="nav-link active" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-home" role="tab" aria-selected="true">Edit Profile</a>
-      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-password" role="tab" aria-selected="false">Change Password</a>
-      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-apps" role="tab" aria-selected="false">Authorized Applications</a>
-      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-contact" role="tab" aria-selected="false">Email and SMS</a>
-      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-contacts" role="tab" aria-selected="false">Manage Contacts</a>
-      <a class="nav-link" data-tabs-target="tab" data-action="click->tabs#select" href="#v-pills-privacy" role="tab" aria-selected="false">Privacy and Security</a>
-      <%= link_to 'Log Out', destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
-    </div>
+    <%= render "users/settings_nav", active: :profile,
+                                     placeholder_tabs: UsersHelper::SETTINGS_PLACEHOLDER_TABS %>
   </div>
   <div class="details tab-content">
     <div class="tab-pane fade show active" data-tabs-target="pane" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
@@ -80,9 +73,6 @@
           </div>
         </div>
       <% end %>
-    </div>
-    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-password" role="tabpanel">
-      <p>Change Password — coming soon.</p>
     </div>
     <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-apps" role="tabpanel">
       <p>Authorized Applications — coming soon.</p>

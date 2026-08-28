@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Instagram</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="auth-body">
+    <main class="auth-page">
+      <div class="auth-showcase">
+        <div class="phone">
+          <div class="phone-screen">
+            <%= image_tag "home_page.png", alt: "" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-panel">
+        <% flash.each do |type, message| %>
+          <div class="alert alert-<%= type == "alert" ? "danger" : "success" %>"><%= message %></div>
+        <% end %>
+        <%= yield %>
+      </div>
+    </main>
+
+    <%= render "layouts/footer" %>
+  </body>
+</html>

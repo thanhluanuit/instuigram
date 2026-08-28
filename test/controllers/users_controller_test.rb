@@ -107,4 +107,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_not_equal "not-an-email", users(:one).reload.email
   end
+
+  test "edit, when authenticated, links the settings sidebar to the change password page" do
+    sign_in users(:one)
+
+    get edit_user_path(users(:one))
+
+    assert_select "a[href=?]", edit_user_registration_path
+  end
 end

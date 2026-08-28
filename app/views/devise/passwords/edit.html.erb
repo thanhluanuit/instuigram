@@ -1,0 +1,25 @@
+<div class="auth-card">
+  <div class="auth-lock"><i class="fa fa-lock"></i></div>
+  <h1 class="auth-heading">Choose a new password</h1>
+  <p class="auth-tagline">
+    Create a new password that's at least <%= @minimum_password_length %> characters long.
+  </p>
+
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "auth-form" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    <%= f.hidden_field :reset_password_token %>
+
+    <%= f.label :password, "New Password", class: "visually-hidden" %>
+    <%= f.password_field :password, autofocus: true, autocomplete: "new-password",
+                         class: "form-control", placeholder: "New Password" %>
+    <%= f.label :password_confirmation, "Confirm New Password", class: "visually-hidden" %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password",
+                         class: "form-control", placeholder: "Confirm New Password" %>
+
+    <%= f.submit "Reset Password", class: "btn btn-primary auth-submit" %>
+  <% end %>
+</div>
+
+<div class="auth-card auth-card-secondary">
+  <%= link_to "Back To Login", new_session_path(resource_name) %>
+</div>

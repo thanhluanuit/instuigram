@@ -1,0 +1,53 @@
+<div class="user-edit-page">
+  <div class="actions">
+    <%= render "users/settings_nav", active: :password %>
+  </div>
+
+  <div class="details">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "form-horizontal form-edit-user" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="row mb-3">
+        <div class="col-sm-3 col-form-label">
+          <% if current_user.avatar.attached? %>
+            <%= image_tag current_user.avatar.variant(resize_to_fill: [ 76, 76 ]), class: 'avatar' %>
+          <% end %>
+        </div>
+        <div class="col-sm-9">
+          <p class="username"><%= current_user.username %></p>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <%= f.label :current_password, "Old Password", class: 'col-sm-3 col-form-label' %>
+        <div class="col-sm-9">
+          <%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <%= f.label :password, "New Password", class: 'col-sm-3 col-form-label' %>
+        <div class="col-sm-9">
+          <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
+          <small class="form-text text-muted">
+            At least <%= @minimum_password_length %> characters.
+          </small>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <%= f.label :password_confirmation, "Confirm New Password", class: 'col-sm-3 col-form-label' %>
+        <div class="col-sm-9">
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+          <%= f.submit "Change Password", class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
