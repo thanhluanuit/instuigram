@@ -7,7 +7,7 @@
   .wrapper img{
     width: 100%;
     height: 100%;
-    border-radius: 50%;
+    border-radius: $radius-circle;
   }
 }
 
@@ -19,7 +19,7 @@
   .username{
     font-size: 30px;
     line-height: 40px;
-    font-weight: 200;
+    font-weight: $weight-normal;
   }
   .edit-profile{
     margin-left: 20px;
@@ -27,12 +27,12 @@
   }
   .edit-profile button{
     background-color: transparent;
-    border-radius: 5px;
-    border: 1px solid #dbdbdb;
-    color: #262626;
+    border-radius: $radius-sm;
+    border: 1px solid $border;
+    color: $ink;
     font-size: 14px;
     padding: 4px 10px;
-    font-weight: 500;
+    font-weight: $weight-medium;
   }
   ul.posts{
     padding-left: 0;
@@ -41,25 +41,25 @@
       padding-right: 40px;
       font-size: 15px;
       span{
-        color: #262626;
-        font-weight: 600;
+        color: $ink;
+        font-weight: $weight-semibold;
       }
     }
   }
   .name{
     font-size: 15px;
-    font-weight: 600;
+    font-weight: $weight-semibold;
   }
   .website{
-    color: #003569;
+    color: $link;
     text-decoration: none;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: $weight-semibold;
   }
 }
 
 .user-tabs{
-  border-top: 1px solid #efefef;
+  border-top: 1px solid $border-subtle;
   display: flex;
   justify-content: center;
 
@@ -67,9 +67,9 @@
     height: 35px;
     margin-right: 50px;
     line-height: 45px;
-    color: #999;
+    color: $ink-muted;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: $weight-medium;
     text-align: center;
     i{
       padding-right: 1px;
@@ -79,8 +79,8 @@
     }
   }
   a.active{
-    border-top: 1px solid #262626;
-    color: #262626;
+    border-top: 1px solid $ink;
+    color: $ink;
   }
 }
 
@@ -97,11 +97,11 @@
 
     img{
       width: 100%;
-      border-radius: 4%;
+      border-radius: $radius-sm;
       width: 278px;
       height: 278px;
       object-fit: cover;
-      border: 1px solid #efefef;
+      border: 1px solid $border-subtle;
     }
   }
 }
@@ -114,11 +114,11 @@
 
   .actions{
     width: 220px;
-    border: 1px solid #dbdbdb;
+    border: 1px solid $border;
 
     .nav-link{
       font-size: 14px;
-      background-color: white;
+      background-color: $ink-inverse;
       color: black;
       border-radius: 0;
       padding: 12px 0 12px 30px;
@@ -128,12 +128,12 @@
     }
     .nav-pills .nav-link.active{
       border-left: 2px solid;
-      font-weight: 600;
+      font-weight: $weight-semibold;
     }
   }
   .details{
     flex: 1;
-    border: 1px solid #dbdbdb;
+    border: 1px solid $border;
     border-left:none;
   }
 }
@@ -147,17 +147,17 @@
     color: black;
   }
   input, textarea{
-    border: 1px solid #efefef;
+    border: 1px solid $border-subtle;
   }
   .col-form-label{
     text-align: right;
-    font-weight: 600;
+    font-weight: $weight-semibold;
   }
 
   .avatar{
     height: 38px;
     width: 38px;
-    border-radius: 50%;
+    border-radius: $radius-circle;
   }
   .username{
     font-size: 20px;
@@ -165,11 +165,11 @@
     margin-bottom: 0;
   }
   .change-photo{
-    color: #3897f0;
+    color: $link;
     text-decoration: none;
     font-size: 13px;
   }
   input[type='submit']{
-    color: white;
+    color: $ink-inverse;
   }
 }

@@ -1,10 +1,10 @@
-$auth-border: #dbdbdb;
-$auth-text: #262626;
-$auth-muted: #8e8e8e;
-$auth-link: #003569;
+$border-subtle: $border;
+$ink: $ink;
+$ink-muted: $ink-muted;
+$link: $link;
 
 .auth-body {
-  background-color: #fafafa;
+  background-color: $canvas;
 }
 
 .auth-page {
@@ -29,9 +29,9 @@ $auth-link: #003569;
 .phone {
   width: 320px;
   height: 590px;
-  border: 12px solid $auth-text;
+  border: 12px solid $ink;
   border-radius: 40px;
-  background-color: $auth-text;
+  background-color: $ink;
   box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
   overflow: hidden;
   position: relative;
@@ -44,7 +44,7 @@ $auth-link: #003569;
     transform: translateX(-50%);
     width: 120px;
     height: 20px;
-    background-color: $auth-text;
+    background-color: $ink;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
     z-index: 2;
@@ -56,7 +56,7 @@ $auth-link: #003569;
   height: 100%;
   border-radius: 28px;
   overflow: hidden;
-  background-color: #fff;
+  background-color: $ink-inverse;
 
   img {
     width: 100%;
@@ -70,13 +70,13 @@ $auth-link: #003569;
 }
 
 .auth-card {
-  background-color: #fff;
-  border: 1px solid $auth-border;
-  border-radius: 1px;
+  background-color: $ink-inverse;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-sm;
   padding: 40px 40px 30px;
   margin-bottom: 10px;
   text-align: center;
-  color: $auth-text;
+  color: $ink;
 
   .alert {
     text-align: left;
@@ -88,28 +88,28 @@ $auth-link: #003569;
   font-size: 14px;
 
   a {
-    color: #0095f6;
-    font-weight: 600;
+    color: $accent;
+    font-weight: $weight-semibold;
     text-decoration: none;
   }
 }
 
 .auth-logo {
   font-size: 42px;
-  font-weight: 200;
+  font-weight: $weight-normal;
   margin-bottom: 25px;
 }
 
 .auth-heading {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: $weight-semibold;
   margin-bottom: 10px;
 }
 
 .auth-tagline {
-  color: $auth-muted;
+  color: $ink-muted;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: $weight-semibold;
   line-height: 18px;
   margin-bottom: 20px;
 }
@@ -118,8 +118,8 @@ $auth-link: #003569;
   width: 96px;
   height: 96px;
   margin: 10px auto 20px;
-  border: 2px solid $auth-text;
-  border-radius: 50%;
+  border: 2px solid $ink;
+  border-radius: $radius-circle;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,15 +131,15 @@ $auth-link: #003569;
 
 .auth-form {
   .form-control {
-    background-color: #fafafa;
-    border: 1px solid #dbdbdb;
-    border-radius: 3px;
+    background-color: $canvas;
+    border: 1px solid $border;
+    border-radius: $radius-sm;
     font-size: 13px;
     padding: 9px 8px;
     margin-bottom: 6px;
 
     &:focus {
-      border-color: #a8a8a8;
+      border-color: $border;
       box-shadow: none;
     }
   }
@@ -147,16 +147,16 @@ $auth-link: #003569;
 
 .auth-submit {
   width: 100%;
-  background-color: #0095f6;
+  background-color: $accent;
   border: none;
-  border-radius: 4px;
+  border-radius: $radius-sm;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: $weight-semibold;
   padding: 7px 16px;
   margin-top: 8px;
 
   &:hover {
-    background-color: #1877f2;
+    background-color: $accent-hover;
   }
 }
 
@@ -164,7 +164,7 @@ $auth-link: #003569;
   display: block;
   margin-top: 12px;
   font-size: 13px;
-  color: $auth-muted;
+  color: $ink-muted;
 
   input {
     margin-right: 6px;
@@ -172,7 +172,7 @@ $auth-link: #003569;
 }
 
 .auth-terms {
-  color: $auth-muted;
+  color: $ink-muted;
   font-size: 12px;
   line-height: 16px;
   margin: 12px 0 0;
@@ -182,16 +182,16 @@ $auth-link: #003569;
   display: flex;
   align-items: center;
   margin: 18px 0;
-  color: $auth-muted;
+  color: $ink-muted;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: $weight-semibold;
 
   &::before,
   &::after {
     content: "";
     flex: 1;
     height: 1px;
-    background-color: $auth-border;
+    background-color: $border-subtle;
   }
 
   span {
@@ -200,7 +200,7 @@ $auth-link: #003569;
 }
 
 .auth-muted-link {
-  color: $auth-link;
+  color: $link;
   font-size: 12px;
   text-decoration: none;
 }

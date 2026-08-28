@@ -5,22 +5,22 @@
   .reaction-icon {
     font-size: 24px;
     line-height: 1;
-    color: #262626;
+    color: $ink;
     margin-right: 8px;
 
     &:hover {
-      color: #8e8e8e;
+      color: $ink-muted;
       text-decoration: none;
     }
 
     &.liked {
-      color: #ed4956;
+      color: $danger;
     }
   }
 
   .reactions-count {
     font-size: 14px;
-    font-weight: 600;
-    color: #262626;
+    font-weight: $weight-semibold;
+    color: $ink;
   }
 }

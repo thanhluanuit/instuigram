@@ -19,8 +19,8 @@ body.modal-open {
     max-height: 90vh;
     overflow-y: auto;
     padding: 16px;
-    background: #fff;
-    border-radius: 4px;
+    background: $surface;
+    border-radius: $radius-sm;
   }
 
   .post-modal-close {
@@ -33,10 +33,10 @@ body.modal-open {
     background: transparent;
     font-size: 20px;
     line-height: 1;
-    color: #8e8e8e;
+    color: $ink-muted;
 
     &:hover, &:focus {
-      color: #262626;
+      color: $ink;
     }
   }
 

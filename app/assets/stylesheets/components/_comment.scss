@@ -5,19 +5,19 @@
   .comment-icon {
     font-size: 24px;
     line-height: 1;
-    color: #262626;
+    color: $ink;
     margin-right: 8px;
 
     &:hover {
-      color: #8e8e8e;
+      color: $ink-muted;
       text-decoration: none;
     }
   }
 
   .comments-count {
     font-size: 14px;
-    font-weight: 600;
-    color: #262626;
+    font-weight: $weight-semibold;
+    color: $ink;
   }
 }
 
@@ -30,7 +30,7 @@
 
     .no-comments{
       margin: 0;
-      color: #8e8e8e;
+      color: $ink-muted;
       font-size: 14px;
     }
 
@@ -43,14 +43,14 @@
       line-height: 1.5;
 
       .comment-body{
-        color: #262626;
+        color: $ink;
 
         .username{
-          font-weight: 700;
+          font-weight: $weight-bold;
           margin-right: 6px;
 
           &:hover{
-            color: #262626;
+            color: $ink;
             text-decoration: none;
           }
         }
@@ -60,10 +60,10 @@
         flex-shrink: 0;
         margin-left: 8px;
         font-size: 14px;
-        color: #c7c7c7;
+        color: $ink-faint;
 
         &:hover{
-          color: #ed4956;
+          color: $danger;
           text-decoration: none;
         }
       }
@@ -73,19 +73,19 @@
   .comment-form{
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid #efefef;
+    border-top: 1px solid $border-subtle;
 
     .form-group{
       margin-bottom: 8px;
     }
 
     .btn-primary{
-      background-color: #0095f6;
-      border-color: #0095f6;
+      background-color: $accent;
+      border-color: $accent;
 
       &:hover, &:focus{
-        background-color: #1877c9;
-        border-color: #1877c9;
+        background-color: $accent-hover;
+        border-color: $accent-hover;
       }
     }
   }

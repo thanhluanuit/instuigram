@@ -8,11 +8,11 @@
     > li {
       display: inline;
       padding-right: 15px;
-      color: #003569;
+      color: $link;
     }
   }
 
   p {
-    color: #999;
+    color: $ink-muted;
   }
 }

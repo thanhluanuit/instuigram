@@ -3,9 +3,9 @@
   margin: 40px auto;
 
   .form-upload {
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 8px;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-md;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
     padding: 20px 24px;
     margin-bottom: 32px;
@@ -24,10 +24,10 @@
       margin-right: 12px;
       flex-shrink: 0;
       overflow: hidden;
-      background: #efefef;
-      color: #8e8e8e;
+      background: $border-subtle;
+      color: $ink-muted;
       font-size: 20px;
-      border-radius: 50%;
+      border-radius: $radius-circle;
 
       img {
         width: 100%;
@@ -45,17 +45,17 @@
       width: 100%;
       padding: 10px 0;
       border: none;
-      border-bottom: 1px solid #efefef;
+      border-bottom: 1px solid $border-subtle;
       font-size: 20px;
-      color: #262626;
+      color: $ink;
 
       &::placeholder {
-        color: #8e8e8e;
+        color: $ink-muted;
       }
 
       &:focus {
         outline: none;
-        border-bottom-color: #0095f6;
+        border-bottom-color: $accent;
       }
     }
 
@@ -78,37 +78,37 @@
       width: 36px;
       height: 36px;
       margin: 0;
-      border-radius: 50%;
-      color: #0095f6;
+      border-radius: $radius-circle;
+      color: $accent;
       font-size: 18px;
       cursor: pointer;
 
       &:hover {
-        background: rgba(0, 149, 246, .1);
+        background: $accent-wash;
       }
     }
 
     .composer-filename {
       margin-left: 10px;
       font-size: 13px;
-      color: #8e8e8e;
+      color: $ink-muted;
     }
 
     .composer-submit {
       padding: 8px 20px;
       border: none;
-      border-radius: 9999px;
-      background-color: #0095f6;
-      color: #fff;
-      font-weight: 700;
+      border-radius: $radius-pill;
+      background-color: $accent;
+      color: $ink-inverse;
+      font-weight: $weight-bold;
       font-size: 14px;
 
       &:hover:not(:disabled) {
-        background-color: #1877c9;
+        background-color: $accent-hover;
       }
 
       &:disabled {
-        background-color: #b2dffc;
+        background-color: $accent-disabled;
         cursor: not-allowed;
       }
     }
@@ -116,9 +116,9 @@
 
   .posts {
     .post {
-      background: #fff;
-      border: 1px solid #dbdbdb;
-      border-radius: 8px;
+      background: $surface;
+      border: 1px solid $border;
+      border-radius: $radius-md;
       box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
       overflow: hidden;
       margin-bottom: 32px;
@@ -127,7 +127,7 @@
         display: flex;
         align-items: center;
         padding: 12px 16px;
-        border-bottom: 1px solid #efefef;
+        border-bottom: 1px solid $border-subtle;
 
         .avatar {
           width: 36px;
@@ -139,18 +139,18 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border: 1px solid #efefef;
-            border-radius: 50%;
+            border: 1px solid $border-subtle;
+            border-radius: $radius-circle;
           }
         }
 
         .username {
-          color: #262626;
+          color: $ink;
           font-size: 14px;
-          font-weight: 700;
+          font-weight: $weight-bold;
 
           &:hover {
-            color: #262626;
+            color: $ink;
             text-decoration: none;
           }
         }
@@ -170,7 +170,7 @@
         padding: 16px;
         font-size: 14px;
         line-height: 1.6;
-        color: #262626;
+        color: $ink;
 
         a {
           @extend %link-accent;
@@ -182,14 +182,14 @@
         align-items: center;
         gap: 20px;
         padding: 8px 16px 16px;
-        border-top: 1px solid #efefef;
+        border-top: 1px solid $border-subtle;
       }
     }
 
     .empty-state {
       text-align: center;
       padding: 60px 20px;
-      color: #8e8e8e;
+      color: $ink-muted;
 
       i {
         display: block;
@@ -209,7 +209,7 @@
     align-items: center;
     justify-content: center;
     padding: 24px 0;
-    color: #8e8e8e;
+    color: $ink-muted;
     font-size: 14px;
 
     &__end {
@@ -242,25 +242,25 @@
       min-width: 32px;
       margin: 0 3px;
       padding: 6px 10px;
-      border-radius: 4px;
+      border-radius: $radius-sm;
       font-size: 13px;
-      color: #262626;
+      color: $ink;
       text-align: center;
     }
 
     a:hover {
-      background: #efefef;
+      background: $border-subtle;
       text-decoration: none;
     }
 
     span.current {
-      background: #262626;
-      color: #fff;
-      font-weight: 600;
+      background: $ink;
+      color: $ink-inverse;
+      font-weight: $weight-semibold;
     }
 
     span.disabled {
-      color: #c7c7c7;
+      color: $ink-faint;
     }
   }
 }

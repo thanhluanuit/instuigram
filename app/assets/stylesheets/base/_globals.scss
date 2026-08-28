@@ -7,8 +7,8 @@
 }
 
 %link-accent {
-  color: #00376b;
-  font-weight: 600;
+  color: $link;
+  font-weight: $weight-semibold;
   text-decoration: none;
 
   &:hover {
