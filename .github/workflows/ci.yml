@@ -83,6 +83,15 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:8.19.11
         env:
@@ -106,6 +115,7 @@ jobs:
       PGUSER: postgres
       PGPASSWORD: postgres
       ELASTICSEARCH_URL: http://localhost:9200
+      REDIS_URL: redis://localhost:6379/1
 
     steps:
       - name: Check out code
