@@ -9,6 +9,11 @@ class MessagesController < ApplicationController
 
     if @message.persisted?
       log_event(event_type: :message_sent, subject: @message)
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to conversation_path(@conversation) }
+      end
     else
       redirect_to conversation_path(@conversation), alert: @message.errors.full_messages.to_sentence
     end

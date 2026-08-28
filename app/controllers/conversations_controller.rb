@@ -28,8 +28,11 @@ class ConversationsController < ApplicationController
   end
 
   def create
-    conversation = Conversations::FindOrCreate.call(user: current_user, other_user: User.find(params[:user_id]))
-    return redirect_to conversations_path, alert: "You cannot message yourself." unless conversation
+    other_user = User.find(params[:user_id])
+    return redirect_to conversations_path, alert: "You cannot message yourself." if other_user == current_user
+
+    conversation = Conversations::FindOrCreate.call(user: current_user, other_user: other_user)
+    return redirect_to conversations_path, alert: "Could not start that conversation." unless conversation
 
     redirect_to conversation_path(conversation)
   end

@@ -15,11 +15,11 @@ export default class extends Controller {
 
   received(data) {
     document.querySelectorAll(`[data-presence-user-id="${data.user_id}"]`).forEach((dot) => {
-      dot.classList.toggle("is-online", data.online)
+      dot.classList.add("is-online")
     })
 
     document.querySelectorAll(`[data-presence-status-for="${data.user_id}"]`).forEach((label) => {
-      label.textContent = data.online ? "Active now" : "Offline"
+      label.textContent = "Active now"
     })
   }
 }
