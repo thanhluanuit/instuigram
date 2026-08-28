@@ -1,0 +1,12 @@
+<section class="conversations">
+  <h1 class="conversations__title">Messages</h1>
+
+  <% if @conversations.any? %>
+    <div class="conversations__list">
+      <%= render partial: "conversations/conversation", collection: @conversations, as: :conversation %>
+    </div>
+    <%= paginate @conversations %>
+  <% else %>
+    <p class="conversations__empty">No messages yet. Visit someone's profile to start a conversation.</p>
+  <% end %>
+</section>
