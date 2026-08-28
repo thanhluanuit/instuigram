@@ -17,6 +17,11 @@ Rails.application.routes.draw do
   resources :comments, only: [ :destroy ]
   get "search" => "search#index"
 
+  resources :conversations, only: [ :index, :show, :create ] do
+    resources :messages, only: [ :create ]
+    resource  :read,     only: [ :create ], module: :conversations
+  end
+
   namespace :api do
     namespace :v1 do
       resources :clients, only: [ :create ]
