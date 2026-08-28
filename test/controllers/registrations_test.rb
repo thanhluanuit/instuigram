@@ -28,6 +28,45 @@ class RegistrationsTest < ActionDispatch::IntegrationTest
     assert_select "nav.navbar-light", false
   end
 
+  test "the change password page renders the password fields" do
+    sign_in users(:one)
+
+    get edit_user_registration_path
+
+    assert_select "input[name='user[current_password]']"
+    assert_select "input[name='user[password]']"
+    assert_select "input[name='user[password_confirmation]']"
+  end
+
+  test "the change password page omits the profile fields owned by the profile form" do
+    sign_in users(:one)
+
+    get edit_user_registration_path
+
+    assert_select "input[name='user[email]']", false
+  end
+
+  test "the change password page keeps the application navbar" do
+    sign_in users(:one)
+
+    get edit_user_registration_path
+
+    assert_select "nav.navbar-light"
+  end
+
+  test "a wrong current password leaves the password unchanged" do
+    user = users(:one)
+    sign_in user
+
+    put user_registration_path, params: { user: {
+      current_password: "wrong-password",
+      password: "brand-new-password",
+      password_confirmation: "brand-new-password"
+    } }
+
+    assert user.reload.valid_password?("password123")
+  end
+
   private
 
   def sign_up_params
