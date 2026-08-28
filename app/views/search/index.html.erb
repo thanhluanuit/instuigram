@@ -1,9 +1,14 @@
 <div class="search-page">
   <% if @posts.any? %>
-    <h1>Top Posts</h1>
+    <div class="page-header">
+      <h1 class="page-title">Top posts</h1>
+      <p class="page-subtitle"><%= pluralize(@posts.total_count, "result") %> for <%= params[:query] %></p>
+    </div>
+    <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>
   <% else %>
-    <h1>Oop! No matching posts ...</h1>
+    <div class="empty-state">
+      <i class="fa fa-search"></i>
+      <p>No posts match <%= params[:query].presence || "that search" %>. Try another word or a #hashtag.</p>
+    </div>
   <% end %>
-
-  <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>
 </div>

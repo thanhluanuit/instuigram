@@ -1,48 +1,43 @@
 <div class="user-profile">
-  <div class="profile row">
-    <div class="col-md-4 avatar">
-      <div class="wrapper">
-        <% if @user.avatar.attached? %>
-          <%= image_tag @user.avatar.variant(resize_to_fill: [ 280, 280 ]) %>
-        <%end %>
-      </div>
+  <div class="profile-header">
+    <div class="profile-header__avatar">
+      <% if @user.avatar.attached? %>
+        <%= image_tag @user.avatar.variant(resize_to_fill: [ 280, 280 ]), alt: "" %>
+      <% end %>
     </div>
-    <div class="col-md-8 basic-info">
-      <div class="user-wrapper">
-        <h2 class="username"><%= @user.username %></h2>
+
+    <div class="profile-header__details">
+      <div class="profile-header__identity">
+        <h1 class="profile-header__username"><%= @user.username %></h1>
         <% if @user == current_user %>
           <%= link_to "Edit profile", edit_user_path(@user), class: "btn-outline" %>
         <% elsif user_signed_in? %>
           <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "btn-outline" %>
         <% end %>
       </div>
-      <ul class="posts">
+
+      <ul class="profile-header__stats">
         <li><span><%= @posts.total_count %></span> posts</li>
         <li><span>195</span> followers</li>
         <li><span>345</span> following</li>
       </ul>
-      <h2 class="name"><%=@user.name %></h2>
-      <%= link_to @user.website, external_url(@user.website), class: 'website' %>
+
+      <p class="profile-header__name"><%= @user.name %></p>
+      <%= link_to @user.website, external_url(@user.website), class: "profile-header__website" %>
     </div>
   </div>
 
   <div class="user-tabs">
-    <a class="tab active" href="">
+    <span class="user-tabs__tab is-active">
       <i class="fa fa-th"></i>
-      POSTS
-    </a>
-    <a class="tab" href="">
-      <i class="fa fa-tv"></i>
-      IGTV
-    </a>
-    <a class="tab" href="">
-      <i class="fa fa-bookmark"></i>
-      SAVED
-    </a>
-    <a class="tab" href="">
-      <i class="fa fa-tag"></i>
-      TAGGED
-    </a>
+      Posts
+    </span>
+    <% UsersHelper::PROFILE_PLACEHOLDER_TABS.each do |label, icon| %>
+      <button type="button" class="user-tabs__tab" disabled>
+        <i class="fa fa-<%= icon %>"></i>
+        <%= label %>
+      </button>
+    <% end %>
   </div>
 
   <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>

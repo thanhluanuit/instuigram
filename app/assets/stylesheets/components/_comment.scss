@@ -3,10 +3,10 @@
   align-items: center;
 
   .comment-icon {
-    font-size: 24px;
+    margin-right: $space-2;
+    font-size: $icon-lg;
     line-height: 1;
     color: $ink;
-    margin-right: 8px;
 
     &:hover {
       color: $ink-muted;
@@ -15,65 +15,79 @@
   }
 
   .comments-count {
-    font-size: 14px;
+    font-size: $text-base;
     font-weight: $weight-semibold;
     color: $ink;
   }
 }
 
-.post-show{
-  .comments{
+.post-detail {
+  .comments {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    margin-top: 16px;
+    margin-top: $space-4;
+  }
 
-    .no-comments{
-      margin: 0;
-      color: $ink-muted;
-      font-size: 14px;
+  .no-comments {
+    margin: 0;
+    color: $ink-muted;
+    font-size: $text-base;
+  }
+
+  .comment {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: $space-2;
+    padding: $space-1 0;
+    font-size: $text-base;
+    line-height: $leading-normal;
+
+    .comment-body {
+      color: $ink;
     }
 
-    .comment{
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 6px 0;
-      font-size: 14px;
-      line-height: 1.5;
+    .username {
+      margin-right: $space-1;
+      font-weight: $weight-bold;
 
-      .comment-body{
+      &:hover {
         color: $ink;
-
-        .username{
-          font-weight: $weight-bold;
-          margin-right: 6px;
-
-          &:hover{
-            color: $ink;
-            text-decoration: none;
-          }
-        }
+        text-decoration: none;
       }
+    }
 
-      .delete-comment-icon{
-        flex-shrink: 0;
-        margin-left: 8px;
-        font-size: 14px;
-        color: $ink-faint;
+    .delete-comment-icon {
+      flex-shrink: 0;
+      font-size: $text-base;
+      color: $ink-faint;
 
-        &:hover{
-          color: $danger;
-          text-decoration: none;
-        }
+      &:hover {
+        color: $danger;
+        text-decoration: none;
       }
     }
   }
 
-  .comment-form{
-    margin-top: 16px;
-    padding-top: 16px;
+  .comment-form {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    margin-top: $space-4;
+    padding-top: $space-4;
     border-top: 1px solid $border-subtle;
 
+    form {
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+      width: 100%;
+    }
+
+    .field {
+      flex: 1;
+      min-width: 0;
+    }
   }
 }

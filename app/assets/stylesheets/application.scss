@@ -5,7 +5,13 @@
 
 @import "base/globals";
 
+@import "components/avatar";
+@import "components/card";
+@import "components/form";
 @import "components/button";
+@import "components/badge";
+@import "components/empty_state";
+@import "components/pagination";
 @import "components/navbar";
 @import "components/footer";
 @import "components/comment";
@@ -16,5 +22,6 @@
 @import "pages/home";
 @import "pages/post";
 @import "pages/profile";
+@import "pages/settings";
 @import "pages/search";
 @import "pages/chat";

@@ -1,8 +1,11 @@
 <section class="conversations">
-  <h1 class="conversations__title">New message</h1>
+  <div class="page-header">
+    <h1 class="page-title">New message</h1>
+  </div>
 
   <%= form_with url: new_conversation_path, method: :get, class: "conversations__search" do |form| %>
-    <%= form.text_field :query, value: params[:query], placeholder: "Search by username...", class: "chat__input" %>
+    <%= form.label :query, "Search by username", class: "visually-hidden" %>
+    <%= form.text_field :query, value: params[:query], placeholder: "Search by username...", class: "field-pill" %>
   <% end %>
 
   <% if @users.any? %>
@@ -24,6 +27,9 @@
     </div>
     <%= paginate @users %>
   <% else %>
-    <p class="conversations__empty">No users found.</p>
+    <div class="empty-state">
+      <i class="fa fa-user-o"></i>
+      <p>No users found. Try a different username.</p>
+    </div>
   <% end %>
 </section>

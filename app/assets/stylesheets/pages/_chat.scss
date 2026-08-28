@@ -1,23 +1,3 @@
-$ink: $ink;
-$ink-muted: $ink-muted;
-$border-subtle: $border-subtle;
-$accent: $accent;
-$online: $online;
-
-@mixin avatar-circle($size) {
-  width: $size;
-  height: $size;
-  border-radius: $radius-circle;
-  background: $border-subtle;
-
-  img {
-    width: $size;
-    height: $size;
-    border-radius: $radius-circle;
-    object-fit: cover;
-  }
-}
-
 .is-hidden {
   display: none;
 }
@@ -27,78 +7,25 @@ $online: $online;
   display: inline-block;
 }
 
-.unread-badge {
-  position: absolute;
-  top: -6px;
-  right: -10px;
-  min-width: 18px;
-  padding: 0 5px;
-  border-radius: $radius-pill;
-  background: $danger;
-  color: $ink-inverse;
-  font-size: 11px;
-  line-height: 18px;
-  text-align: center;
-}
-
-.presence-dot {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 12px;
-  height: 12px;
-  border: 2px solid $surface;
-  border-radius: $radius-circle;
-  background: $ink-muted;
-
-  &.is-online {
-    background: $online;
-  }
-}
-
 .conversations {
-  max-width: 640px;
-  margin: 24px auto;
-}
-
-.conversations__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.conversations__title {
-  margin: 0;
-  font-size: 20px;
-  color: $ink;
+  max-width: $width-feed;
+  margin: $page-top auto;
 }
 
 .conversations__search {
-  margin-bottom: 16px;
-
-  .chat__input {
-    width: 100%;
-  }
-}
-
-.conversations__empty {
-  padding: 32px 0;
-  color: $ink-muted;
-  text-align: center;
+  margin-bottom: $space-4;
 }
 
 .conversations__list {
-  border: 1px solid $border-subtle;
-  border-radius: $radius-md;
+  @extend %surface-card;
   overflow: hidden;
 }
 
 .conversation-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: $space-3;
+  padding: $space-3 $space-4;
   border-bottom: 1px solid $border-subtle;
   color: $ink;
   text-decoration: none;
@@ -108,14 +35,14 @@ $online: $online;
   }
 
   &:hover {
-    background: $canvas;
+    background-color: $surface-hover;
+    color: $ink;
   }
 }
 
 .conversation-row__avatar {
   position: relative;
-  flex: 0 0 56px;
-  @include avatar-circle(56px);
+  @include avatar(56px);
 }
 
 .conversation-row__body {
@@ -125,14 +52,16 @@ $online: $online;
 
 .conversation-row__name {
   display: block;
+  color: $ink;
   font-weight: $weight-semibold;
+  text-decoration: none;
 }
 
 .conversation-row__preview {
   display: block;
   overflow: hidden;
   color: $ink-muted;
-  font-size: 14px;
+  font-size: $text-base;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -142,49 +71,43 @@ $online: $online;
 }
 
 .conversation-row__unread {
+  @extend %count-badge;
   flex: 0 0 auto;
-  min-width: 20px;
-  padding: 0 6px;
-  border-radius: $radius-pill;
-  background: $accent;
-  color: $ink-inverse;
-  font-size: 12px;
-  line-height: 20px;
-  text-align: center;
 }
 
 .chat {
+  @extend %surface-card;
   display: flex;
   flex-direction: column;
-  max-width: 640px;
+  max-width: $width-feed;
   height: 70vh;
-  margin: 24px auto;
-  border: 1px solid $border-subtle;
-  border-radius: $radius-md;
+  margin: $page-top auto;
+  overflow: hidden;
 }
 
 .chat__header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: $space-3;
+  padding: $space-3 $space-4;
   border-bottom: 1px solid $border-subtle;
 }
 
 .chat__back {
   color: $ink;
-  font-size: 20px;
+  font-size: $icon-md;
   text-decoration: none;
 }
 
 .chat__avatar {
   position: relative;
-  @include avatar-circle(40px);
+  @include avatar(40px);
 }
 
 .chat__identity {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .chat__name {
@@ -195,51 +118,52 @@ $online: $online;
 
 .chat__presence {
   color: $ink-muted;
-  font-size: 12px;
+  font-size: $text-xs;
 }
 
 .chat__messages {
   flex: 1;
   min-height: 0;
-  padding: 16px;
+  padding: $space-4;
   overflow-y: auto;
 }
 
 .chat-message {
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: $space-2;
 }
 
 .chat-message__bubble {
   max-width: 70%;
-  padding: 8px 12px;
+  padding: $space-2 $space-3;
   border-radius: $radius-lg;
-  background: $border-subtle;
+  background-color: $border-subtle;
 }
 
 .chat-message__author {
   display: block;
   color: $ink-muted;
-  font-size: 11px;
+  font-size: $text-xs;
 }
 
 .chat-message__body {
   margin: 0;
   color: $ink;
+  font-size: $text-base;
   overflow-wrap: anywhere;
 }
 
 .chat-message__time {
   display: block;
   color: $ink-muted;
-  font-size: 11px;
+  font-size: $text-xs;
 }
 
 .chat-message--mine {
   justify-content: flex-end;
 
   .chat-message__bubble {
-    background: $accent;
+    background-color: $accent;
   }
 
   .chat-message__author,
@@ -251,15 +175,33 @@ $online: $online;
 
 .chat__composer {
   display: flex;
-  gap: 8px;
-  padding: 12px 16px;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-4;
   border-top: 1px solid $border-subtle;
+
+  .field-pill {
+    flex: 1;
+    min-width: 0;
+  }
 }
 
-.chat__input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid $border-subtle;
-  border-radius: $radius-lg;
-}
 
+@media (max-width: $bp-sm) {
+  .conversations,
+  .chat {
+    margin: $space-4 auto;
+  }
+
+  .conversations__list,
+  .chat {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .chat {
+    height: calc(100dvh - 140px);
+  }
+}

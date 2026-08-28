@@ -1,6 +1,6 @@
 <section class="conversations">
-  <div class="conversations__header">
-    <h1 class="conversations__title">Messages</h1>
+  <div class="page-header">
+    <h1 class="page-title">Messages</h1>
     <%= link_to "New message", new_conversation_path, class: "btn-outline" %>
   </div>
 
@@ -10,6 +10,9 @@
     </div>
     <%= paginate @conversations %>
   <% else %>
-    <p class="conversations__empty">No messages yet. Start a <%= link_to "new message", new_conversation_path %>.</p>
+    <div class="empty-state">
+      <i class="fa fa-paper-plane-o"></i>
+      <p>No messages yet. Start a <%= link_to "new message", new_conversation_path %>.</p>
+    </div>
   <% end %>
 </section>

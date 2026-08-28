@@ -1,32 +1,24 @@
-$border-subtle: $border;
-$ink: $ink;
-$ink-muted: $ink-muted;
-$link: $link;
-
-.auth-body {
-  background-color: $canvas;
-}
-
 .auth-page {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  max-width: 1000px;
+  gap: $space-8;
+  max-width: $width-wide;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: $space-10 $page-gutter;
   min-height: 500px;
 }
 
 .auth-showcase {
   display: none;
 
-  @media (min-width: 992px) {
+  @media (min-width: $bp-lg) {
     display: block;
   }
 }
 
 .phone {
+  position: relative;
   width: 320px;
   height: 590px;
   border: 12px solid $ink;
@@ -34,7 +26,6 @@ $link: $link;
   background-color: $ink;
   box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
   overflow: hidden;
-  position: relative;
 
   &::before {
     content: "";
@@ -56,7 +47,7 @@ $link: $link;
   height: 100%;
   border-radius: 28px;
   overflow: hidden;
-  background-color: $ink-inverse;
+  background-color: $surface;
 
   img {
     width: 100%;
@@ -70,13 +61,11 @@ $link: $link;
 }
 
 .auth-card {
-  background-color: $ink-inverse;
-  border: 1px solid $border-subtle;
-  border-radius: $radius-sm;
-  padding: 40px 40px 30px;
-  margin-bottom: 10px;
-  text-align: center;
+  @extend %surface-card;
+  padding: $space-10 $space-10 $space-8;
+  margin-bottom: $space-3;
   color: $ink;
+  text-align: center;
 
   .alert {
     text-align: left;
@@ -84,8 +73,8 @@ $link: $link;
 }
 
 .auth-card-secondary {
-  padding: 20px;
-  font-size: 14px;
+  padding: $space-5;
+  font-size: $text-base;
 
   a {
     color: $accent;
@@ -95,80 +84,75 @@ $link: $link;
 }
 
 .auth-logo {
-  font-size: 42px;
+  margin-bottom: $space-6;
+  font-size: $text-display;
   font-weight: $weight-normal;
-  margin-bottom: 25px;
 }
 
 .auth-heading {
-  font-size: 16px;
+  margin-bottom: $space-3;
+  font-size: $text-lg;
   font-weight: $weight-semibold;
-  margin-bottom: 10px;
 }
 
 .auth-tagline {
+  margin-bottom: $space-5;
   color: $ink-muted;
-  font-size: 14px;
+  font-size: $text-base;
   font-weight: $weight-semibold;
-  line-height: 18px;
-  margin-bottom: 20px;
+  line-height: $leading-normal;
 }
 
 .auth-lock {
-  width: 96px;
-  height: 96px;
-  margin: 10px auto 20px;
-  border: 2px solid $ink;
-  border-radius: $radius-circle;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 96px;
+  height: 96px;
+  margin: $space-3 auto $space-5;
+  border: 2px solid $ink;
+  border-radius: $radius-circle;
 
   i.fa {
-    font-size: 40px;
+    font-size: $icon-xl;
   }
 }
 
 .auth-form {
-  .form-control {
+  .field {
     background-color: $canvas;
-    border: 1px solid $border;
-    border-radius: $radius-sm;
-    font-size: 13px;
-    padding: 9px 8px;
-    margin-bottom: 6px;
+    margin-bottom: $space-2;
+  }
 
-    &:focus {
-      border-color: $border;
-      box-shadow: none;
-    }
+  .btn-accent {
+    margin-top: $space-2;
   }
 }
 
 .auth-remember {
   display: block;
-  margin-top: 12px;
-  font-size: 13px;
+  margin-top: $space-3;
   color: $ink-muted;
+  font-size: $text-sm;
 
   input {
-    margin-right: 6px;
+    margin-right: $space-1;
   }
 }
 
 .auth-terms {
+  margin: $space-3 0 0;
   color: $ink-muted;
-  font-size: 12px;
-  line-height: 16px;
-  margin: 12px 0 0;
+  font-size: $text-xs;
+  line-height: $leading-normal;
 }
 
 .auth-divider {
   display: flex;
   align-items: center;
-  margin: 18px 0;
+  margin: $space-5 0;
   color: $ink-muted;
-  font-size: 13px;
+  font-size: $text-sm;
   font-weight: $weight-semibold;
 
   &::before,
@@ -176,16 +160,26 @@ $link: $link;
     content: "";
     flex: 1;
     height: 1px;
-    background-color: $border-subtle;
+    background-color: $border;
   }
 
   span {
-    padding: 0 18px;
+    padding: 0 $space-5;
   }
 }
 
 .auth-muted-link {
   color: $link;
-  font-size: 12px;
+  font-size: $text-xs;
   text-decoration: none;
+}
+
+@media (max-width: $bp-sm) {
+  .auth-page {
+    padding: $space-5 $page-gutter;
+  }
+
+  .auth-card {
+    padding: $space-6 $space-5;
+  }
 }

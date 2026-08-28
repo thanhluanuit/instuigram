@@ -5,44 +5,62 @@ body.modal-open {
 .post-modal {
   position: fixed;
   inset: 0;
-  z-index: 1050;
+  z-index: $z-modal;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  background: rgba(0, 0, 0, .65);
+  padding: $space-6;
+  background-color: rgba(0, 0, 0, .65);
 
   .post-modal-dialog {
     position: relative;
     width: 100%;
-    max-width: 935px;
+    max-width: $width-wide;
     max-height: 90vh;
     overflow-y: auto;
-    padding: 16px;
-    background: $surface;
-    border-radius: $radius-sm;
+    border-radius: $radius-md;
+    background-color: $surface;
+    box-shadow: $shadow-modal;
   }
 
   .post-modal-close {
     position: absolute;
-    top: 8px;
-    right: 12px;
+    top: $space-2;
+    right: $space-2;
     z-index: 1;
-    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
     border: none;
-    background: transparent;
-    font-size: 20px;
+    border-radius: $radius-circle;
+    background-color: rgba(255, 255, 255, .9);
+    font-size: $icon-sm;
     line-height: 1;
     color: $ink-muted;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       color: $ink;
     }
   }
 
-  .post-show {
-    .comments {
-      max-height: 40vh;
+  .post-detail {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: $bp-sm) {
+  .post-modal {
+    padding: 0;
+
+    .post-modal-dialog {
+      max-height: 100vh;
+      border-radius: 0;
     }
   }
 }

@@ -1,7 +1,7 @@
 <div class="composer">
   <div class="composer-avatar">
     <% if current_user.avatar.attached? %>
-      <%= image_tag current_user.avatar.variant(resize_to_fill: [ 76, 76 ]) %>
+      <%= image_tag current_user.avatar.variant(resize_to_fill: [ 96, 96 ]) %>
     <% else %>
       <i class="fa fa-user"></i>
     <% end %>

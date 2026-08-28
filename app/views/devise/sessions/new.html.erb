@@ -4,10 +4,10 @@
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
     <%= f.label :email, class: "visually-hidden" %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email",
-                      class: "form-control", placeholder: "Email" %>
+                      class: "field", placeholder: "Email" %>
     <%= f.label :password, class: "visually-hidden" %>
     <%= f.password_field :password, autocomplete: "current-password",
-                         class: "form-control", placeholder: "Password" %>
+                         class: "field", placeholder: "Password" %>
 
     <%= f.submit "Log in", class: "btn-accent btn-block" %>
 

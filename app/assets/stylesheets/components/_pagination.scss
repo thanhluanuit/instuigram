@@ -1,0 +1,35 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: $space-1;
+  padding: $space-6 0;
+
+  a,
+  span {
+    display: inline-block;
+    min-width: 32px;
+    padding: $space-2 $space-3;
+    border-radius: $radius-sm;
+    color: $ink;
+    font-size: $text-sm;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  a:hover {
+    background-color: $border-subtle;
+    text-decoration: none;
+  }
+
+  span.current {
+    background-color: $ink;
+    color: $ink-inverse;
+    font-weight: $weight-semibold;
+  }
+
+  span.disabled {
+    color: $ink-faint;
+  }
+}

@@ -1,164 +1,146 @@
-.profile .avatar{
-  .wrapper{
-    width: 140px;
-    height: 140px;
-    margin: 40px auto;
-  }
-  .wrapper img{
-    width: 100%;
-    height: 100%;
-    border-radius: $radius-circle;
-  }
+.user-profile {
+  margin-top: $page-top;
 }
 
-.profile .basic-info{
-  padding: 40px 0;
-  .user-wrapper{
-    display: flex;
-    align-items: center;
-    gap: $space-5;
-  }
-  .username{
-    font-size: 30px;
-    line-height: 40px;
-    font-weight: $weight-normal;
-  }
-  ul.posts{
-    padding-left: 0;
-    > li{
-      display: inline;
-      padding-right: 40px;
-      font-size: 15px;
-      span{
-        color: $ink;
-        font-weight: $weight-semibold;
-      }
-    }
-  }
-  .name{
-    font-size: 15px;
-    font-weight: $weight-semibold;
-  }
-  .website{
-    color: $link;
-    text-decoration: none;
-    font-size: 15px;
+.profile-header {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  align-items: center;
+  gap: $space-10;
+  padding-bottom: $space-10;
+}
+
+.profile-header__avatar {
+  @include avatar(140px);
+  margin: 0 auto;
+}
+
+.profile-header__identity {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-5;
+  margin-bottom: $space-5;
+}
+
+.profile-header__username {
+  margin: 0;
+  font-size: $text-xl;
+  font-weight: $weight-semibold;
+  line-height: $leading-tight;
+}
+
+.profile-header__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-10;
+  padding-left: 0;
+  margin-bottom: $space-5;
+  list-style: none;
+  font-size: $text-md;
+
+  span {
     font-weight: $weight-semibold;
   }
 }
 
-.user-tabs{
-  border-top: 1px solid $border-subtle;
+.profile-header__name {
+  margin: 0 0 $space-1;
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+}
+
+.profile-header__website {
+  color: $link;
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.user-tabs {
   display: flex;
   justify-content: center;
+  gap: $space-10;
+  border-top: 1px solid $border-subtle;
+}
 
-  a.tab{
-    height: 35px;
-    margin-right: 50px;
-    line-height: 45px;
+.user-tabs__tab {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-4 0;
+  border: none;
+  border-top: 1px solid transparent;
+  margin-top: -1px;
+  background: none;
+  color: $ink-muted;
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  letter-spacing: .05em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &:hover {
     color: $ink-muted;
-    font-size: 12px;
-    font-weight: $weight-medium;
-    text-align: center;
-    i{
-      padding-right: 1px;
-    }
-    &:hover{
-      text-decoration: none;
-    }
+    text-decoration: none;
   }
-  a.active{
-    border-top: 1px solid $ink;
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+
+  &.is-active {
+    border-top-color: $ink;
     color: $ink;
   }
 }
 
-.user-images{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 0 20px;
+.thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $space-4;
+  padding: $space-6 0;
 
-  .wrapper{
-    width: 280px;
-    height: 280px;
-    margin: 15px;
-
-    img{
-      width: 100%;
-      border-radius: $radius-sm;
-      width: 278px;
-      height: 278px;
-      object-fit: cover;
-      border: 1px solid $border-subtle;
-    }
+  .wrapper {
+    aspect-ratio: 1;
   }
-}
 
-/*  Edit Profile page */
-.user-edit-page{
-  display: flex;
-  margin-top: 60px;
-  min-height: 500px;
-
-  .actions{
-    width: 220px;
-    border: 1px solid $border;
-
-    .nav-link{
-      font-size: 14px;
-      background-color: $ink-inverse;
-      color: black;
-      border-radius: 0;
-      padding: 12px 0 12px 30px;
-      &:hover{
-        cursor: pointer;
-      }
-    }
-    .nav-pills .nav-link.active{
-      border-left: 2px solid;
-      font-weight: $weight-semibold;
-    }
-  }
-  .details{
-    flex: 1;
-    border: 1px solid $border;
-    border-left:none;
-  }
-}
-
-/* Form Edit User */
-.form-edit-user{
-  padding: 30px 100px 10px 50px;
-
-  .form-group, input{
-    font-size: 14px;
-    color: black;
-  }
-  input, textarea{
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: $radius-sm;
     border: 1px solid $border-subtle;
+    object-fit: cover;
   }
-  .col-form-label{
-    text-align: right;
-    font-weight: $weight-semibold;
+}
+
+@media (max-width: $bp-md) {
+  .profile-header {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: $space-5;
+    padding-bottom: $space-6;
   }
 
-  .avatar{
-    height: 38px;
-    width: 38px;
-    border-radius: $radius-circle;
+  .profile-header__avatar {
+    @include avatar(96px);
   }
-  .username{
-    font-size: 20px;
-    line-height: 22px;
-    margin-bottom: 0;
+
+  .profile-header__stats {
+    gap: $space-5;
   }
-  .change-photo{
-    color: $link;
-    text-decoration: none;
-    font-size: 13px;
+
+  .user-tabs {
+    gap: $space-6;
   }
-  input[type='submit']{
-    color: $ink-inverse;
+}
+
+@media (max-width: $bp-sm) {
+  .thumbnail-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: $space-1;
   }
 }

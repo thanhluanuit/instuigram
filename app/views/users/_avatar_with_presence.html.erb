@@ -1,4 +1,4 @@
 <% if user&.avatar&.attached? %>
-  <%= image_tag user.avatar.variant(resize_to_fill: [ size, size ]) %>
+  <%= image_tag user.avatar.variant(resize_to_fill: [ size * 2, size * 2 ]), alt: "" %>
 <% end %>
 <span class="presence-dot <%= "is-online" if user&.online? %>" data-presence-user-id="<%= user&.id %>"></span>

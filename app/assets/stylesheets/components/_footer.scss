@@ -1,18 +1,26 @@
 .footer {
-  font-size: 12px;
-  padding-top: 30px;
+  padding: $space-8 0 $space-6;
+  color: $ink-muted;
+  font-size: $text-xs;
+
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $space-3;
+  }
 
   ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-4;
+    margin: 0;
     padding-left: 0;
-
-    > li {
-      display: inline;
-      padding-right: 15px;
-      color: $link;
-    }
+    list-style: none;
   }
 
   p {
-    color: $ink-muted;
+    margin: 0;
   }
 }
