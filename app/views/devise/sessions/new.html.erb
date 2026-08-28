@@ -1,0 +1,28 @@
+<div class="auth-card">
+  <h1 class="auth-logo">Instagram</h1>
+
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                      class: "form-control", placeholder: "Email" %>
+    <%= f.password_field :password, autocomplete: "current-password",
+                         class: "form-control", placeholder: "Password" %>
+
+    <%= f.submit "Log In", class: "btn btn-primary auth-submit" %>
+
+    <% if devise_mapping.rememberable? %>
+      <label class="auth-remember">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me %>
+      </label>
+    <% end %>
+  <% end %>
+
+  <div class="auth-divider"><span>OR</span></div>
+
+  <%= link_to "Forgot password?", new_password_path(resource_name), class: "auth-muted-link" %>
+</div>
+
+<div class="auth-card auth-card-secondary">
+  Don't have an account?
+  <%= link_to "Sign up", new_registration_path(resource_name) %>
+</div>
