@@ -98,5 +98,7 @@ Rails.application.configure do
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Post", association: :user
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Post", association: :image_attachment
     Bullet.add_safelist type: :unused_eager_loading, class_name: "ActiveStorage::Attachment", association: :blob
+
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "Post", association: :comments
   end
 end

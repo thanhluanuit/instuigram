@@ -1,6 +1,8 @@
 require "test_helper"
 
 class CommentsControllerTest < ActionDispatch::IntegrationTest
+  include ActionView::RecordIdentifier
+
   test "when unauthenticated, redirects to sign in and creates no comment" do
     assert_no_difference([ "Comment.count", "EventLog.count" ]) do
       post post_comments_path(posts(:one)), params: { comment: { body: "Nice!" } }
@@ -42,6 +44,31 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference([ "Comment.count", "EventLog.count" ]) do
       post post_comments_path(posts(:two)), params: { comment: { body: "" } }
     end
+  end
+
+  test "when asked for a turbo stream, creating a comment refreshes the list, the form, and the count" do
+    sign_in users(:one)
+
+    post post_comments_path(posts(:two)), params: { comment: { body: "Nice!" } }, as: :turbo_stream
+
+    assert_response :success
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(posts(:two), :comments)
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(posts(:two), :comment_form)
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(posts(:two), :comments_count)
+    assert_match "Nice!", @response.body
+    assert_match "2 comments", @response.body
+  end
+
+  test "when asked for a turbo stream, deleting a comment refreshes the list and the count" do
+    sign_in users(:two)
+
+    delete comment_path(comments(:one)), as: :turbo_stream
+
+    assert_response :success
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(posts(:one), :comments)
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(posts(:one), :comments_count)
+    assert_match "No comments yet.", @response.body
+    assert_match "0 comments", @response.body
   end
 
   test "when unauthenticated, redirects to sign in and does not delete a comment" do

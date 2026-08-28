@@ -1,0 +1,27 @@
+<div class="post-show row">
+  <div class="col-md-8">
+    <%= image_tag post.image.variant(resize_to_limit: [ 600, 600 ]), class: 'image' %>
+  </div>
+  <div class="col-md-4">
+    <div class="user">
+      <%= render partial: "posts/user_header", locals: { user: post.user, avatar_size: 88 } %>
+    </div>
+    <div class="description">
+      <%= render partial: "posts/description", locals: { post: post } %>
+    </div>
+    <div class="actions">
+      <%= render partial: "posts/reaction_button", locals: { post: post, user_reaction: user_reaction, frame_id: reaction_frame_id } %>
+      <% if current_user && current_user.id == post.user_id %>
+        <div class="delete">
+          <%= link_to post_path(post), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "delete-icon", "aria-label": "Delete" do %>
+            <i class="fa fa-trash-o"></i>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <%= render partial: "comments/list", locals: { post: post } %>
+    <% if current_user %>
+      <%= render partial: "comments/form", locals: { post: post } %>
+    <% end %>
+  </div>
+</div>

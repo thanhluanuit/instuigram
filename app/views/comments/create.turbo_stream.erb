@@ -1,0 +1,9 @@
+<%= turbo_stream.replace dom_id(@post, :comments) do %>
+  <%= render partial: "comments/list", locals: { post: @post } %>
+<% end %>
+<%= turbo_stream.replace dom_id(@post, :comment_form) do %>
+  <%= render partial: "comments/form", locals: { post: @post } %>
+<% end %>
+<%= turbo_stream.replace dom_id(@post, :comments_count) do %>
+  <%= render partial: "posts/comments_count", locals: { post: @post } %>
+<% end %>

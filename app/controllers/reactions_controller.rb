@@ -1,4 +1,6 @@
 class ReactionsController < ApplicationController
+  include ActionView::RecordIdentifier
+
   before_action :authenticate_user!
   before_action :set_post
 
@@ -7,22 +9,28 @@ class ReactionsController < ApplicationController
     was_new_record = reaction.new_record?
     if reaction.update(reaction_params)
       log_event(event_type: :reaction_created, subject: reaction) if was_new_record
-      redirect_back(fallback_location: post_path(@post))
+      redirect_to reaction_return_path
     else
-      redirect_back(fallback_location: post_path(@post), alert: reaction.errors.full_messages.to_sentence)
+      redirect_to reaction_return_path, alert: reaction.errors.full_messages.to_sentence
     end
   end
 
   def destroy
     current_user.reactions.find_by(reactable: @post)&.destroy
 
-    redirect_back(fallback_location: post_path(@post))
+    redirect_to reaction_return_path
   end
 
   private
 
   def set_post
     @post = Post.find(params[:post_id])
+  end
+
+  def reaction_return_path
+    return post_path(@post) if turbo_frame_request_id == dom_id(@post, :modal_reaction)
+
+    request.referer.presence || post_path(@post)
   end
 
   def reaction_params

@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "post_modal" do %>
+  <div class="post-modal" data-controller="modal" data-action="click->modal#closeOnBackdrop keydown.esc@window->modal#close">
+    <div class="post-modal-dialog" role="dialog" aria-modal="true" aria-label="Post">
+      <button type="button" class="post-modal-close" data-action="modal#close" aria-label="Close">
+        <i class="fa fa-times"></i>
+      </button>
+      <%= render partial: "posts/detail", locals: { post: @post, user_reaction: @user_reaction, reaction_frame_id: dom_id(@post, :modal_reaction) } %>
+    </div>
+  </div>
+<% end %>

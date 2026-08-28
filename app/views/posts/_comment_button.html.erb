@@ -1,0 +1,6 @@
+<div class="comment-action">
+  <%= link_to post_path(post), data: { turbo_frame: "post_modal" }, class: "comment-icon", "aria-label": "Comments" do %>
+    <i class="fa fa-comment-o"></i>
+  <% end %>
+  <%= render partial: "posts/comments_count", locals: { post: post } %>
+</div>
