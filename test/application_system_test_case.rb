@@ -21,6 +21,12 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     assert_current_path root_path
   end
 
+  def browser_readable_fixture_file(filename)
+    path = File.join(Dir.tmpdir, "instuigram_system_test_#{filename}")
+    FileUtils.cp(file_fixture(filename), path)
+    path
+  end
+
   def wait_for_page_to_settle
     wait_for_script "window.Turbo !== undefined && window.Turbo.session.started"
     wait_for_script "window.Stimulus !== undefined"

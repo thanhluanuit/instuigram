@@ -45,6 +45,11 @@ module PostTestHelper
     Post.find_each { |post| post.__elasticsearch__.index_document }
     Post.__elasticsearch__.refresh_index!
   end
+
+  def index_pending_posts!
+    perform_enqueued_jobs
+    Post.__elasticsearch__.refresh_index!
+  end
 end
 
 class ActiveSupport::TestCase

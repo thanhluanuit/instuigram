@@ -52,6 +52,15 @@ class PostTest < ActiveSupport::TestCase
     assert posts(:one).image.attached?
   end
 
+  test "created_recently orders posts newest first" do
+    older = travel_to(2.days.ago) { create_post!(@user, description: "older") }
+    newer = travel_to(1.day.ago) { create_post!(@user, description: "newer") }
+
+    ordered = Post.where(id: [ older.id, newer.id ]).created_recently.to_a
+
+    assert_equal [ newer, older ], ordered
+  end
+
   test "extracts every #word token from the description" do
     post = build_post(description: "loving this #sunset over the #beach today", attach_image: false)
 
