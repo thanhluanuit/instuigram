@@ -14,9 +14,8 @@ export default class extends Controller {
   }
 
   async load(entries) {
-    if (!entries.some((entry) => entry.isIntersecting) || this.loading) return
+    if (!entries.some((entry) => entry.isIntersecting)) return
 
-    this.loading = true
     this.observer.disconnect()
     this.spinnerTarget.hidden = false
     this.linkTarget.hidden = true
@@ -33,7 +32,6 @@ export default class extends Controller {
       console.error(error)
       this.spinnerTarget.hidden = true
       this.linkTarget.hidden = false
-      this.loading = false
       this.observer.observe(this.element)
     }
   }

@@ -1,3 +1,13 @@
+%link-accent {
+  color: #00376b;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .homepage {
   max-width: 630px;
   margin: 40px auto;
@@ -173,13 +183,7 @@
         color: #262626;
 
         a {
-          color: #00376b;
-          font-weight: 600;
-          text-decoration: none;
-
-          &:hover {
-            text-decoration: underline;
-          }
+          @extend %link-accent;
         }
       }
 
@@ -233,13 +237,7 @@
     }
 
     &__link {
-      color: #00376b;
-      font-weight: 600;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
+      @extend %link-accent;
     }
   }
 
@@ -341,13 +339,7 @@
     color: #262626;
 
     a {
-      color: #00376b;
-      font-weight: 600;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
+      @extend %link-accent;
     }
   }
 
