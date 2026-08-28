@@ -1,0 +1,8 @@
+one_and_two:
+  participants_key: <%= [ ActiveRecord::FixtureSet.identify(:one), ActiveRecord::FixtureSet.identify(:two) ].sort.join("-") %>
+  last_message_at: <%= 30.minutes.ago.to_fs(:db) %>
+  last_message: latest_from_one
+
+one_and_admin:
+  participants_key: <%= [ ActiveRecord::FixtureSet.identify(:one), ActiveRecord::FixtureSet.identify(:admin) ].sort.join("-") %>
+  last_message_at: <%= 2.days.ago.to_fs(:db) %>

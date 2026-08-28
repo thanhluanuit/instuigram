@@ -1,0 +1,17 @@
+from_one:
+  conversation: one_and_two
+  user: one
+  body: Hey there
+  created_at: <%= 2.hours.ago.to_fs(:db) %>
+
+from_two:
+  conversation: one_and_two
+  user: two
+  body: Hi back
+  created_at: <%= 1.hour.ago.to_fs(:db) %>
+
+latest_from_one:
+  conversation: one_and_two
+  user: one
+  body: See you soon
+  created_at: <%= 30.minutes.ago.to_fs(:db) %>
