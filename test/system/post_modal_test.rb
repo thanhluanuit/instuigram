@@ -1,6 +1,6 @@
 require "application_system_test_case"
 
-class CommentsTest < ApplicationSystemTestCase
+class PostModalTest < ApplicationSystemTestCase
   setup do
     attach_images_to_all_posts!
     sign_in_as users(:one)
