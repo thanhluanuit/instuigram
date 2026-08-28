@@ -1,7 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  layout :layout_by_resource
+
   private
+
+  def layout_by_resource
+    devise_controller? && !user_signed_in? ? "auth" : "application"
+  end
 
   def log_event(event_type:, subject:)
     LogEventJob.perform_later(
