@@ -1,0 +1,9 @@
+<div id="<%= dom_id(user, :follow) %>" class="follow-wrapper">
+  <% if following %>
+    <%= button_to "Following", user_follow_path(user), method: :delete,
+                  class: "follow-user is-following", "aria-label": "Unfollow #{user.username}" %>
+  <% else %>
+    <%= button_to "Follow", user_follow_path(user),
+                  class: "follow-user", "aria-label": "Follow #{user.username}" %>
+  <% end %>
+</div>

@@ -8,18 +8,25 @@ class FollowsController < ApplicationController
     follow = Follows::Create.call(follower: current_user, followed: @user)
     log_event(event_type: :follow_created, subject: follow) if follow.previously_new_record?
 
-    redirect_to user_path(@user)
+    render_follow_state
   end
 
   def destroy
     Follows::Destroy.call(follower: current_user, followed: @user)
 
-    redirect_to user_path(@user)
+    render_follow_state
   end
 
   private
 
   def set_user
     @user = User.find(params[:user_id])
+  end
+
+  def render_follow_state
+    respond_to do |format|
+      format.turbo_stream { render :create }
+      format.html { redirect_to user_path(@user) }
+    end
   end
 end

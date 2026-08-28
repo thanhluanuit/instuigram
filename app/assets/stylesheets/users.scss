@@ -25,6 +25,25 @@
     margin-left: 20px;
     margin-top: 5px;
   }
+  .follow-wrapper{
+    display: inline-block;
+  }
+  .follow-user{
+    margin-top: 5px;
+    margin-left: 20px;
+    padding: 4px 10px;
+    border: 1px solid #0095f6;
+    border-radius: 5px;
+    background-color: #0095f6;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .follow-user.is-following{
+    border-color: #dbdbdb;
+    background-color: transparent;
+    color: #262626;
+  }
   .edit-profile button{
     background-color: transparent;
     border-radius: 5px;

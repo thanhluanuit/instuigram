@@ -1,6 +1,8 @@
 require "test_helper"
 
 class FollowsControllerTest < ActionDispatch::IntegrationTest
+  include ActionView::RecordIdentifier
+
   setup do
     @user  = users(:one)
     @other = users(:two)
@@ -38,6 +40,30 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference([ "Follow.count", "EventLog.count" ]) do
       perform_enqueued_jobs { post user_follow_path(@other) }
+    end
+  end
+
+  test "a turbo_stream follow replaces the button and the followers count" do
+    sign_in @user
+
+    post user_follow_path(@other), as: :turbo_stream
+
+    assert_response :success
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(@other, :follow)
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(@other, :followers_count) do
+      assert_select "li span", text: "1"
+    end
+  end
+
+  test "a turbo_stream unfollow renders the follow button back" do
+    sign_in @user
+    post user_follow_path(@other), as: :turbo_stream
+
+    delete user_follow_path(@other), as: :turbo_stream
+
+    assert_response :success
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(@other, :followers_count) do
+      assert_select "li span", text: "0"
     end
   end
 

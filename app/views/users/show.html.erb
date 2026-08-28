@@ -15,13 +15,14 @@
             <button>Edit Profile</button>
           </a>
         <% elsif user_signed_in? %>
+          <%= render "users/follow_button", user: @user, following: current_user.following?(@user) %>
           <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "message-user" %>
         <% end %>
       </div>
       <ul class="posts">
         <li><span><%= @posts.total_count %></span> posts</li>
-        <li><span>195</span> followers</li>
-        <li><span>345</span> following</li>
+        <%= render "users/followers_count", user: @user %>
+        <%= render "users/following_count", user: @user %>
       </ul>
       <h2 class="name"><%=@user.name %></h2>
       <%= link_to @user.website, external_url(@user.website), class: 'website' %>
