@@ -45,6 +45,14 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     JS
   end
 
+  def assert_no_navigation
+    page.execute_script("document.body.dataset.navigationMark = 'kept'")
+
+    yield
+
+    assert_selector "body[data-navigation-mark='kept']", visible: :all
+  end
+
   def within_session_as(name, user)
     using_session(name) do
       sign_in_as(user)

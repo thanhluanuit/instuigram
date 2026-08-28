@@ -37,13 +37,15 @@ class ReactionsTest < ApplicationSystemTestCase
     within(feed_post(posts(:two))) { assert_selector ".reactions-count", text: "0 likes" }
     wait_for_cable("reactions")
 
-    within_session_as(:two, users(:two)) do
-      wait_for_page_to_settle
-      within(feed_post(posts(:two))) { find(".reaction-icon").click }
-      within(feed_post(posts(:two))) { assert_selector ".reaction-icon.liked" }
-    end
+    assert_no_navigation do
+      within_session_as(:two, users(:two)) do
+        wait_for_page_to_settle
+        within(feed_post(posts(:two))) { find(".reaction-icon").click }
+        within(feed_post(posts(:two))) { assert_selector ".reaction-icon.liked" }
+      end
 
-    within(feed_post(posts(:two))) { assert_selector ".reactions-count", text: "1 likes" }
+      within(feed_post(posts(:two))) { assert_selector ".reactions-count", text: "1 likes" }
+    end
   end
 
   private

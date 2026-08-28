@@ -9,11 +9,13 @@ class PresenceTest < ApplicationSystemTestCase
 
     assert_selector "[data-presence-status-for='#{users(:two).id}']", text: "Offline"
 
-    within_session_as(:two, users(:two)) do
-      wait_for_cable("presence")
-    end
+    assert_no_navigation do
+      within_session_as(:two, users(:two)) do
+        wait_for_cable("presence")
+      end
 
-    assert_selector "[data-presence-status-for='#{users(:two).id}']", text: "Active now"
-    assert_selector ".presence-dot.is-online[data-presence-user-id='#{users(:two).id}']"
+      assert_selector "[data-presence-status-for='#{users(:two).id}']", text: "Active now"
+      assert_selector ".presence-dot.is-online[data-presence-user-id='#{users(:two).id}']"
+    end
   end
 end

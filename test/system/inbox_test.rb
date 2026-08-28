@@ -11,24 +11,27 @@ class InboxTest < ApplicationSystemTestCase
   test "a message from another user raises the unread badge without a page reload" do
     assert_selector "#unread-badge", text: "1"
 
-    send_admin_message
+    assert_no_navigation do
+      send_admin_message
 
-    assert_selector "#unread-badge", text: "2"
-    assert_current_path conversations_path
+      assert_selector "#unread-badge", text: "2"
+    end
   end
 
   test "a message from another user rewrites its inbox row and moves it to the top" do
     assert_equal [ dom_id(conversations(:one_and_two)), dom_id(conversations(:one_and_admin)) ], conversation_row_ids
 
-    send_admin_message
+    assert_no_navigation do
+      send_admin_message
 
-    within "##{dom_id(conversations(:one_and_admin))}" do
-      assert_selector ".conversation-row__sender", text: "#{users(:admin).username}:"
-      assert_selector ".conversation-row__text", text: "Standup in five"
-      assert_selector ".conversation-row__unread", text: "2"
+      within "##{dom_id(conversations(:one_and_admin))}" do
+        assert_selector ".conversation-row__sender", text: "#{users(:admin).username}:"
+        assert_selector ".conversation-row__text", text: "Standup in five"
+        assert_selector ".conversation-row__unread", text: "2"
+      end
+
+      assert_equal [ dom_id(conversations(:one_and_admin)), dom_id(conversations(:one_and_two)) ], conversation_row_ids
     end
-
-    assert_equal [ dom_id(conversations(:one_and_admin)), dom_id(conversations(:one_and_two)) ], conversation_row_ids
   end
 
   private
