@@ -34,6 +34,17 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal [ reactions(:two) ], comments(:one).reactions
   end
 
+  test "creating a comment increments its post's comments_count" do
+    assert_difference("@post.reload.comments_count", 1) { build_comment.save! }
+  end
+
+  test "destroying a comment decrements its post's comments_count" do
+    comment = build_comment
+    comment.save!
+
+    assert_difference("@post.reload.comments_count", -1) { comment.destroy }
+  end
+
   test "destroying a comment destroys its reactions" do
     comment = comments(:one)
     reaction_id = reactions(:two).id

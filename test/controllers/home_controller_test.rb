@@ -1,6 +1,8 @@
 require "test_helper"
 
 class HomeControllerTest < ActionDispatch::IntegrationTest
+  include ActionView::RecordIdentifier
+
   test "when unauthenticated, redirects to sign in" do
     get root_path
 
@@ -28,6 +30,24 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_select ".reaction-icon", count: 2
     assert_select ".reaction-icon.liked", count: 1
+  end
+
+  test "shows a comment icon opening the post popup for each post" do
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select ".comment-icon", count: 2
+    assert_select ".comment-icon[data-turbo-frame=?]", "post_modal", count: 2
+  end
+
+  test "shows each post's comment count" do
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select "##{dom_id(posts(:one), :comments_count)}", text: /1 comment/
+    assert_select "##{dom_id(posts(:two), :comments_count)}", text: /1 comment/
   end
 
   test "when authenticated, paginates posts 10 per page" do

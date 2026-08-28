@@ -1,3 +1,26 @@
+.comment-action {
+  display: flex;
+  align-items: center;
+
+  .comment-icon {
+    font-size: 24px;
+    line-height: 1;
+    color: #262626;
+    margin-right: 8px;
+
+    &:hover {
+      color: #8e8e8e;
+      text-decoration: none;
+    }
+  }
+
+  .comments-count {
+    font-size: 14px;
+    font-weight: 600;
+    color: #262626;
+  }
+}
+
 .post-show{
   .comments{
     flex: 1;

@@ -1,6 +1,8 @@
 require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
+  include ActionView::RecordIdentifier
+
   test "when unauthenticated, redirects to sign in and creates no post" do
     assert_no_difference([ "Post.count", "EventLog.count" ]) { post posts_path, params: valid_post_params }
 
@@ -186,6 +188,26 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
     assert Post.exists?(posts(:one).id)
+  end
+
+  test "when requested from the post_modal turbo frame, renders the post as a popup" do
+    sign_in users(:one)
+
+    get post_path(posts(:one)), headers: { "Turbo-Frame" => "post_modal" }
+
+    assert_response :success
+    assert_select "turbo-frame#post_modal .post-modal .post-show"
+    assert_select "turbo-frame##{dom_id(posts(:one), :modal_reaction)}"
+    assert_select "turbo-frame##{dom_id(posts(:one), :reaction)}", count: 0
+  end
+
+  test "when requested as a full page, renders the post detail outside a popup" do
+    sign_in users(:one)
+
+    get post_path(posts(:one))
+
+    assert_select ".post-modal", count: 0
+    assert_select "turbo-frame##{dom_id(posts(:one), :reaction)}"
   end
 
   private

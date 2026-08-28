@@ -14,6 +14,8 @@ class PostsController < ApplicationController
   def show
     @post          = Post.includes(comments: :user).find(params[:id])
     @user_reaction = current_user&.reactions&.find_by(reactable: @post)
+
+    render "modal" if turbo_frame_request?
   end
 
   def destroy

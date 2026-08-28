@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ReactionsControllerTest < ActionDispatch::IntegrationTest
+  include ActionView::RecordIdentifier
+
   test "when unauthenticated, redirects to sign in and creates no reaction" do
     assert_no_difference([ "Reaction.count", "EventLog.count" ]) { post post_reaction_path(posts(:one)) }
 
@@ -96,5 +98,23 @@ class ReactionsControllerTest < ActionDispatch::IntegrationTest
     delete post_reaction_path(posts(:one)), headers: { "HTTP_REFERER" => root_path }
 
     assert_redirected_to root_path
+  end
+
+  test "when creating from the popup's reaction frame, redirects to the post so the popup re-renders" do
+    sign_in users(:one)
+
+    post post_reaction_path(posts(:two)),
+         headers: { "HTTP_REFERER" => root_path, "Turbo-Frame" => dom_id(posts(:two), :modal_reaction) }
+
+    assert_redirected_to post_path(posts(:two))
+  end
+
+  test "when destroying from the popup's reaction frame, redirects to the post so the popup re-renders" do
+    sign_in users(:two)
+
+    delete post_reaction_path(posts(:one)),
+           headers: { "HTTP_REFERER" => root_path, "Turbo-Frame" => dom_id(posts(:one), :modal_reaction) }
+
+    assert_redirected_to post_path(posts(:one))
   end
 end

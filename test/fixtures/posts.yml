@@ -1,7 +1,9 @@
 one:
   description: Watching the sunset today
   user: one
+  comments_count: 1
 
 two:
   description: Long walk on the beach
   user: two
+  comments_count: 1

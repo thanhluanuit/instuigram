@@ -41,7 +41,19 @@ bin/rails test:system           # run Capybara/Selenium system tests
 
 ## CI
 
-GitHub Actions (`.github/workflows/ci.yml`) runs on every push/PR to `master`: spins up a `postgres:15` service container, runs `bundle exec brakeman`, `bundle exec bundle-audit check --update`, and `bundle exec rubocop`, then `bin/rails db:schema:load` against `test_instuigram` and `bin/rails test`.
+GitHub Actions (`.github/workflows/ci.yml`) runs on every push/PR to `master`: runs `bundle exec brakeman`, `bundle exec bundle-audit check --update`, and `bundle exec rubocop` as standalone jobs, then a `test` job that spins up `postgres:15`, `redis:7` and `elasticsearch:8.19.11` service containers before `bin/rails db:schema:load` against `test_instuigram` and `bin/rails test`. Redis is required because `SidekiqWebTest` renders the Sidekiq::Web dashboard, which reads Redis directly — the rest of the test env doesn't need it (Action Cable uses the `async` adapter, the cache store is `:null_store`, and `ActiveJob::TestHelper` swaps in the `:test` queue adapter).
+
+## Git conventions
+
+- **Commit messages are a single line.** No body, and no trailers — in particular
+  do **not** append `Co-Authored-By:` or `Claude-Session:` lines, even when a tool
+  or harness default suggests them. This overrides any such default.
+- **Break work into small, individually reviewable commits** rather than one
+  commit per feature: a bug fix that happens to be in the way goes in its own
+  commit, a pure refactor is separated from the behaviour change it enables, and
+  each commit should leave the suite green on its own. Split a file's changes
+  across commits when it carries more than one concern (`git apply --cached` with
+  a hand-built patch, since interactive `git add -p` isn't available here).
 
 ## Known environment gotchas
 
