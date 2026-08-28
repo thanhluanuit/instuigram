@@ -9,7 +9,7 @@ class HomeController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream
+      format.turbo_stream if params[:page].present?
     end
   end
 end
