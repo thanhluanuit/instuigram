@@ -19,7 +19,7 @@
           <%= f.file_field :image, class: 'visually-hidden', data: { composer_target: "fileInput", action: "change->composer#updateFilename" } %>
           <span class="composer-filename" data-composer-target="filename">No photo selected</span>
         </div>
-        <%= f.submit 'Post', class: 'btn composer-submit', data: { composer_target: "submit" } %>
+        <%= f.submit 'Post', class: 'btn-accent', data: { composer_target: "submit" } %>
       </div>
     <% end %>
   </div>

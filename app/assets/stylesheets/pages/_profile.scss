@@ -15,24 +15,13 @@
   padding: 40px 0;
   .user-wrapper{
     display: flex;
+    align-items: center;
+    gap: $space-5;
   }
   .username{
     font-size: 30px;
     line-height: 40px;
     font-weight: $weight-normal;
-  }
-  .edit-profile{
-    margin-left: 20px;
-    margin-top: 5px;
-  }
-  .edit-profile button{
-    background-color: transparent;
-    border-radius: $radius-sm;
-    border: 1px solid $border;
-    color: $ink;
-    font-size: 14px;
-    padding: 4px 10px;
-    font-weight: $weight-medium;
   }
   ul.posts{
     padding-left: 0;

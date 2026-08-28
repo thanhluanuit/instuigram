@@ -263,28 +263,3 @@ $online: $online;
   border-radius: $radius-lg;
 }
 
-.chat__send {
-  padding: 8px 16px;
-  border: none;
-  border-radius: $radius-lg;
-  background: $accent;
-  color: $ink-inverse;
-}
-
-a.message-user {
-  display: inline-block;
-  margin: 0;
-  text-decoration: none;
-}
-
-.message-user {
-  margin-top: 5px;
-  margin-left: 20px;
-  padding: 4px 10px;
-  border: 1px solid $border;
-  border-radius: $radius-sm;
-  background-color: transparent;
-  color: $ink;
-  font-size: 14px;
-  font-weight: $weight-medium;
-}

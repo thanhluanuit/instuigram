@@ -145,21 +145,6 @@ $link: $link;
   }
 }
 
-.auth-submit {
-  width: 100%;
-  background-color: $accent;
-  border: none;
-  border-radius: $radius-sm;
-  font-size: 14px;
-  font-weight: $weight-semibold;
-  padding: 7px 16px;
-  margin-top: 8px;
-
-  &:hover {
-    background-color: $accent-hover;
-  }
-}
-
 .auth-remember {
   display: block;
   margin-top: 12px;

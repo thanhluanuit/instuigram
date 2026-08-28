@@ -94,24 +94,6 @@
       color: $ink-muted;
     }
 
-    .composer-submit {
-      padding: 8px 20px;
-      border: none;
-      border-radius: $radius-pill;
-      background-color: $accent;
-      color: $ink-inverse;
-      font-weight: $weight-bold;
-      font-size: 14px;
-
-      &:hover:not(:disabled) {
-        background-color: $accent-hover;
-      }
-
-      &:disabled {
-        background-color: $accent-disabled;
-        cursor: not-allowed;
-      }
-    }
   }
 
   .posts {

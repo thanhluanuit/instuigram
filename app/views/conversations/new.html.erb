@@ -18,7 +18,7 @@
             <span class="conversation-row__preview"><%= user.name %></span>
           </div>
 
-          <%= button_to "Message", conversations_path, params: { user_id: user.id }, class: "message-user" %>
+          <%= button_to "Message", conversations_path, params: { user_id: user.id }, class: "btn-outline" %>
         </div>
       <% end %>
     </div>

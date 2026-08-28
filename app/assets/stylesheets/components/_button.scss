@@ -1,0 +1,50 @@
+%btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-2 $space-5;
+  border: 1px solid transparent;
+  border-radius: $radius-pill;
+  font-size: $text-base;
+  font-weight: $weight-semibold;
+  line-height: $leading-tight;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-accent {
+  @extend %btn-base;
+  background-color: $accent;
+  color: $ink-inverse;
+
+  &:hover,
+  &:focus {
+    background-color: $accent-hover;
+    color: $ink-inverse;
+    text-decoration: none;
+  }
+
+  &:disabled {
+    background-color: $accent-disabled;
+    cursor: not-allowed;
+  }
+}
+
+.btn-outline {
+  @extend %btn-base;
+  border-color: $border;
+  background-color: transparent;
+  color: $ink;
+
+  &:hover,
+  &:focus {
+    background-color: $surface-hover;
+    color: $ink;
+    text-decoration: none;
+  }
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}

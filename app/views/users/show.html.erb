@@ -11,11 +11,9 @@
       <div class="user-wrapper">
         <h2 class="username"><%= @user.username %></h2>
         <% if @user == current_user %>
-          <a class="edit-profile" href="<%= edit_user_path(@user) %>">
-            <button>Edit Profile</button>
-          </a>
+          <%= link_to "Edit profile", edit_user_path(@user), class: "btn-outline" %>
         <% elsif user_signed_in? %>
-          <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "message-user" %>
+          <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "btn-outline" %>
         <% end %>
       </div>
       <ul class="posts">

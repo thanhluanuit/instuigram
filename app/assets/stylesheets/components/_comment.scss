@@ -75,18 +75,5 @@
     padding-top: 16px;
     border-top: 1px solid $border-subtle;
 
-    .form-group{
-      margin-bottom: 8px;
-    }
-
-    .btn-primary{
-      background-color: $accent;
-      border-color: $accent;
-
-      &:hover, &:focus{
-        background-color: $accent-hover;
-        border-color: $accent-hover;
-      }
-    }
   }
 }
