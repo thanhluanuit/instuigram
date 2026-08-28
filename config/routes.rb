@@ -9,7 +9,9 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
-  resources :users, only: [ :show, :edit, :update ]
+  resources :users, only: [ :show, :edit, :update ] do
+    resource :follow, only: [ :create, :destroy ]
+  end
   resources :posts, only: [ :create, :show, :destroy ] do
     resources :comments, only: [ :create ]
     resource :reaction, only: [ :create, :destroy ]
