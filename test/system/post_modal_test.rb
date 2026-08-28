@@ -28,6 +28,26 @@ class PostModalTest < ApplicationSystemTestCase
     assert_selector "section.post", count: 2
   end
 
+  test "clicking the popup backdrop closes it" do
+    open_popup_for posts(:two)
+
+    find(".post-modal").execute_script("this.click()")
+
+    assert_no_selector ".post-modal"
+    assert_current_path root_path
+    assert_selector "section.post", count: 2
+  end
+
+  test "pressing Escape closes the popup" do
+    open_popup_for posts(:two)
+
+    find("body").send_keys(:escape)
+
+    assert_no_selector ".post-modal"
+    assert_no_selector "body.modal-open"
+    assert_current_path root_path
+  end
+
   private
 
   def open_popup_for(post)
