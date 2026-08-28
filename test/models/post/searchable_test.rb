@@ -4,36 +4,28 @@ class Post::SearchableTest < ActiveSupport::TestCase
   setup { index_all_posts! }
 
   test "finds the same posts whether or not the query is written with a leading #" do
-    hashtag_results = Post.search("##{hash_tags(:one).name}").records.map(&:id)
-    plain_results   = Post.search(hash_tags(:one).name).records.map(&:id)
+    hashtag_results = search_ids("##{hash_tags(:one).name}")
+    plain_results   = search_ids(hash_tags(:one).name)
 
     assert_includes hashtag_results, posts(:one).id
     assert_equal plain_results, hashtag_results
   end
 
   test "ranks a hashtag match above a description-only match" do
-    tagged, described = index_posts(
-      "a photo of a #capybara at dusk",
-      "capybara spotted by the river"
-    )
+    tagged    = create_post!(users(:one), description: "a photo of a #capybara at dusk")
+    described = create_post!(users(:one), description: "capybara spotted by the river")
+    index_pending_posts!
 
-    results = Post.search("capybara").records.map(&:id)
-
-    assert_equal [ tagged.id, described.id ], results
+    assert_equal [ tagged.id, described.id ], search_ids("capybara")
   end
 
   test "tolerates a single-character typo in the query" do
-    results = Post.search("sunst").records.map(&:id)
-
-    assert_includes results, posts(:one).id
+    assert_includes search_ids("sunst"), posts(:one).id
   end
 
   private
 
-  def index_posts(*descriptions)
-    posts = descriptions.map { |description| create_post!(users(:one), description: description) }
-    perform_enqueued_jobs
-    Post.__elasticsearch__.refresh_index!
-    posts
+  def search_ids(query)
+    Post.search(query).records.map(&:id)
   end
 end

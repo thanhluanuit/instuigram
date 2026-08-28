@@ -1,6 +1,8 @@
 require "test_helper"
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
+  MATCHING_MARKER = "pagination marker".freeze
+
   setup { index_all_posts! }
 
   test "with a blank query, shows no matching posts" do
@@ -39,17 +41,17 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   test "paginates matching posts 10 per page" do
     index_matching_posts(11)
 
-    get search_path(query: "pagination marker")
+    get search_path(query: MATCHING_MARKER)
     assert_select ".user-images .wrapper", count: 10
 
-    get search_path(query: "pagination marker", page: 2)
+    get search_path(query: MATCHING_MARKER, page: 2)
     assert_select ".user-images .wrapper", count: 1
   end
 
   test "with a page past the last one, shows no matching posts" do
-    index_matching_posts(11)
+    index_matching_posts(1)
 
-    get search_path(query: "pagination marker", page: 99)
+    get search_path(query: MATCHING_MARKER, page: 99)
 
     assert_response :success
     assert_select "h1", "Oop! No matching posts ..."
@@ -63,11 +65,9 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "avoids N+1 queries when rendering multiple matching posts" do
-    perform_enqueued_jobs do
-      create_post!(users(:one), description: "shared marker one")
-      create_post!(users(:two), description: "shared marker two")
-    end
-    Post.__elasticsearch__.refresh_index!
+    create_post!(users(:one), description: "shared marker one")
+    create_post!(users(:two), description: "shared marker two")
+    index_pending_posts!
 
     assert_queries_count(3) { get search_path(query: "shared marker") }
 
@@ -78,8 +78,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   private
 
   def index_matching_posts(count)
-    count.times { |n| create_post!(users(:one), description: "pagination marker #{n}") }
-    perform_enqueued_jobs
-    Post.__elasticsearch__.refresh_index!
+    count.times { |n| create_post!(users(:one), description: "#{MATCHING_MARKER} #{n}") }
+    index_pending_posts!
   end
 end

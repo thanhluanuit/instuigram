@@ -53,12 +53,12 @@ class PostTest < ActiveSupport::TestCase
   end
 
   test "created_recently orders posts newest first" do
-    older = travel_to(2.days.ago) { build_post(description: "older").tap(&:save!) }
-    newer = travel_to(1.day.ago) { build_post(description: "newer").tap(&:save!) }
+    older = travel_to(2.days.ago) { create_post!(@user, description: "older") }
+    newer = travel_to(1.day.ago) { create_post!(@user, description: "newer") }
 
-    ordered = Post.created_recently.to_a
+    ordered = Post.where(id: [ older.id, newer.id ]).created_recently.to_a
 
-    assert_operator ordered.index(newer), :<, ordered.index(older)
+    assert_equal [ newer, older ], ordered
   end
 
   test "extracts every #word token from the description" do

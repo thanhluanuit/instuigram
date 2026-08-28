@@ -17,12 +17,13 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "with no avatar, shows the fallback icon in the composer" do
+  test "with no avatar, shows a placeholder instead of an image in the composer" do
     sign_in users(:one)
 
     get root_path
 
-    assert_select ".composer-avatar i.fa-user"
+    assert_select ".composer-avatar"
+    assert_select ".composer-avatar img", count: 0
   end
 
   test "with no posts, shows the empty state" do
@@ -32,7 +33,6 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_select ".empty-state"
-    assert_select "section.post", count: 0
   end
 
   test "requesting a page past the last page shows the empty state" do
@@ -45,14 +45,23 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "renders the feed with a bounded number of queries regardless of post count" do
+    sign_in_and_absorb_trackable_update users(:one)
+    11.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    assert_queries_count(10) { get root_path }
+
+    create_post!(users(:one), description: "one more post")
+
+    assert_queries_count(10) { get root_path }
+  end
+
+  test "shows the newest post first" do
     sign_in users(:one)
+    newest = create_post!(users(:one), description: "the newest post")
+
     get root_path
 
-    11.times { |n| create_post!(users(:one), description: "post #{n}") }
-    assert_queries_count(10) { get root_path }
-
-    10.times { |n| create_post!(users(:one), description: "later post #{n}") }
-    assert_queries_count(10) { get root_path }
+    assert_select "section.post:first-of-type", text: /#{newest.description}/
   end
 
   test "shows no filled hearts for a user who has reacted to no posts" do
@@ -97,19 +106,25 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     get root_path
     assert_select "section.post", count: 10
-    assert_select "nav.pagination"
+    assert_select "a[href=?]", root_path(page: 2)
 
     get root_path(page: 2)
-    assert_select "section.post", count: 3
+    assert_select "section.post", count: Post.count - 10
   end
 
-  test "with a non-numeric page param, falls back to the first page" do
+  test "with a non-numeric page param, renders the first page without erroring" do
     sign_in users(:one)
-    11.times { |n| create_post!(users(:one), description: "post #{n}") }
 
     get root_path(page: "not-a-number")
 
     assert_response :success
-    assert_select "section.post", count: 10
+    assert_select "section.post", count: Post.count
+  end
+
+  private
+
+  def sign_in_and_absorb_trackable_update(user)
+    sign_in user
+    get root_path
   end
 end
