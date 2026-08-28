@@ -47,10 +47,25 @@ $chat-online: #2ecc71;
   margin: 24px auto;
 }
 
-.conversations__title {
+.conversations__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 16px;
+}
+
+.conversations__title {
+  margin: 0;
   font-size: 20px;
   color: $chat-text;
+}
+
+.conversations__search {
+  margin-bottom: 16px;
+
+  .chat__input {
+    width: 100%;
+  }
 }
 
 .conversations__empty {
@@ -261,6 +276,12 @@ $chat-online: #2ecc71;
   border-radius: 20px;
   background: $chat-blue;
   color: #fff;
+}
+
+a.message-user {
+  display: inline-block;
+  margin: 0;
+  text-decoration: none;
 }
 
 .message-user {

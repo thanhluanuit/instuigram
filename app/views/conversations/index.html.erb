@@ -1,5 +1,8 @@
 <section class="conversations">
-  <h1 class="conversations__title">Messages</h1>
+  <div class="conversations__header">
+    <h1 class="conversations__title">Messages</h1>
+    <%= link_to "New message", new_conversation_path, class: "message-user" %>
+  </div>
 
   <% if @conversations.any? %>
     <div class="conversations__list">
@@ -7,6 +10,6 @@
     </div>
     <%= paginate @conversations %>
   <% else %>
-    <p class="conversations__empty">No messages yet. Visit someone's profile to start a conversation.</p>
+    <p class="conversations__empty">No messages yet. Start a <%= link_to "new message", new_conversation_path %>.</p>
   <% end %>
 </section>
