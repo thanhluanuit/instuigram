@@ -19,6 +19,14 @@ class ConversationsController < ApplicationController
     @conversation.participant_for(current_user).update!(unread_count: 0)
   end
 
+  def new
+    @users = User.excluding(current_user)
+                 .matching_username(params[:query])
+                 .includes(avatar_attachment: :blob)
+                 .order(:username)
+                 .page(params[:page]).per(10)
+  end
+
   def create
     conversation = Conversations::FindOrCreate.call(user: current_user, other_user: User.find(params[:user_id]))
     return redirect_to conversations_path, alert: "You cannot message yourself." unless conversation

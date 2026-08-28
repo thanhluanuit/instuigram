@@ -62,6 +62,32 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_queries_count(11) { get conversation_path(conversations(:one_and_two)) }
   end
 
+  test "when unauthenticated, redirects the new message page to sign in" do
+    get new_conversation_path
+
+    assert_redirected_to new_user_session_path
+  end
+
+  test "the new message page lists other users but not yourself" do
+    sign_in users(:one)
+
+    get new_conversation_path
+
+    assert_response :success
+    assert_select ".conversations__list a[href=?]", user_path(users(:two))
+    assert_select ".conversations__list a[href=?]", user_path(users(:one)), false
+  end
+
+  test "the new message page filters users by username" do
+    sign_in users(:one)
+
+    get new_conversation_path, params: { query: "admin" }
+
+    assert_response :success
+    assert_select ".conversations__list a[href=?]", user_path(users(:admin))
+    assert_select ".conversations__list a[href=?]", user_path(users(:two)), false
+  end
+
   test "creating a conversation with another user redirects to it" do
     sign_in users(:two)
 

@@ -1,0 +1,32 @@
+<section class="conversations">
+  <h1 class="conversations__title">New message</h1>
+
+  <%= form_with url: new_conversation_path, method: :get, class: "conversations__search" do |form| %>
+    <%= form.text_field :query, value: params[:query], placeholder: "Search by username...", class: "chat__input" %>
+  <% end %>
+
+  <% if @users.any? %>
+    <div class="conversations__list">
+      <% @users.each do |user| %>
+        <div class="conversation-row">
+          <%= link_to user_path(user), class: "conversation-row__avatar" do %>
+            <% if user.avatar.attached? %>
+              <%= image_tag user.avatar.variant(resize_to_fill: [ 56, 56 ]) %>
+            <% end %>
+            <span class="presence-dot <%= "is-online" if user.online? %>" data-presence-user-id="<%= user.id %>"></span>
+          <% end %>
+
+          <div class="conversation-row__body">
+            <%= link_to user.username, user_path(user), class: "conversation-row__name" %>
+            <span class="conversation-row__preview"><%= user.name %></span>
+          </div>
+
+          <%= button_to "Message", conversations_path, params: { user_id: user.id }, class: "message-user" %>
+        </div>
+      <% end %>
+    </div>
+    <%= paginate @users %>
+  <% else %>
+    <p class="conversations__empty">No users found.</p>
+  <% end %>
+</section>
