@@ -14,6 +14,8 @@
           <a class="edit-profile" href="<%= edit_user_path(@user) %>">
             <button>Edit Profile</button>
           </a>
+        <% elsif user_signed_in? %>
+          <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "message-user" %>
         <% end %>
       </div>
       <ul class="posts">
