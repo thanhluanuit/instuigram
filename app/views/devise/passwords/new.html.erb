@@ -8,6 +8,7 @@
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "auth-form" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
+    <%= f.label :email, class: "visually-hidden" %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email",
                       class: "form-control", placeholder: "Email" %>
 

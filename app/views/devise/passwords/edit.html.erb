@@ -9,8 +9,10 @@
     <%= render "devise/shared/error_messages", resource: resource %>
     <%= f.hidden_field :reset_password_token %>
 
+    <%= f.label :password, "New Password", class: "visually-hidden" %>
     <%= f.password_field :password, autofocus: true, autocomplete: "new-password",
                          class: "form-control", placeholder: "New Password" %>
+    <%= f.label :password_confirmation, "Confirm New Password", class: "visually-hidden" %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password",
                          class: "form-control", placeholder: "Confirm New Password" %>
 

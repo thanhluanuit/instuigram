@@ -22,4 +22,11 @@ class SessionsTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", new_user_registration_path
     assert_select "a[href=?]", new_user_password_path
   end
+
+  test "the sign in page labels every input" do
+    get new_user_session_path
+
+    assert_select "label[for='user_email']"
+    assert_select "label[for='user_password']"
+  end
 end

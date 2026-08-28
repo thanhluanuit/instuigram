@@ -78,4 +78,14 @@ class RegistrationsTest < ActionDispatch::IntegrationTest
       password_confirmation: "password123"
     }
   end
+
+  test "the sign up page labels every input" do
+    get new_user_registration_path
+
+    assert_select "label[for='user_email']"
+    assert_select "label[for='user_name']"
+    assert_select "label[for='user_username']"
+    assert_select "label[for='user_password']"
+    assert_select "label[for='user_password_confirmation']"
+  end
 end

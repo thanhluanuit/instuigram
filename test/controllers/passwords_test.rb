@@ -27,4 +27,17 @@ class PasswordsTest < ActionDispatch::IntegrationTest
 
     assert_select "nav.navbar-light", false
   end
+
+  test "the forgot password page labels its input" do
+    get new_user_password_path
+
+    assert_select "label[for='user_email']"
+  end
+
+  test "the reset password page labels every input" do
+    get edit_user_password_path(reset_password_token: "a-token")
+
+    assert_select "label[for='user_password']"
+    assert_select "label[for='user_password_confirmation']"
+  end
 end
