@@ -1,0 +1,12 @@
+<div id="feed_sentinel" class="feed-sentinel">
+  <% if posts.last_page? %>
+    <p class="feed-sentinel__end">You're all caught up</p>
+  <% else %>
+    <div class="feed-sentinel__loader" data-controller="infinite-scroll" data-infinite-scroll-url-value="<%= root_path(page: posts.next_page) %>">
+      <div class="feed-sentinel__spinner" data-infinite-scroll-target="spinner" hidden>
+        <i class="fa fa-spinner fa-spin"></i>
+      </div>
+      <%= link_to "Load more", root_path(page: posts.next_page), class: "feed-sentinel__link", data: { infinite_scroll_target: "link" } %>
+    </div>
+  <% end %>
+</div>

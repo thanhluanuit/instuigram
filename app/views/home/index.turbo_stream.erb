@@ -1,0 +1,9 @@
+<%= turbo_stream.append "posts" do %>
+  <% @posts.each do |post| %>
+    <%= render partial: "post", locals: { post: post, user_reaction: @user_reactions[post.id] } %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "feed_sentinel" do %>
+  <%= render "feed_sentinel", posts: @posts %>
+<% end %>
