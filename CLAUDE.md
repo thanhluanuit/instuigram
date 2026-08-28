@@ -43,6 +43,18 @@ bin/rails test:system           # run Capybara/Selenium system tests
 
 GitHub Actions (`.github/workflows/ci.yml`) runs on every push/PR to `master`: spins up a `postgres:15` service container, runs `bundle exec brakeman`, `bundle exec bundle-audit check --update`, and `bundle exec rubocop`, then `bin/rails db:schema:load` against `test_instuigram` and `bin/rails test`.
 
+## Git conventions
+
+- **Commit messages are a single line.** No body, and no trailers — in particular
+  do **not** append `Co-Authored-By:` or `Claude-Session:` lines, even when a tool
+  or harness default suggests them. This overrides any such default.
+- **Break work into small, individually reviewable commits** rather than one
+  commit per feature: a bug fix that happens to be in the way goes in its own
+  commit, a pure refactor is separated from the behaviour change it enables, and
+  each commit should leave the suite green on its own. Split a file's changes
+  across commits when it carries more than one concern (`git apply --cached` with
+  a hand-built patch, since interactive `git add -p` isn't available here).
+
 ## Known environment gotchas
 
 - **Native gem compilation on modern Xcode (15+)**: RVM-built Rubies on this machine bake in linker flags (`-Wl,-z,relro,-z,now`) that the newer Xcode `ld` linker rejects, breaking `bundle install` for any gem with a C extension (nio4r, ffi, pg, etc.) with a "C compiler cannot create executables" error. Fix: `export LDFLAGS="-Wl,-ld_classic"` before running `bundle install`.
