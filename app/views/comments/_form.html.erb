@@ -1,7 +1,8 @@
 <div id="<%= dom_id(post, form_id_prefix) %>" class="comment-form">
-  <%= form_for [ post, Comment.new ] do |f| %>
-    <%= f.label :body, "Comment", class: "visually-hidden" %>
-    <%= f.text_field :body, class: 'field-pill', placeholder: "Add a comment..." %>
+  <%= form_for [ post, Comment.new ], html: { id: dom_id(post, :"#{form_id_prefix}_form") } do |f| %>
+    <%= f.label :body, "Comment", class: "visually-hidden", for: dom_id(post, :"#{form_id_prefix}_body") %>
+    <%= f.text_field :body, id: dom_id(post, :"#{form_id_prefix}_body"), class: 'field-pill',
+                     placeholder: "Add a comment...", required: true %>
     <%= f.submit "Post", class: "btn-accent" %>
   <% end %>
 </div>

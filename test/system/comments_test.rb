@@ -11,7 +11,7 @@ class CommentsTest < ApplicationSystemTestCase
     open_popup_for posts(:two)
 
     within ".post-modal" do
-      fill_in "comment_body", with: "Great shot"
+      fill_in dom_id(posts(:two), :comment_form_body), with: "Great shot"
       click_button "Post"
 
       assert_selector ".comment", text: "Great shot"

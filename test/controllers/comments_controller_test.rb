@@ -46,6 +46,16 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "when a blank body is submitted as a turbo stream, re-renders in place instead of redirecting" do
+    sign_in users(:one)
+
+    post post_comments_path(posts(:two)), params: { comment: { body: "" } }, as: :turbo_stream
+
+    assert_response :unprocessable_entity
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(posts(:two), :comment_form)
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(posts(:two), :feed_comment_form)
+  end
+
   test "when asked for a turbo stream, creating a comment refreshes the list, the form, and the count" do
     sign_in users(:one)
 

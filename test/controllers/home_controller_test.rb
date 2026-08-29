@@ -50,11 +50,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     sign_in_and_absorb_trackable_update users(:one)
     11.times { |n| create_post!(users(:one), description: "post #{n}") }
 
-    assert_queries_count(13) { get root_path }
+    assert_queries_count(12) { get root_path }
 
     create_post!(users(:one), description: "one more post")
 
-    assert_queries_count(13) { get root_path }
+    assert_queries_count(12) { get root_path }
   end
 
   test "suggests users the signed-in user does not already follow" do
@@ -80,6 +80,20 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_select ".feed-account__meta", text: /0 following · 0 followers/
+  end
+
+  test "gives every feed comment field a unique id its label points at" do
+    sign_in users(:one)
+    2.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    get root_path
+
+    field_ids = css_select(".post-comment input[type=text]").map { |input| input["id"] }
+    label_targets = css_select(".post-comment label").map { |label| label["for"] }
+
+    assert_equal css_select("section.post").size, field_ids.size
+    assert_equal field_ids.uniq, field_ids
+    assert_equal field_ids.sort, label_targets.sort
   end
 
   test "shows the newest post first" do
