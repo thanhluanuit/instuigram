@@ -6,6 +6,6 @@
   <% end %>
 </div>
 <%= link_to user.username, user_path(user), class: 'username' %>
-<% if user_signed_in? && user != current_user %>
+<% if user_signed_in? && user != current_user && !following %>
   <%= render "users/follow_button", user: user, following: following %>
 <% end %>

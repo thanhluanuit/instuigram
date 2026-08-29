@@ -30,13 +30,28 @@ class FollowsTest < ApplicationSystemTestCase
     assert_selector "##{dom_id(@other, :followers_count)}", text: "0 followers"
   end
 
-  test "following from a post in the feed hides that post's button" do
+  test "following from a post in the feed leaves the button in place to undo it" do
     visit root_path
     wait_for_page_to_settle
 
     assert_selector "section.post #{follow_button_selector}", exact_text: "Follow", count: 1
 
     click_button "Follow"
+    assert_selector "section.post #{follow_button_selector}", exact_text: "Following", count: 1
+
+    click_button "Following"
+
+    assert_selector "section.post #{follow_button_selector}", exact_text: "Follow", count: 1
+  end
+
+  test "a followed user's posts carry no follow button on the next page load" do
+    visit root_path
+    wait_for_page_to_settle
+    click_button "Follow"
+    assert_selector "section.post #{follow_button_selector}", exact_text: "Following"
+
+    visit root_path
+    wait_for_page_to_settle
 
     assert_no_selector "section.post #{follow_button_selector}"
   end
