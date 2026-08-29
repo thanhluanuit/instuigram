@@ -24,7 +24,7 @@
       <div class="avatar">
         <%= render "users/avatar_image", user: current_user, size: 52 %>
       </div>
-      <%= render partial: "comments/form", locals: { post: post, form_id_prefix: :feed_comment_form } %>
+      <%= render partial: "comments/form", locals: { post: post, form_id_prefix: :feed_comment_form, comment: Comment.new } %>
     </div>
     <time class="post-time" datetime="<%= post.created_at.iso8601 %>"><%= time_ago_in_words(post.created_at) %> ago</time>
   </div>

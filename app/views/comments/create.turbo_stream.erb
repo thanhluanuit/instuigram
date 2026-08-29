@@ -1,9 +1,11 @@
+<% rejected = @comment if @comment&.errors&.any? %>
+<% form_comment = rejected || Comment.new %>
 <%= turbo_stream.replace dom_id(@post, :comments) do %>
   <%= render partial: "comments/list", locals: { post: @post } %>
 <% end %>
 <% %i[comment_form feed_comment_form].each do |prefix| %>
   <%= turbo_stream.replace dom_id(@post, prefix) do %>
-    <%= render partial: "comments/form", locals: { post: @post, form_id_prefix: prefix } %>
+    <%= render partial: "comments/form", locals: { post: @post, form_id_prefix: prefix, comment: form_comment } %>
   <% end %>
 <% end %>
 <%= turbo_stream.replace dom_id(@post, :comments_count) do %>

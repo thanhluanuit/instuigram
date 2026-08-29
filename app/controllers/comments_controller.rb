@@ -22,15 +22,12 @@ class CommentsController < ApplicationController
   private
 
   def render_rejected_comment
-    alert = @comment.errors.full_messages.to_sentence
-
     respond_to do |format|
       format.turbo_stream do
-        flash.now[:alert] = alert
         @post = Post.includes(comments: :user).find(@post.id)
         render :create, status: :unprocessable_entity
       end
-      format.html { redirect_to post_path(@post), alert: alert }
+      format.html { redirect_to post_path(@post), alert: @comment.errors.full_messages.to_sentence }
     end
   end
 

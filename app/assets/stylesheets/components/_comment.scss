@@ -91,3 +91,9 @@
     }
   }
 }
+
+.comment-form__error {
+  margin: $space-1 0 0;
+  color: $danger;
+  font-size: $text-xs;
+}

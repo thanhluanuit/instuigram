@@ -56,6 +56,23 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_select "turbo-stream[action=replace][target=?]", dom_id(posts(:two), :feed_comment_form)
   end
 
+  test "a rejected comment sends the reason back in the replaced form" do
+    sign_in users(:one)
+
+    post post_comments_path(posts(:two)), params: { comment: { body: "" } }, as: :turbo_stream
+
+    assert_select "turbo-stream .comment-form__error", text: /Body can't be blank/
+  end
+
+  test "a successful comment leaves the replaced form blank and error-free" do
+    sign_in users(:one)
+
+    post post_comments_path(posts(:two)), params: { comment: { body: "Nice!" } }, as: :turbo_stream
+
+    assert_select ".comment-form__error", count: 0
+    assert_select "turbo-stream input##{dom_id(posts(:two), :feed_comment_form_body)}[value]", count: 0
+  end
+
   test "when asked for a turbo stream, creating a comment refreshes the list, the form, and the count" do
     sign_in users(:one)
 
