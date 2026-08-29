@@ -1,21 +1,5 @@
 .homepage {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: $rail-gap;
-  max-width: $width-feed;
-  margin: $page-top auto;
-
-  .feed-rail,
-  .feed-aside {
-    display: none;
-  }
-
-  .feed-column {
-    flex: 1;
-    min-width: 0;
-    max-width: $width-feed;
-  }
+  @extend %feed-column;
 
   .form-upload {
     @extend %surface-card;
@@ -171,7 +155,6 @@
       .avatar {
         @include avatar(36px);
         @include avatar-ring;
-        margin: 2px;
       }
 
       .username {
@@ -341,85 +324,6 @@
 }
 
 
-.feed-rail {
-  flex-direction: column;
-  gap: $space-1;
-  width: $width-rail;
-  flex: none;
-  position: sticky;
-  top: $space-8;
-}
-
-.feed-rail__item {
-  display: flex;
-  align-items: center;
-  gap: $space-3;
-  padding: 11px 13px;
-  border-radius: $radius-md;
-  color: $ink-muted;
-  font-size: $text-md;
-
-  &:hover {
-    background-color: $surface-hover;
-    color: $ink-muted;
-    text-decoration: none;
-  }
-
-  &.is-active {
-    background-color: $accent-tint;
-    color: $link;
-    font-weight: $weight-semibold;
-
-    &:hover {
-      background-color: $accent-tint;
-      color: $link;
-    }
-  }
-
-  i.fa {
-    width: $icon-md;
-    font-size: $icon-md;
-    text-align: center;
-  }
-}
-
-.feed-rail__item--inert:hover {
-  background-color: transparent;
-}
-
-.feed-rail__avatar {
-  @include avatar(20px);
-}
-
-.feed-rail__new {
-  display: block;
-  margin: $space-3 0 0;
-  padding: $space-3;
-  border-radius: $radius-md;
-  background-color: $accent;
-  color: $ink-inverse;
-  font-size: $text-md;
-  font-weight: $weight-semibold;
-  text-align: center;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: $accent-hover;
-    color: $ink-inverse;
-    text-decoration: none;
-  }
-}
-
-.feed-aside {
-  flex-direction: column;
-  gap: $space-5;
-  width: $width-aside;
-  flex: none;
-  position: sticky;
-  top: $space-8;
-}
-
 .feed-account {
   @extend %surface-panel;
   display: flex;
@@ -527,25 +431,8 @@
   font-family: $font-mono;
 }
 
-@media (min-width: $bp-shell) {
-  .homepage {
-    max-width: none;
-
-    .feed-rail,
-    .feed-aside {
-      display: flex;
-    }
-
-    .feed-column {
-      flex: none;
-      width: $width-feed;
-    }
-  }
-}
 @media (max-width: $bp-sm) {
   .homepage {
-    margin: $space-4 auto;
-
     .form-upload,
     .posts .post {
       border-left: none;

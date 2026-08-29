@@ -8,13 +8,9 @@ body {
 }
 
 .container {
-  max-width: $width-wide;
+  max-width: $width-shell;
   padding-left: $page-gutter;
   padding-right: $page-gutter;
-}
-
-.page-feed .container {
-  max-width: $width-shell;
 }
 
 .main-content {
@@ -46,6 +42,10 @@ body {
   letter-spacing: .1em;
   text-transform: uppercase;
   color: $ink-meta;
+}
+
+.is-hidden {
+  display: none;
 }
 
 .page-subtitle {

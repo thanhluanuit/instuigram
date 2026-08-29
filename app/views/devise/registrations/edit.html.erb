@@ -1,52 +1,28 @@
+<div class="page-header">
+  <h1 class="page-title">Settings</h1>
+</div>
+
 <div class="user-edit-page">
   <div class="user-edit-page__nav">
     <%= render "users/settings_nav", active: :password %>
   </div>
 
   <div class="user-edit-page__pane">
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "form-horizontal form-edit-user" }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "settings-form" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
-      <div class="row mb-3">
-        <div class="col-sm-3 col-form-label">
-          <% if current_user.avatar.attached? %>
-            <%= image_tag current_user.avatar.variant(:thumb), class: 'avatar' %>
-          <% end %>
-        </div>
-        <div class="col-sm-9">
-          <p class="username"><%= current_user.username %></p>
-        </div>
-      </div>
+      <%= render "users/form_identity", user: current_user %>
 
-      <div class="row mb-3">
-        <%= f.label :current_password, "Old Password", class: 'col-sm-3 col-form-label' %>
-        <div class="col-sm-9">
-          <%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control' %>
-        </div>
-      </div>
+      <%= render "users/form_row", f: f, attribute: :current_password, label: "Old Password",
+                 control: f.password_field(:current_password, autocomplete: "current-password", class: "field") %>
+      <%= render "users/form_row", f: f, attribute: :password, label: "New Password",
+                 control: f.password_field(:password, autocomplete: "new-password", class: "field"),
+                 hint: "At least #{@minimum_password_length} characters." %>
+      <%= render "users/form_row", f: f, attribute: :password_confirmation, label: "Confirm New Password",
+                 control: f.password_field(:password_confirmation, autocomplete: "new-password", class: "field") %>
 
-      <div class="row mb-3">
-        <%= f.label :password, "New Password", class: 'col-sm-3 col-form-label' %>
-        <div class="col-sm-9">
-          <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
-          <small class="form-text text-muted">
-            At least <%= @minimum_password_length %> characters.
-          </small>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <%= f.label :password_confirmation, "Confirm New Password", class: 'col-sm-3 col-form-label' %>
-        <div class="col-sm-9">
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-9">
-          <%= f.submit "Change Password", class: 'btn-accent' %>
-        </div>
+      <div class="settings-form__actions">
+        <%= f.submit "Change Password", class: "btn-accent" %>
       </div>
     <% end %>
   </div>

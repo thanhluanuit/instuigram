@@ -1,3 +1,7 @@
+<div class="page-header">
+  <h1 class="page-title">Settings</h1>
+</div>
+
 <div class="user-edit-page" data-controller="tabs">
   <div class="user-edit-page__nav">
     <%= render "users/settings_nav", active: :profile,
@@ -5,85 +9,29 @@
   </div>
   <div class="user-edit-page__pane tab-content">
     <div class="tab-pane fade show active" data-tabs-target="pane" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-      <%= form_with model: current_user, local: true, html: {class: "form-horizontal form-edit-user"} do |f| %>
-        <div class="row mb-3">
-          <div class="col-sm-3 col-form-label">
-            <% if current_user.avatar.attached? %>
-              <%= image_tag current_user.avatar.variant(:thumb), class: 'avatar' %>
-            <%end %>
-          </div>
-          <div class="col-sm-9">
-            <p class="username"><%=current_user.username %></p>
-                      </div>
-        </div>
-        <div class="row mb-3">
-          <%= f.label :avatar, class: 'col-sm-3 col-form-label' %>
-          <div class="col-sm-9">
-            <%= f.file_field :avatar, class: 'form-control' %>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <%= f.label :name, class: 'col-sm-3 col-form-label' %>
-          <div class="col-sm-9">
-            <%= f.text_field :name, class: 'form-control' %>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <%= f.label :username, class: 'col-sm-3 col-form-label' %>
-          <div class="col-sm-9">
-            <%= f.text_field :username, class: 'form-control' %>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <%= f.label :website, class: 'col-sm-3 col-form-label' %>
-          <div class="col-sm-9">
-            <%= f.text_field :website, class: 'form-control' %>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <%= f.label :bio, class: 'col-sm-3 col-form-label' %>
-          <div class="col-sm-9">
-            <%= f.text_area :bio, class: 'form-control' %>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <%= f.label :email, class: 'col-sm-3 col-form-label' %>
-          <div class="col-sm-9">
-            <%= f.text_field :email, class: 'form-control' %>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <%= f.label :phone, class: 'col-sm-3 col-form-label' %>
-          <div class="col-sm-9">
-            <%= f.text_field :phone, class: 'form-control' %>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <%= f.label :gender, class: 'col-sm-3 col-form-label' %>
-          <div class="col-sm-9">
-            <%= f.text_field :gender, class: 'form-control' %>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-sm-3">
-          </div>
-          <div class="col-sm-9">
-            <%= f.submit "Save changes", class: 'btn-accent' %>
-          </div>
+      <%= form_with model: current_user, local: true, html: { class: "settings-form" } do |f| %>
+        <%= render "users/form_identity", user: current_user %>
+
+        <%= render "users/form_row", f: f, attribute: :avatar,
+                   control: f.file_field(:avatar, class: "field") %>
+        <% %i[name username website].each do |attribute| %>
+          <%= render "users/form_row", f: f, attribute: attribute %>
+        <% end %>
+        <%= render "users/form_row", f: f, attribute: :bio,
+                   control: f.text_area(:bio, class: "field", rows: 3) %>
+        <% %i[email phone gender].each do |attribute| %>
+          <%= render "users/form_row", f: f, attribute: attribute %>
+        <% end %>
+
+        <div class="settings-form__actions">
+          <%= f.submit "Save changes", class: "btn-accent" %>
         </div>
       <% end %>
     </div>
-    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-apps" role="tabpanel">
-      <p>Authorized Applications — coming soon.</p>
-    </div>
-    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-contact" role="tabpanel">
-      <p>Email and SMS — coming soon.</p>
-    </div>
-    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-contacts" role="tabpanel">
-      <p>Manage Contacts — coming soon.</p>
-    </div>
-    <div class="tab-pane fade" data-tabs-target="pane" id="v-pills-privacy" role="tabpanel">
-      <p>Privacy and Security — coming soon.</p>
-    </div>
+    <% UsersHelper::SETTINGS_PLACEHOLDER_TABS.each do |label, anchor| %>
+      <div class="tab-pane fade" data-tabs-target="pane" id="<%= anchor %>" role="tabpanel">
+        <p class="settings-form__placeholder"><%= label %> — coming soon.</p>
+      </div>
+    <% end %>
   </div>
 </div>

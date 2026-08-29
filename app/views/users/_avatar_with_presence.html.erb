@@ -1,4 +1,2 @@
-<% if user&.avatar&.attached? %>
-  <%= image_tag user.avatar.variant(:thumb), alt: "" %>
-<% end %>
+<%= render "users/avatar_image", user: user if user %>
 <span class="presence-dot <%= "is-online" if user&.online? %>" data-presence-user-id="<%= user&.id %>"></span>

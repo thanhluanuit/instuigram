@@ -1,0 +1,9 @@
+<div class="settings-form__row">
+  <%= f.label attribute, local_assigns[:label], class: "settings-form__label" %>
+  <div class="settings-form__control">
+    <%= local_assigns.fetch(:control) { f.text_field(attribute, class: "field") } %>
+    <% if local_assigns[:hint].present? %>
+      <p class="settings-form__hint"><%= hint %></p>
+    <% end %>
+  </div>
+</div>
