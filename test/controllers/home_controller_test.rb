@@ -75,11 +75,13 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "shows the signed-in user's own follow counts in the account card" do
+    Follows::Create.call(follower: users(:one), followed: users(:two))
     sign_in users(:one)
 
     get root_path
 
-    assert_select ".feed-account__meta", text: /0 following · 0 followers/
+    assert_select "##{dom_id(users(:one), :following_count)}", text: /1 following/
+    assert_select "##{dom_id(users(:one), :followers_count)}", text: /0 followers/
   end
 
   test "gives every feed comment field a unique id its label points at" do

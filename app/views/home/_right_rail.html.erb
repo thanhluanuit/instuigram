@@ -1,13 +1,15 @@
 <aside class="feed-aside">
+  <%= turbo_stream_from current_user, :follows %>
   <div class="feed-account">
     <div class="avatar">
       <%= render "users/avatar_image", user: current_user, size: 88 %>
     </div>
     <div class="feed-account__identity">
       <%= link_to current_user.username, user_path(current_user), class: "feed-account__name" %>
-      <span class="feed-account__meta">
-        <%= current_user.following_count %> following · <%= current_user.followers_count %> followers
-      </span>
+      <ul class="feed-account__meta">
+        <%= render "users/following_count", user: current_user %>
+        <%= render "users/followers_count", user: current_user %>
+      </ul>
     </div>
   </div>
 
