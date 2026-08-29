@@ -10,12 +10,7 @@ class HomeController < ApplicationController
                                   .where(followed_id: @posts.map(&:user_id))
                                   .pluck(:followed_id).to_set
     respond_to do |format|
-      format.html do
-        @suggestions = User.suggested_for(current_user)
-                           .includes(avatar_attachment: :blob)
-                           .limit(3)
-                           .load
-      end
+      format.html
       format.turbo_stream if params[:page].present?
     end
   end

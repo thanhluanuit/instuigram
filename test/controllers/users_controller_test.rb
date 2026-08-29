@@ -22,6 +22,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "nav.app-rail", false
   end
 
+  test "omits the aside for an anonymous visitor" do
+    get user_path(users(:one))
+
+    assert_select "aside.app-shell__aside", false
+  end
+
+  test "renders the aside on the settings page" do
+    sign_in users(:one)
+
+    get edit_user_path(users(:one))
+
+    assert_select "aside.app-shell__aside .aside-account__name", text: users(:one).username
+  end
+
   test "shows the bio when the profile has one" do
     users(:one).update!(bio: "Baking bread and chasing light.")
 

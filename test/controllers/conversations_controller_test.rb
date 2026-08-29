@@ -59,16 +59,24 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".conversation-row__avatar .avatar-monogram"
   end
 
+  test "renders the aside on the inbox" do
+    sign_in users(:one)
+
+    get conversations_path
+
+    assert_select "aside.app-shell__aside .aside-account__name", text: users(:one).username
+  end
+
   test "renders the inbox with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(12) { get conversations_path }
+    assert_queries_count(14) { get conversations_path }
   end
 
   test "renders a conversation with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(11) { get conversation_path(conversations(:one_and_two)) }
+    assert_queries_count(13) { get conversation_path(conversations(:one_and_two)) }
   end
 
   test "when unauthenticated, redirects the new message page to sign in" do

@@ -107,13 +107,19 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     get post_path(posts(:one))
 
-    assert_select ".follow-control", count: 0
+    assert_select ".post-detail .follow-control", count: 0
   end
 
   test "when unauthenticated, hides the follow button" do
     get post_path(posts(:one))
 
     assert_select ".follow-control", count: 0
+  end
+
+  test "omits the aside for an anonymous visitor" do
+    get post_path(posts(:one))
+
+    assert_select "aside.app-shell__aside", false
   end
 
   test "when signed in and not yet reacted, shows an outline heart Like icon" do

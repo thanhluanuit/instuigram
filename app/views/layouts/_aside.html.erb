@@ -1,0 +1,3 @@
+<%= content_for?(:aside) ? content_for(:aside) : render("layouts/aside_account") %>
+<%= render "layouts/aside_suggestions", suggestions: @aside_suggestions %>
+<%= render "layouts/aside_footer" %>

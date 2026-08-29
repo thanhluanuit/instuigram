@@ -12,6 +12,12 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_select ".page-title", false
   end
 
+  test "omits the aside for an anonymous visitor" do
+    get search_path(query: "sunset")
+
+    assert_select "aside.app-shell__aside", false
+  end
+
   test "echoes the query back as a chip in the result header" do
     get search_path(query: "sunset")
 
