@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class SettingsTest < ApplicationSystemTestCase
   setup do
-    Post.find_each { |post| attach_test_image(post.image) }
+    attach_images_to_all_posts!
     sign_in_as users(:one)
     visit edit_user_path(users(:one))
     wait_for_page_to_settle
