@@ -12,6 +12,7 @@
   }
 
   ul {
+    @extend %meta-mono;
     display: flex;
     flex-wrap: wrap;
     gap: $space-4;
@@ -22,5 +23,7 @@
 
   p {
     margin: 0;
+    color: $ink-meta;
+    font-family: $font-mono;
   }
 }

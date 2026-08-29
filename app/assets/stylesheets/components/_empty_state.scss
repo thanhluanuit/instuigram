@@ -6,9 +6,15 @@
   text-align: center;
 
   i {
-    display: block;
-    margin-bottom: $space-3;
-    font-size: $icon-xl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto $space-4;
+    border-radius: $radius-circle;
+    background-color: $canvas-sunk;
+    font-size: $icon-lg;
     color: $ink-faint;
   }
 
@@ -17,7 +23,6 @@
   }
 
   a {
-    color: $link;
-    font-weight: $weight-semibold;
+    @extend %link-accent;
   }
 }
