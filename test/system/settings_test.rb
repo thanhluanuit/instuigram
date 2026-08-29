@@ -14,6 +14,12 @@ class SettingsTest < ApplicationSystemTestCase
     assert_selector "#v-pills-privacy.active", text: "Privacy and Security"
   end
 
+  test "selecting a settings tab deselects the Edit Profile link" do
+    click_link "Manage Contacts"
+
+    assert_no_selector ".user-edit-page__nav .nav-link.active", text: "Edit Profile"
+  end
+
   test "selecting a settings tab hides the profile form" do
     click_link "Authorized Applications"
 
