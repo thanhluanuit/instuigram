@@ -1,21 +1,29 @@
 import { Controller } from "@hotwired/stimulus"
 
+const EMPTY_HINT = "Drag a photo here, or click to browse"
+
 // Post composer (app/views/home/_upload_form.html.erb): drives the drop zone
 // behind the visually hidden file input, previews the chosen photo, mirrors the
 // caption's #hashtags as chips, and keeps Share disabled until a photo is
 // attached — Post requires an image but not caption text (see Post#image_presence).
+// acceptValue/maxBytesValue mirror ImageValidator so a file the server would
+// reject never reaches it — a rejected create redirects and discards the caption.
 export default class extends Controller {
   static targets = ["fileInput", "filename", "submit", "caption", "counter", "tags", "preview", "dropzone"]
-  static values = { limit: Number }
+  static values = { limit: Number, accept: String, maxBytes: Number }
 
   connect() {
-    this.toggleSubmit()
+    this.syncFile()
     this.captionChanged()
   }
 
   updateFilename() {
+    this.syncFile()
+  }
+
+  syncFile() {
     const file = this.fileInputTarget.files[0]
-    this.filenameTarget.textContent = file ? file.name : "Drag a photo here, or click to browse"
+    this.filenameTarget.textContent = file ? file.name : EMPTY_HINT
     this.showPreview(file)
     this.toggleSubmit()
   }
@@ -25,7 +33,9 @@ export default class extends Controller {
     this.dropzoneTarget.classList.add("is-dragging")
   }
 
-  dragLeave() {
+  dragLeave(event) {
+    if (this.dropzoneTarget.contains(event.relatedTarget)) return
+
     this.dropzoneTarget.classList.remove("is-dragging")
   }
 
@@ -34,12 +44,29 @@ export default class extends Controller {
     this.dropzoneTarget.classList.remove("is-dragging")
 
     const file = event.dataTransfer.files[0]
-    if (!file || !file.type.startsWith("image/")) return
+    if (!this.acceptable(file)) return
 
     const transfer = new DataTransfer()
     transfer.items.add(file)
     this.fileInputTarget.files = transfer.files
-    this.updateFilename()
+    this.syncFile()
+  }
+
+  acceptable(file) {
+    if (!file) return false
+
+    if (!this.acceptValue.split(",").includes(file.type)) {
+      this.filenameTarget.textContent = `${file.name} is not a PNG, JPEG or WebP`
+      return false
+    }
+
+    if (file.size > this.maxBytesValue) {
+      const megabytes = Math.floor(this.maxBytesValue / 1048576)
+      this.filenameTarget.textContent = `${file.name} is larger than ${megabytes}MB`
+      return false
+    }
+
+    return true
   }
 
   captionChanged() {
@@ -56,8 +83,7 @@ export default class extends Controller {
       return
     }
 
-    const unique = [...new Set(tags.map((tag) => tag.toLowerCase()))]
-    unique.forEach((tag) => this.tagsTarget.append(this.buildTag(tag, "composer-tag")))
+    new Set(tags).forEach((tag) => this.tagsTarget.append(this.buildTag(tag, "composer-tag")))
   }
 
   buildTag(text, className) {
@@ -71,6 +97,7 @@ export default class extends Controller {
     if (this.previewUrl) URL.revokeObjectURL(this.previewUrl)
 
     if (!file) {
+      this.previewUrl = null
       this.previewTarget.hidden = true
       this.previewTarget.removeAttribute("src")
       return
@@ -83,6 +110,7 @@ export default class extends Controller {
 
   disconnect() {
     if (this.previewUrl) URL.revokeObjectURL(this.previewUrl)
+    this.previewUrl = null
   }
 
   toggleSubmit() {

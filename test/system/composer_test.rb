@@ -22,6 +22,14 @@ class ComposerTest < ApplicationSystemTestCase
     assert_selector ".composer-filename", text: "test_image.png"
   end
 
+  test "attaching a photo renders a preview rather than being blocked by the content security policy" do
+    attach_file "post_image", browser_readable_fixture_file("test_image.png"), make_visible: true
+
+    assert_selector ".composer-preview"
+    assert page.evaluate_script("(() => { const i = document.querySelector('.composer-preview'); return i.complete && i.naturalWidth > 0 })()"),
+           "the blob: preview did not load — check img_src in the content security policy"
+  end
+
   test "the caption's hashtags appear as chips as you type" do
     assert_selector ".composer-tag", text: "add #hashtags"
 
