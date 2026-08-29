@@ -4,8 +4,8 @@
 
   .form-upload {
     @extend %surface-card;
-    padding: $space-5 $space-6;
-    margin-bottom: $space-8;
+    padding: $space-4;
+    margin-bottom: $space-5;
 
     .composer {
       display: flex;
@@ -14,12 +14,7 @@
     }
 
     .composer-avatar {
-      @include avatar(48px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: $ink-muted;
-      font-size: $icon-md;
+      @include avatar(36px);
     }
 
     .composer-main {
@@ -27,11 +22,67 @@
       min-width: 0;
     }
 
+    .composer-form {
+      display: flex;
+      flex-direction: column;
+      gap: $space-3;
+    }
+
     .composer-input {
       @extend .field-plain;
-      padding-top: $space-3;
-      padding-bottom: $space-3;
-      font-size: $text-lg;
+      border-bottom: none;
+      padding: $space-1 0 0;
+      font-size: $text-md;
+      line-height: $leading-normal;
+      resize: none;
+    }
+
+    .composer-dropzone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 104px;
+      margin: 0;
+      padding: $space-3;
+      overflow: hidden;
+      border: 1px dashed $border-dashed;
+      border-radius: $radius-md;
+      background-color: $canvas-sunk;
+      cursor: pointer;
+
+      &:hover,
+      &.is-dragging {
+        border-color: $accent;
+        background-color: $accent-tint;
+      }
+    }
+
+    .composer-dropzone__hint {
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+      min-width: 0;
+      color: $ink-muted;
+      font-size: $text-sm;
+
+      i.fa {
+        font-size: $icon-md;
+      }
+    }
+
+    .composer-preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .composer-filename {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .composer-toolbar {
@@ -39,40 +90,43 @@
       align-items: center;
       justify-content: space-between;
       gap: $space-3;
-      padding-top: $space-3;
+    }
+
+    .composer-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $space-1;
+      min-width: 0;
+    }
+
+    .composer-tag {
+      padding: 5px 9px;
+      border: 1px solid transparent;
+      border-radius: $radius-pill;
+      background-color: $accent-tint;
+      color: $link;
+      font-family: $font-mono;
+      font-size: $text-xs;
+      white-space: nowrap;
+
+      &--hint {
+        border-color: $border-dashed;
+        background-color: transparent;
+        color: $ink-muted;
+      }
     }
 
     .composer-actions {
       display: flex;
       align-items: center;
-      min-width: 0;
+      gap: $space-3;
+      flex: none;
     }
 
-    .composer-icon-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      margin: 0;
-      flex-shrink: 0;
-      border-radius: $radius-circle;
-      color: $accent;
-      font-size: $icon-md;
-      cursor: pointer;
-
-      &:hover {
-        background-color: $accent-wash;
-      }
-    }
-
-    .composer-filename {
-      margin-left: $space-2;
-      overflow: hidden;
+    .composer-counter {
       color: $ink-muted;
-      font-size: $text-sm;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-family: $font-mono;
+      font-size: $text-xs;
     }
   }
 
