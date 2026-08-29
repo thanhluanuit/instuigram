@@ -72,6 +72,25 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "following from the feed returns to the feed" do
+    sign_in @user
+    get root_path
+
+    post user_follow_path(@other), headers: { "HTTP_REFERER" => root_url }
+
+    assert_redirected_to root_url
+  end
+
+  test "unfollowing from the feed returns to the feed" do
+    sign_in @user
+    get root_path
+    post user_follow_path(@other)
+
+    delete user_follow_path(@other), headers: { "HTTP_REFERER" => root_url }
+
+    assert_redirected_to root_url
+  end
+
   test "following yourself creates no follow and alerts" do
     sign_in @user
 
