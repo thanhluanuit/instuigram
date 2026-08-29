@@ -50,6 +50,15 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 0, conversations(:one_and_two).participant_for(users(:two)).reload.unread_count
   end
 
+  test "falls back to the monogram for a participant with no avatar" do
+    users(:two).avatar.purge
+    sign_in users(:one)
+
+    get conversations_path
+
+    assert_select ".conversation-row__avatar .avatar-monogram"
+  end
+
   test "renders the inbox with a bounded number of queries" do
     sign_in users(:one)
 
