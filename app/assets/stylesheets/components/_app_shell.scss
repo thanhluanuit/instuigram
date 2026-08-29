@@ -1,0 +1,96 @@
+.app-shell {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $rail-gap;
+  margin: $page-top auto;
+}
+
+.app-shell__main {
+  flex: 1;
+  min-width: 0;
+  max-width: $width-wide;
+}
+
+.app-rail {
+  display: none;
+  flex-direction: column;
+  gap: $space-1;
+  width: $width-rail;
+  flex: none;
+  position: sticky;
+  top: $space-8;
+}
+
+.app-rail__item {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: 11px 13px;
+  border-radius: $radius-md;
+  color: $ink-muted;
+  font-size: $text-md;
+
+  &:hover {
+    background-color: $surface-hover;
+    color: $ink-muted;
+    text-decoration: none;
+  }
+
+  &.is-active {
+    background-color: $accent-tint;
+    color: $link;
+    font-weight: $weight-semibold;
+
+    &:hover {
+      background-color: $accent-tint;
+      color: $link;
+    }
+  }
+
+  i.fa {
+    width: $icon-md;
+    font-size: $icon-md;
+    text-align: center;
+  }
+}
+
+.app-rail__item--inert:hover {
+  background-color: transparent;
+}
+
+.app-rail__avatar {
+  @include avatar(20px);
+}
+
+.app-rail__new {
+  display: block;
+  margin: $space-3 0 0;
+  padding: $space-3;
+  border-radius: $radius-md;
+  background-color: $accent;
+  color: $ink-inverse;
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: $accent-hover;
+    color: $ink-inverse;
+    text-decoration: none;
+  }
+}
+
+@media (min-width: $bp-shell) {
+  .app-rail {
+    display: flex;
+  }
+}
+
+@media (max-width: $bp-sm) {
+  .app-shell {
+    margin: $space-4 auto;
+  }
+}

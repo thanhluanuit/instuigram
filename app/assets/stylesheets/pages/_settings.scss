@@ -2,7 +2,7 @@
   @extend %surface-card;
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
-  margin: $page-top auto;
+  margin: 0 auto;
   overflow: hidden;
 }
 
@@ -57,7 +57,6 @@
 @media (max-width: $bp-md) {
   .user-edit-page {
     grid-template-columns: minmax(0, 1fr);
-    margin-top: $space-4;
   }
 
   .user-edit-page__nav {

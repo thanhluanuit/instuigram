@@ -9,7 +9,7 @@
 
 .conversations {
   max-width: $width-feed;
-  margin: $page-top auto;
+  margin: 0 auto;
 }
 
 .conversations__search {
@@ -81,7 +81,7 @@
   flex-direction: column;
   max-width: $width-feed;
   height: 70vh;
-  margin: $page-top auto;
+  margin: 0 auto;
   overflow: hidden;
 }
 

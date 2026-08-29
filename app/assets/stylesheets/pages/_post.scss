@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr);
   max-width: $width-wide;
-  margin: $page-top auto 0;
+  margin: 0 auto;
   overflow: hidden;
 
   &__media {
@@ -92,7 +92,6 @@
 @media (max-width: $bp-md) {
   .post-detail {
     grid-template-columns: minmax(0, 1fr);
-    margin-top: $space-4;
 
     &__panel {
       max-height: none;

@@ -53,13 +53,13 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "renders the inbox with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(11) { get conversations_path }
+    assert_queries_count(12) { get conversations_path }
   end
 
   test "renders a conversation with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(10) { get conversation_path(conversations(:one_and_two)) }
+    assert_queries_count(11) { get conversation_path(conversations(:one_and_two)) }
   end
 
   test "when unauthenticated, redirects the new message page to sign in" do

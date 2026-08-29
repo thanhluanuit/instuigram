@@ -54,10 +54,20 @@
 
     <!--Main content-->
     <main class="container main-content">
-      <% flash.each do |type, message| %>
-        <div class="alert alert-<%= type == "alert" ? "danger" : "success" %>"><%= message %></div>
-      <% end %>
-      <%= yield %>
+      <div class="app-shell">
+        <% if user_signed_in? %>
+          <%= render "layouts/rail" %>
+        <% end %>
+
+        <div class="app-shell__main">
+          <% flash.each do |type, message| %>
+            <div class="alert alert-<%= type == "alert" ? "danger" : "success" %>"><%= message %></div>
+          <% end %>
+          <%= yield %>
+        </div>
+
+        <%= yield :aside %>
+      </div>
     </main>
 
     <!--Footer-->

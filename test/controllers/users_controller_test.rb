@@ -7,6 +7,21 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "renders the navigation rail for a signed in visitor, with Profile marked current" do
+    sign_in users(:one)
+
+    get user_path(users(:one))
+
+    assert_select "nav.app-rail"
+    assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Profile/
+  end
+
+  test "omits the navigation rail for an anonymous visitor" do
+    get user_path(users(:one))
+
+    assert_select "nav.app-rail", false
+  end
+
   test "responds not found for a nonexistent user" do
     get user_path(id: -1)
 

@@ -1,0 +1,29 @@
+<nav class="app-rail" aria-label="Primary">
+  <%= link_to root_path, nav_rail_link_options(:home) do %>
+    <i class="fa fa-home"></i>
+    Home
+  <% end %>
+  <span class="app-rail__item app-rail__item--inert" aria-hidden="true">
+    <i class="fa fa-search"></i>
+    Explore
+  </span>
+  <%= link_to conversations_path, nav_rail_link_options(:messages) do %>
+    <i class="fa fa-paper-plane-o"></i>
+    Messages
+  <% end %>
+  <span class="app-rail__item app-rail__item--inert" aria-hidden="true">
+    <i class="fa fa-heart-o"></i>
+    Activity
+  </span>
+  <span class="app-rail__item app-rail__item--inert" aria-hidden="true">
+    <i class="fa fa-bookmark-o"></i>
+    Saved
+  </span>
+  <%= link_to user_path(current_user), nav_rail_link_options(:profile) do %>
+    <span class="app-rail__avatar avatar">
+      <%= render "users/avatar_image", user: current_user %>
+    </span>
+    Profile
+  <% end %>
+  <%= link_to "New post", root_path(anchor: "post_description"), class: "app-rail__new" %>
+</nav>
