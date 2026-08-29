@@ -11,6 +11,10 @@
   &::placeholder {
     color: $ink-muted;
   }
+
+  &:focus-visible {
+    box-shadow: none;
+  }
 }
 
 .field {

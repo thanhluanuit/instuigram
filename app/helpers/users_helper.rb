@@ -2,7 +2,6 @@
 
 module UsersHelper
   PROFILE_PLACEHOLDER_TABS = {
-    "IGTV" => "tv",
     "Saved" => "bookmark",
     "Tagged" => "tag"
   }.freeze
