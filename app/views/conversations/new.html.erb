@@ -13,7 +13,7 @@
       <% @users.each do |user| %>
         <div class="conversation-row">
           <%= link_to user_path(user), class: "conversation-row__avatar" do %>
-            <%= render "users/avatar_with_presence", user: user, size: 56 %>
+            <%= render "users/avatar_with_presence", user: user %>
           <% end %>
 
           <div class="conversation-row__body">

@@ -17,7 +17,7 @@
   </span>
   <%= link_to user_path(current_user), class: "feed-rail__item" do %>
     <span class="feed-rail__avatar avatar">
-      <%= render "users/avatar_image", user: current_user, size: 40 %>
+      <%= render "users/avatar_image", user: current_user %>
     </span>
     Profile
   <% end %>

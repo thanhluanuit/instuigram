@@ -1,6 +1,6 @@
 <div class="composer">
   <div class="composer-avatar">
-    <%= render "users/avatar_image", user: current_user, size: 96 %>
+    <%= render "users/avatar_image", user: current_user %>
   </div>
   <div class="composer-main" data-controller="composer"
        data-composer-limit-value="<%= Post::DESCRIPTION_LIMIT %>"

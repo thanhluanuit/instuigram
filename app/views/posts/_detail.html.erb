@@ -1,10 +1,10 @@
 <div class="post-detail">
   <div class="post-detail__media">
-    <%= image_tag post.image.variant(resize_to_limit: [ 1200, 1200 ]), class: 'post-detail__image', alt: "" %>
+    <%= image_tag post.image.variant(:detail), class: 'post-detail__image', alt: "" %>
   </div>
   <div class="post-detail__panel">
     <div class="user">
-      <%= render partial: "posts/user_header", locals: { user: post.user, avatar_size: 88, following: current_user&.following?(post.user) } %>
+      <%= render partial: "posts/user_header", locals: { user: post.user, following: current_user&.following?(post.user) } %>
     </div>
     <div class="description">
       <%= render partial: "posts/description", locals: { post: post } %>

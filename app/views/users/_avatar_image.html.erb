@@ -1,5 +1,5 @@
 <% if user.avatar.attached? %>
-  <%= image_tag user.avatar.variant(resize_to_fill: [ size, size ]), alt: user.username %>
+  <%= image_tag user.avatar.variant(:thumb), alt: user.username %>
 <% else %>
   <span class="avatar-monogram"><%= user_monogram(user) %></span>
 <% end %>

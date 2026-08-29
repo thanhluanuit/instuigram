@@ -1,6 +1,6 @@
 <div class="avatar">
   <%= link_to user_path(user) do %>
-    <%= render "users/avatar_image", user: user, size: avatar_size %>
+    <%= render "users/avatar_image", user: user %>
   <% end %>
 </div>
 <%= link_to user.username, user_path(user), class: 'username' %>
