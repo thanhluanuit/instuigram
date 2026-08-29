@@ -21,4 +21,22 @@ class ComposerTest < ApplicationSystemTestCase
 
     assert_selector ".composer-filename", text: "test_image.png"
   end
+
+  test "the caption's hashtags appear as chips as you type" do
+    assert_selector ".composer-tag", text: "add #hashtags"
+
+    fill_in "post_description", with: "sunset over #hanoi #travel"
+
+    assert_selector ".composer-tag", text: "#hanoi"
+    assert_selector ".composer-tag", text: "#travel"
+    assert_no_selector ".composer-tag", text: "add #hashtags"
+  end
+
+  test "the character counter tracks the caption length" do
+    assert_selector ".composer-counter", text: "0 / 2200"
+
+    fill_in "post_description", with: "hello"
+
+    assert_selector ".composer-counter", text: "5 / 2200"
+  end
 end

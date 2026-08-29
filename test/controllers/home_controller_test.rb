@@ -57,6 +57,31 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_queries_count(13) { get root_path }
   end
 
+  test "suggests users the signed-in user does not already follow" do
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select ".feed-suggestion__name", text: users(:two).username
+  end
+
+  test "leaves an already-followed user out of the suggestions" do
+    users(:one).following << users(:two)
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select ".feed-suggestion__name", text: users(:two).username, count: 0
+  end
+
+  test "shows the signed-in user's own follow counts in the account card" do
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select ".feed-account__meta", text: /0 following · 0 followers/
+  end
+
   test "shows the newest post first" do
     sign_in users(:one)
     newest = create_post!(users(:one), description: "the newest post")
