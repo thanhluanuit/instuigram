@@ -1,8 +1,8 @@
 <section class="post">
+  <div class="user">
+    <%= render partial: "posts/user_header", locals: { user: post.user, avatar_size: 72, following: following } %>
+  </div>
   <% cache post do %>
-    <div class="user">
-      <%= render partial: "posts/user_header", locals: { user: post.user, avatar_size: 72 } %>
-    </div>
     <%= link_to post_path(post), class: 'main-image-link' do %>
       <%= image_tag post.image.variant(resize_to_limit: [ 600, 600 ]), class: 'main-image' %>
     <% end %>
