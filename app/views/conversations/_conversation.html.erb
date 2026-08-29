@@ -3,7 +3,7 @@
 <% last = conversation.last_message %>
 <%= link_to conversation_path(conversation), id: dom_id(conversation), class: "conversation-row" do %>
   <div class="conversation-row__avatar">
-    <%= render "users/avatar_with_presence", user: other, size: 56 %>
+    <%= render "users/avatar_with_presence", user: other %>
   </div>
 
   <div class="conversation-row__body">

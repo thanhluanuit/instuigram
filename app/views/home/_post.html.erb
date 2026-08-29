@@ -1,6 +1,6 @@
 <section class="post">
   <div class="user">
-    <%= render partial: "posts/user_header", locals: { user: post.user, avatar_size: 72, following: following } %>
+    <%= render partial: "posts/user_header", locals: { user: post.user, following: following } %>
     <span class="post-overflow" aria-hidden="true"><i class="fa fa-ellipsis-h"></i></span>
   </div>
   <% cache post do %>
@@ -22,7 +22,7 @@
     <%= link_to "View all comments", post_path(post), class: "post-comments-link", data: { turbo_frame: "post_modal" } %>
     <div class="post-comment">
       <div class="avatar">
-        <%= render "users/avatar_image", user: current_user, size: 52 %>
+        <%= render "users/avatar_image", user: current_user %>
       </div>
       <%= render partial: "comments/form", locals: { post: post, form_id_prefix: :feed_comment_form, comment: Comment.new } %>
     </div>

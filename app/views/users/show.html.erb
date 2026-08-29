@@ -4,7 +4,7 @@
   <div class="profile-header">
     <div class="profile-header__avatar">
       <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar.variant(resize_to_fill: [ 280, 280 ]), alt: "" %>
+        <%= image_tag @user.avatar.variant(:large), alt: "" %>
       <% end %>
     </div>
 

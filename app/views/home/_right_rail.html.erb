@@ -2,7 +2,7 @@
   <%= turbo_stream_from current_user, :follows %>
   <div class="feed-account">
     <div class="avatar">
-      <%= render "users/avatar_image", user: current_user, size: 88 %>
+      <%= render "users/avatar_image", user: current_user %>
     </div>
     <div class="feed-account__identity">
       <%= link_to current_user.username, user_path(current_user), class: "feed-account__name" %>
@@ -20,7 +20,7 @@
         <div class="feed-suggestion">
           <div class="avatar">
             <%= link_to user_path(user) do %>
-              <%= render "users/avatar_image", user: user, size: 72 %>
+              <%= render "users/avatar_image", user: user %>
             <% end %>
           </div>
           <div class="feed-suggestion__identity">

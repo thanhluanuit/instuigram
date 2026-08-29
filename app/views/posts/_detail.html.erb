@@ -4,7 +4,7 @@
   </div>
   <div class="post-detail__panel">
     <div class="user">
-      <%= render partial: "posts/user_header", locals: { user: post.user, avatar_size: 88, following: current_user&.following?(post.user) } %>
+      <%= render partial: "posts/user_header", locals: { user: post.user, following: current_user&.following?(post.user) } %>
     </div>
     <div class="description">
       <%= render partial: "posts/description", locals: { post: post } %>
