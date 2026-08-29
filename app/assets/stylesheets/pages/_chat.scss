@@ -34,6 +34,7 @@
 .conversation-row__avatar {
   position: relative;
   @include avatar(56px);
+  background-color: $accent-tint;
 }
 
 .conversation-row__body {
@@ -59,6 +60,7 @@
 
 .conversation-row__sender {
   color: $ink;
+  font-weight: $weight-semibold;
 }
 
 .conversation-row__unread {
@@ -93,6 +95,8 @@
 .chat__avatar {
   position: relative;
   @include avatar(40px);
+  @include avatar-ring;
+  margin: 2px;
 }
 
 .chat__identity {
@@ -108,8 +112,7 @@
 }
 
 .chat__presence {
-  color: $ink-muted;
-  font-size: $text-xs;
+  @extend %meta-mono;
 }
 
 .chat__messages {
@@ -128,13 +131,14 @@
   max-width: 70%;
   padding: $space-2 $space-3;
   border-radius: $radius-lg;
-  background-color: $border-subtle;
+  background-color: $canvas-sunk;
+  border: 1px solid $border-subtle;
 }
 
 .chat-message__author {
+  @extend %meta-mono;
   display: block;
-  color: $ink-muted;
-  font-size: $text-xs;
+  letter-spacing: .08em;
 }
 
 .chat-message__body {
@@ -145,9 +149,10 @@
 }
 
 .chat-message__time {
+  @extend %meta-mono;
   display: block;
-  color: $ink-muted;
-  font-size: $text-xs;
+  font-size: 10.5px;
+  letter-spacing: .08em;
 }
 
 .chat-message--mine {
@@ -155,6 +160,7 @@
 
   .chat-message__bubble {
     background-color: $accent;
+    border-color: $accent;
   }
 
   .chat-message__author,
