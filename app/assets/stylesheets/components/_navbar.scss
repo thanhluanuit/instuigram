@@ -63,6 +63,17 @@
   }
 }
 
+@media (min-width: $bp-shell) {
+  .navbar > .container {
+    gap: $rail-gap;
+  }
+
+  .navbar-brand {
+    width: $width-rail;
+    flex: none;
+  }
+}
+
 @media (max-width: $bp-sm) {
   .navbar > .container {
     flex-wrap: wrap;
