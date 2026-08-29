@@ -13,18 +13,19 @@
   .nav-link {
     padding: $space-3 $space-6;
     border-radius: 0;
-    color: $ink;
+    color: $ink-muted;
     font-size: $text-base;
 
     &:hover {
       background-color: $surface-hover;
+      color: $ink-muted;
       cursor: pointer;
     }
 
     &.active {
-      border-left: 2px solid $ink;
-      background-color: $surface;
-      color: $ink;
+      border-left: 2px solid $accent;
+      background-color: $accent-tint;
+      color: $link;
       font-weight: $weight-semibold;
     }
   }
@@ -35,23 +36,63 @@
   padding: $space-8;
 }
 
-.form-edit-user {
-  max-width: 480px;
+.settings-form {
+  max-width: 520px;
+}
 
-  .col-form-label {
-    font-weight: $weight-semibold;
-    text-align: right;
-  }
+.settings-form__identity {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding-bottom: $space-5;
+  margin-bottom: $space-5;
+  border-bottom: 1px solid $border-subtle;
 
   .avatar {
-    @include avatar(38px);
+    @include avatar(56px);
+    @include avatar-ring;
+    margin: 2px;
   }
+}
 
-  .username {
-    margin-bottom: 0;
-    font-size: $text-lg;
-    line-height: $leading-tight;
-  }
+.settings-form__username {
+  margin: 0;
+  font-family: $font-display;
+  font-size: $text-lg;
+  font-weight: $weight-normal;
+  line-height: $leading-tight;
+}
+
+.settings-form__row {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  align-items: start;
+  gap: $space-4;
+  margin-bottom: $space-4;
+}
+
+.settings-form__label {
+  padding-top: $space-2;
+  font-weight: $weight-semibold;
+  text-align: right;
+}
+
+.settings-form__control {
+  min-width: 0;
+}
+
+.settings-form__hint {
+  @extend %meta-mono;
+  margin: $space-2 0 0;
+}
+
+.settings-form__actions {
+  padding-left: 140px + $space-4;
+}
+
+.settings-form__placeholder {
+  margin: 0;
+  color: $ink-muted;
 }
 
 @media (max-width: $bp-md) {
@@ -80,7 +121,17 @@
     padding: $space-5;
   }
 
-  .form-edit-user .col-form-label {
+  .settings-form__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-2;
+  }
+
+  .settings-form__label {
+    padding-top: 0;
     text-align: left;
+  }
+
+  .settings-form__actions {
+    padding-left: 0;
   }
 }

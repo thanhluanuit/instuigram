@@ -1,0 +1,9 @@
+<div class="settings-form__row">
+  <%= label %>
+  <div class="settings-form__control">
+    <%= control %>
+    <% if local_assigns[:hint].present? %>
+      <p class="settings-form__hint"><%= hint %></p>
+    <% end %>
+  </div>
+</div>
