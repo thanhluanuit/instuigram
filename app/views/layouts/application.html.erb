@@ -12,6 +12,7 @@
   <body>
     <% if user_signed_in? %>
       <div id="realtime" data-turbo-permanent data-controller="inbox presence"></div>
+      <%= turbo_stream_from current_user, :follow_state %>
     <% end %>
 
     <!--Navigation Bar-->

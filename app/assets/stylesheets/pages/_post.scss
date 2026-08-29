@@ -38,6 +38,10 @@
     border-bottom: 1px solid $border-subtle;
   }
 
+  .follow-control {
+    margin-left: auto;
+  }
+
   .avatar {
     @include avatar(44px);
   }

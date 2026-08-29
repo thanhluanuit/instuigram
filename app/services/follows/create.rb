@@ -8,7 +8,7 @@ class Follows::Create < BaseService
 
   def call
     follow = find_follow || create_follow
-    broadcast_counts if follow&.previously_new_record?
+    broadcast_changes if follow&.previously_new_record?
     follow
   end
 
@@ -26,7 +26,8 @@ class Follows::Create < BaseService
     find_follow
   end
 
-  def broadcast_counts
+  def broadcast_changes
     Follows::BroadcastCounts.call(follower: follower, followed: followed)
+    Follows::BroadcastButton.call(follower: follower, followed: followed, following: true)
   end
 end

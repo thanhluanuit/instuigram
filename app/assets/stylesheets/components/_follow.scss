@@ -1,0 +1,20 @@
+.follow-control {
+  display: inline-flex;
+}
+
+.follow-control__button {
+  padding: $space-2 $space-4;
+  border: none;
+  border-radius: $radius-md;
+  background-color: $border-subtle;
+  color: $ink;
+  font-size: $text-base;
+  font-weight: $weight-semibold;
+  line-height: $leading-tight;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: $border;
+  }
+}

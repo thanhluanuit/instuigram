@@ -12,7 +12,7 @@
   cursor: pointer;
 }
 
-.btn-accent {
+%btn-accent {
   @extend %btn-base;
   background-color: $accent;
   color: $ink-inverse;
@@ -30,7 +30,7 @@
   }
 }
 
-.btn-outline {
+%btn-outline {
   @extend %btn-base;
   border-color: $border;
   background-color: transparent;
@@ -42,6 +42,14 @@
     color: $ink;
     text-decoration: none;
   }
+}
+
+.btn-accent {
+  @extend %btn-accent;
+}
+
+.btn-outline {
+  @extend %btn-outline;
 }
 
 .btn-block {

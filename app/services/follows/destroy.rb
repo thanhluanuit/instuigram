@@ -10,7 +10,7 @@ class Follows::Destroy < BaseService
     follow = Follow.find_by(follower: follower, followed: followed)
     return unless follow&.destroy
 
-    broadcast_counts
+    broadcast_changes
     follow
   end
 
@@ -18,7 +18,8 @@ class Follows::Destroy < BaseService
 
   attr_reader :follower, :followed
 
-  def broadcast_counts
+  def broadcast_changes
     Follows::BroadcastCounts.call(follower: follower, followed: followed)
+    Follows::BroadcastButton.call(follower: follower, followed: followed, following: false)
   end
 end

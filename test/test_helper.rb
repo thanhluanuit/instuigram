@@ -52,6 +52,12 @@ module PostTestHelper
   end
 end
 
+module TurboStreamTestHelper
+  def follow_state_stream(user)
+    Turbo::StreamsChannel.send(:stream_name_from, [ user, :follow_state ])
+  end
+end
+
 class ActiveSupport::TestCase
   parallelize(workers: :number_of_processors)
   parallelize_setup do |worker|
@@ -61,6 +67,7 @@ class ActiveSupport::TestCase
   fixtures :all
   include ActiveStorageTestHelper
   include PostTestHelper
+  include TurboStreamTestHelper
   include ActionCable::TestHelper
   include ActiveJob::TestHelper
   include ActionMailer::TestHelper

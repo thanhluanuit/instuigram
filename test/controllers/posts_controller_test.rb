@@ -94,6 +94,28 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.delete-icon", count: 0
   end
 
+  test "when signed in as a different user, shows a follow button in the post header" do
+    sign_in users(:two)
+
+    get post_path(posts(:one))
+
+    assert_select ".post-detail .user form[data-follow-user-id=?] button", users(:one).id.to_s, text: "Follow"
+  end
+
+  test "when signed in as the post's owner, hides the follow button" do
+    sign_in users(:one)
+
+    get post_path(posts(:one))
+
+    assert_select ".follow-control", count: 0
+  end
+
+  test "when unauthenticated, hides the follow button" do
+    get post_path(posts(:one))
+
+    assert_select ".follow-control", count: 0
+  end
+
   test "when signed in and not yet reacted, shows an outline heart Like icon" do
     sign_in users(:one)
 

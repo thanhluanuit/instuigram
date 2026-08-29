@@ -26,7 +26,7 @@ class FollowsController < ApplicationController
   def render_follow_state
     respond_to do |format|
       format.turbo_stream { render :create }
-      format.html { redirect_to user_path(@user) }
+      format.html { redirect_back fallback_location: user_path(@user) }
     end
   end
 end
