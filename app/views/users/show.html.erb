@@ -1,3 +1,5 @@
+<%= turbo_stream_from @user, :follows %>
+
 <div class="user-profile">
   <div class="profile-header">
     <div class="profile-header__avatar">
@@ -12,14 +14,15 @@
         <% if @user == current_user %>
           <%= link_to "Edit profile", edit_user_path(@user), class: "btn-outline" %>
         <% elsif user_signed_in? %>
+          <%= render "users/follow_button", user: @user, following: current_user.following?(@user) %>
           <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "btn-outline" %>
         <% end %>
       </div>
 
       <ul class="profile-header__stats">
         <li><span><%= @posts.total_count %></span> posts</li>
-        <li><span>195</span> followers</li>
-        <li><span>345</span> following</li>
+        <%= render "users/followers_count", user: @user %>
+        <%= render "users/following_count", user: @user %>
       </ul>
 
       <p class="profile-header__name"><%= @user.name %></p>

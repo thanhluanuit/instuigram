@@ -5,7 +5,8 @@ class EventLog < ApplicationRecord
     profile_updated: "profile_updated",
     comment_created: "comment_created",
     reaction_created: "reaction_created",
-    message_sent: "message_sent"
+    message_sent: "message_sent",
+    follow_created: "follow_created"
   }.freeze
 
   belongs_to :user
