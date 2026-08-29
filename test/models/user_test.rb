@@ -177,10 +177,12 @@ class UserTest < ActiveSupport::TestCase
     assert_includes User.suggested_for(users(:one)), users(:admin)
   end
 
-  test "suggested_for excludes users without a username" do
+  test "suggested_for excludes users whose username is nil or blank" do
     nameless = User.create!(email: "nameless@instuigram.com", password: "password123", username: nil)
+    blank    = User.create!(email: "blank@instuigram.com", password: "password123", username: "")
 
     assert_not_includes User.suggested_for(users(:one)), nameless
+    assert_not_includes User.suggested_for(users(:one)), blank
   end
 
   test "suggested_for orders the most followed users first" do

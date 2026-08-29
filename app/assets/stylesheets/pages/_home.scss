@@ -386,6 +386,7 @@
 }
 
 .feed-rail__new {
+  display: block;
   margin: $space-3 0 0;
   padding: $space-3;
   border-radius: $radius-md;
@@ -396,8 +397,11 @@
   text-align: center;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: $accent-hover;
+    color: $ink-inverse;
+    text-decoration: none;
   }
 }
 
