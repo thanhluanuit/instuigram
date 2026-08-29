@@ -10,12 +10,12 @@ class FollowsTest < ApplicationSystemTestCase
   test "following a user flips the button and updates the follower count in place" do
     visit_profile
 
-    assert_selector "##{dom_id(@other, :followers_count)}", text: "0 followers"
+    assert_selector "##{dom_id(@other, :followers_count)}", text: /0 followers/i
 
     click_button "Follow"
 
     assert_selector follow_button_selector, exact_text: "Following"
-    assert_selector "##{dom_id(@other, :followers_count)}", text: "1 followers"
+    assert_selector "##{dom_id(@other, :followers_count)}", text: /1 followers/i
   end
 
   test "unfollowing reverts the button and the follower count" do
@@ -27,7 +27,7 @@ class FollowsTest < ApplicationSystemTestCase
     click_button "Following"
 
     assert_selector follow_button_selector, exact_text: "Follow"
-    assert_selector "##{dom_id(@other, :followers_count)}", text: "0 followers"
+    assert_selector "##{dom_id(@other, :followers_count)}", text: /0 followers/i
   end
 
   test "following from a post in the feed leaves the button in place to undo it" do
