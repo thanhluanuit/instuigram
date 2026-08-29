@@ -3,10 +3,11 @@
 }
 
 .follow-control__button {
-  padding: 0;
+  padding: $space-2 $space-4;
   border: none;
-  background: none;
-  color: $accent;
+  border-radius: $radius-md;
+  background-color: $border-subtle;
+  color: $ink;
   font-size: $text-base;
   font-weight: $weight-semibold;
   line-height: $leading-tight;
@@ -14,15 +15,6 @@
 
   &:hover,
   &:focus {
-    color: $accent-hover;
-  }
-
-  &.is-following {
-    color: $ink-muted;
-
-    &:hover,
-    &:focus {
-      color: $ink;
-    }
+    background-color: $border;
   }
 }
