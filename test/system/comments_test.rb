@@ -17,7 +17,7 @@ class CommentsTest < ApplicationSystemTestCase
       assert_selector ".comment", text: "Great shot"
     end
 
-    assert_selector "##{dom_id(posts(:two), :comments_count)}", text: "2 comments"
+    assert_selector "##{dom_id(posts(:two), :comments_count)}", text: "2 comments", visible: :all
     assert_current_path root_path
   end
 
@@ -27,7 +27,7 @@ class CommentsTest < ApplicationSystemTestCase
     accept_confirm { find(".post-modal .delete-comment-icon").click }
 
     assert_selector ".post-modal .no-comments"
-    assert_selector "##{dom_id(posts(:two), :comments_count)}", text: "0 comments"
+    assert_selector "##{dom_id(posts(:two), :comments_count)}", text: "0 comments", visible: :all
   end
 
   private
