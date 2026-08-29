@@ -20,8 +20,10 @@
     letter-spacing: .01em;
     color: $ink;
 
-    .fa-circle {
-      color: $brand;
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      display: block;
     }
   }
 }
