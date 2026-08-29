@@ -1,9 +1,13 @@
 module Api::JwtAuthenticatable
   extend ActiveSupport::Concern
 
-  def self.secret_key
-    Rails.application.credentials.jwt_secret_key ||
-      Rails.application.key_generator.generate_key("Api::JwtAuthenticatable access token", 32)
+  MissingSecretKey = Class.new(StandardError)
+
+  def self.secret_key(credential = Rails.application.credentials.jwt_secret_key, env: Rails.env)
+    return credential if credential.present?
+    raise MissingSecretKey, "credentials.jwt_secret_key is required in #{env}" unless env.local?
+
+    Rails.application.key_generator.generate_key("Api::JwtAuthenticatable access token", 32)
   end
 
   included do
