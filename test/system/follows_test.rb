@@ -12,21 +12,21 @@ class FollowsTest < ApplicationSystemTestCase
 
     assert_selector "##{dom_id(@other, :followers_count)}", text: /0 followers/i
 
-    click_button "Follow"
+    find(profile_follow_button_selector).click
 
-    assert_selector follow_button_selector, exact_text: "Following"
+    assert_selector profile_follow_button_selector, exact_text: "Following"
     assert_selector "##{dom_id(@other, :followers_count)}", text: /1 followers/i
   end
 
   test "unfollowing reverts the button and the follower count" do
     visit_profile
 
-    click_button "Follow"
-    assert_selector follow_button_selector, exact_text: "Following"
+    find(profile_follow_button_selector).click
+    assert_selector profile_follow_button_selector, exact_text: "Following"
 
-    click_button "Following"
+    find(profile_follow_button_selector).click
 
-    assert_selector follow_button_selector, exact_text: "Follow"
+    assert_selector profile_follow_button_selector, exact_text: "Follow"
     assert_selector "##{dom_id(@other, :followers_count)}", text: /0 followers/i
   end
 
@@ -63,13 +63,13 @@ class FollowsTest < ApplicationSystemTestCase
     using_session :second_tab do
       sign_in_as users(:one)
       visit_profile
-      assert_selector follow_button_selector, exact_text: "Follow"
+      assert_selector profile_follow_button_selector, exact_text: "Follow"
     end
 
     find("section.post #{follow_button_selector}").click
 
     using_session :second_tab do
-      assert_selector follow_button_selector, exact_text: "Following"
+      assert_selector profile_follow_button_selector, exact_text: "Following"
     end
   end
 
@@ -82,5 +82,9 @@ class FollowsTest < ApplicationSystemTestCase
 
   def follow_button_selector
     "[data-follow-user-id='#{@other.id}'] button"
+  end
+
+  def profile_follow_button_selector
+    ".profile-header #{follow_button_selector}"
   end
 end
