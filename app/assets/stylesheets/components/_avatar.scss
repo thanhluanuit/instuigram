@@ -1,0 +1,14 @@
+@mixin avatar($size) {
+  width: $size;
+  height: $size;
+  flex-shrink: 0;
+  border-radius: $radius-circle;
+  background-color: $border-subtle;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: $radius-circle;
+    object-fit: cover;
+  }
+}

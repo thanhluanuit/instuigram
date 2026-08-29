@@ -1,0 +1,60 @@
+.navbar {
+  border-bottom: 1px solid $border;
+  background-color: $surface;
+
+  > .container {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+  }
+
+  .navbar-brand {
+    font-size: $text-lg;
+    font-weight: $weight-semibold;
+    color: $ink;
+  }
+}
+
+.navbar-search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+
+  .field-pill {
+    max-width: 260px;
+    font-size: $text-sm;
+  }
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+
+  a {
+    display: flex;
+    align-items: center;
+    color: $ink;
+  }
+
+  i.fa {
+    font-size: $icon-md;
+  }
+}
+
+@media (max-width: $bp-sm) {
+  .navbar > .container {
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+
+  .navbar-search {
+    order: 3;
+    flex: 1 0 100%;
+    padding-bottom: $space-2;
+
+    .field-pill {
+      max-width: none;
+    }
+  }
+}

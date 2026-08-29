@@ -1,0 +1,23 @@
+.empty-state {
+  padding: $space-10 $space-5;
+  color: $ink-muted;
+  font-size: $text-base;
+  line-height: $leading-normal;
+  text-align: center;
+
+  i {
+    display: block;
+    margin-bottom: $space-3;
+    font-size: $icon-xl;
+    color: $ink-faint;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: $link;
+    font-weight: $weight-semibold;
+  }
+}

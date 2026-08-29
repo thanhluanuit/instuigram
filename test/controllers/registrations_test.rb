@@ -25,7 +25,7 @@ class RegistrationsTest < ActionDispatch::IntegrationTest
   test "the sign up page renders outside the application navbar" do
     get new_user_registration_path
 
-    assert_select "nav.navbar-light", false
+    assert_select "nav.navbar", false
   end
 
   test "the change password page renders the password fields" do
@@ -51,7 +51,7 @@ class RegistrationsTest < ActionDispatch::IntegrationTest
 
     get edit_user_registration_path
 
-    assert_select "nav.navbar-light"
+    assert_select "nav.navbar"
   end
 
   test "a wrong current password leaves the password unchanged" do

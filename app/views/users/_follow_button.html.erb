@@ -1,0 +1,9 @@
+<% if following %>
+  <%= button_to "Following", user_follow_path(user), method: :delete,
+                form: { id: dom_id(user, :follow) },
+                class: "btn-outline", "aria-label": "Unfollow #{user.username}" %>
+<% else %>
+  <%= button_to "Follow", user_follow_path(user),
+                form: { id: dom_id(user, :follow) },
+                class: "btn-accent", "aria-label": "Follow #{user.username}" %>
+<% end %>

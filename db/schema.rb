@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_28_041500) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_140100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -96,6 +96,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_041500) do
     t.index ["user_id"], name: "index_event_logs_on_user_id"
   end
 
+  create_table "follows", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "followed_id", null: false
+    t.bigint "follower_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followed_id"], name: "index_follows_on_followed_id"
+    t.index ["follower_id", "followed_id"], name: "index_follows_on_follower_id_and_followed_id", unique: true
+    t.check_constraint "follower_id <> followed_id", name: "follows_no_self_follow"
+  end
+
   create_table "hash_tags", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.string "name", null: false
@@ -129,6 +139,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_041500) do
     t.integer "reactions_count", default: 0, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "user_id", null: false
+    t.index ["created_at"], name: "index_posts_on_created_at", order: :desc
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -154,6 +165,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_041500) do
     t.inet "current_sign_in_ip"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.integer "followers_count", default: 0, null: false
+    t.integer "following_count", default: 0, null: false
     t.string "gender"
     t.datetime "last_seen_at"
     t.datetime "last_sign_in_at", precision: nil
@@ -182,6 +195,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_041500) do
   add_foreign_key "conversation_participants", "users"
   add_foreign_key "conversations", "messages", column: "last_message_id", on_delete: :nullify
   add_foreign_key "event_logs", "users"
+  add_foreign_key "follows", "users", column: "followed_id"
+  add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
   add_foreign_key "post_hash_tags", "hash_tags"

@@ -1,8 +1,9 @@
 require "test_helper"
 
 class EventLogTest < ActiveSupport::TestCase
-  test "supports the six tracked event types" do
-    assert_equal %w[post_created post_destroyed profile_updated comment_created reaction_created message_sent],
+  test "supports the seven tracked event types" do
+    assert_equal %w[post_created post_destroyed profile_updated comment_created reaction_created message_sent
+                    follow_created],
                  EventLog::EVENT_TYPES.values
   end
 

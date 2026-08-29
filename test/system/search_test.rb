@@ -9,7 +9,7 @@ class SearchTest < ApplicationSystemTestCase
     fill_in "query", with: "#sunset"
     find_field("query").send_keys(:enter)
 
-    assert_selector "h1", text: "Top Posts"
-    assert_selector ".user-images .wrapper", count: 1
+    assert_selector "h1", text: "Top posts"
+    assert_selector ".thumbnail-grid .wrapper", count: 1
   end
 end

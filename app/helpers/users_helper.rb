@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module UsersHelper
+  PROFILE_PLACEHOLDER_TABS = {
+    "IGTV" => "tv",
+    "Saved" => "bookmark",
+    "Tagged" => "tag"
+  }.freeze
+
   SETTINGS_PLACEHOLDER_TABS = {
     "Authorized Applications" => "v-pills-apps",
     "Email and SMS" => "v-pills-contact",

@@ -26,7 +26,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     get user_path(users(:one))
 
-    assert_select ".user-images .wrapper", 10
+    assert_select ".thumbnail-grid .wrapper", 10
     assert_select ".pagination"
   end
 
@@ -35,7 +35,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     get user_path(users(:one))
 
-    assert_select "a.edit-profile"
+    assert_select "a.btn-outline[href=?]", edit_user_path(users(:one))
   end
 
   test "when signed in as a different user, hides the Edit Profile link" do
@@ -43,7 +43,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     get user_path(users(:one))
 
-    assert_select "a.edit-profile", count: 0
+    assert_select "a.btn-outline[href=?]", edit_user_path(users(:one)), count: 0
   end
 
   test "edit, when unauthenticated, redirects to sign in" do

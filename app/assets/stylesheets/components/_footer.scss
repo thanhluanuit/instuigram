@@ -1,0 +1,26 @@
+.footer {
+  padding: $space-8 0 $space-6;
+  color: $ink-muted;
+  font-size: $text-xs;
+
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $space-3;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-4;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  p {
+    margin: 0;
+  }
+}

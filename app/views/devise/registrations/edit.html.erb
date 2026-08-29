@@ -1,9 +1,9 @@
 <div class="user-edit-page">
-  <div class="actions">
+  <div class="user-edit-page__nav">
     <%= render "users/settings_nav", active: :password %>
   </div>
 
-  <div class="details">
+  <div class="user-edit-page__pane">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "form-horizontal form-edit-user" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
@@ -45,7 +45,7 @@
       <div class="row mb-3">
         <div class="col-sm-3"></div>
         <div class="col-sm-9">
-          <%= f.submit "Change Password", class: 'btn btn-primary' %>
+          <%= f.submit "Change Password", class: 'btn-accent' %>
         </div>
       </div>
     <% end %>
