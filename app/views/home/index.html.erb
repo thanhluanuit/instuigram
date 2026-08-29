@@ -1,19 +1,26 @@
+<% content_for :body_class, "page-feed" %>
 <div class="homepage">
-  <div class='form-upload'>
-    <%= render 'upload_form' %>
+  <%= render "left_rail" %>
+
+  <div class="feed-column">
+    <div class='form-upload'>
+      <%= render 'upload_form' %>
+    </div>
+
+    <% if @posts.load.any? %>
+      <div class="posts" id="posts">
+        <% @posts.each do |post| %>
+          <%= render partial: 'post', locals: { post: post, user_reaction: @user_reactions[post.id], following: @following_ids.include?(post.user_id) } %>
+        <% end %>
+      </div>
+      <%= render "feed_sentinel", posts: @posts %>
+    <% else %>
+      <div class="empty-state">
+        <i class="fa fa-camera"></i>
+        <p>No posts yet. Share your first photo above.</p>
+      </div>
+    <% end %>
   </div>
 
-  <% if @posts.load.any? %>
-    <div class="posts" id="posts">
-      <% @posts.each do |post| %>
-        <%= render partial: 'post', locals: { post: post, user_reaction: @user_reactions[post.id], following: @following_ids.include?(post.user_id) } %>
-      <% end %>
-    </div>
-    <%= render "feed_sentinel", posts: @posts %>
-  <% else %>
-    <div class="empty-state">
-      <i class="fa fa-camera"></i>
-      <p>No posts yet. Share your first photo above.</p>
-    </div>
-  <% end %>
+  <%= render "right_rail", suggestions: @suggestions %>
 </div>

@@ -25,6 +25,12 @@ class User < ApplicationRecord
 
   before_destroy :destroy_conversations
 
+  scope :suggested_for, ->(user) {
+    where.not(id: user.following_ids + [ user.id ])
+      .where.not(username: nil)
+      .order(followers_count: :desc, id: :asc)
+  }
+
   scope :matching_username, ->(query) {
     next all if query.blank?
 

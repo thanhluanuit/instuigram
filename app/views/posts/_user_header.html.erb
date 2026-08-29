@@ -1,10 +1,6 @@
 <div class="avatar">
   <%= link_to user_path(user) do %>
-    <% if user.avatar.attached? %>
-      <%= image_tag user.avatar.variant(resize_to_fill: [ avatar_size, avatar_size ]), alt: user.username %>
-    <% else %>
-      <span class="avatar-monogram"><%= user_monogram(user) %></span>
-    <% end %>
+    <%= render "users/avatar_image", user: user, size: avatar_size %>
   <% end %>
 </div>
 <%= link_to user.username, user_path(user), class: 'username' %>

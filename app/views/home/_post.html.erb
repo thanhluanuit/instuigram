@@ -22,11 +22,7 @@
     <%= link_to "View all comments", post_path(post), class: "post-comments-link", data: { turbo_frame: "post_modal" } %>
     <div class="post-comment">
       <div class="avatar">
-        <% if current_user.avatar.attached? %>
-          <%= image_tag current_user.avatar.variant(resize_to_fill: [ 52, 52 ]), alt: current_user.username %>
-        <% else %>
-          <span class="avatar-monogram"><%= user_monogram(current_user) %></span>
-        <% end %>
+        <%= render "users/avatar_image", user: current_user, size: 52 %>
       </div>
       <%= render partial: "comments/form", locals: { post: post, form_id_prefix: :feed_comment_form } %>
     </div>

@@ -1,10 +1,6 @@
 <div class="composer">
   <div class="composer-avatar">
-    <% if current_user.avatar.attached? %>
-      <%= image_tag current_user.avatar.variant(resize_to_fill: [ 96, 96 ]), alt: current_user.username %>
-    <% else %>
-      <span class="avatar-monogram"><%= user_monogram(current_user) %></span>
-    <% end %>
+    <%= render "users/avatar_image", user: current_user, size: 96 %>
   </div>
   <div class="composer-main" data-controller="composer" data-composer-limit-value="<%= Post::DESCRIPTION_LIMIT %>">
     <%= form_for Post.new, html: { class: "composer-form" } do |f| %>

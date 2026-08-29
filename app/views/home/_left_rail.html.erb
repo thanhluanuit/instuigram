@@ -1,0 +1,25 @@
+<nav class="feed-rail" aria-label="Feed navigation">
+  <%= link_to root_path, class: "feed-rail__item is-active", "aria-current": "page" do %>
+    <i class="fa fa-home"></i>
+    Home
+  <% end %>
+  <span class="feed-rail__item feed-rail__item--inert" aria-hidden="true">
+    <i class="fa fa-search"></i>
+    Explore
+  </span>
+  <span class="feed-rail__item feed-rail__item--inert" aria-hidden="true">
+    <i class="fa fa-heart-o"></i>
+    Activity
+  </span>
+  <span class="feed-rail__item feed-rail__item--inert" aria-hidden="true">
+    <i class="fa fa-bookmark-o"></i>
+    Saved
+  </span>
+  <%= link_to user_path(current_user), class: "feed-rail__item" do %>
+    <span class="feed-rail__avatar avatar">
+      <%= render "users/avatar_image", user: current_user, size: 40 %>
+    </span>
+    Profile
+  <% end %>
+  <label for="post_description" class="feed-rail__new">New post</label>
+</nav>

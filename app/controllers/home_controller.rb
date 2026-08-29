@@ -9,6 +9,9 @@ class HomeController < ApplicationController
     @following_ids  = current_user.following_relationships
                                   .where(followed_id: @posts.map(&:user_id))
                                   .pluck(:followed_id).to_set
+    @suggestions    = User.suggested_for(current_user)
+                          .includes(avatar_attachment: :blob)
+                          .limit(3)
 
     respond_to do |format|
       format.html

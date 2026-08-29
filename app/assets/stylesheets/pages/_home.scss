@@ -1,6 +1,21 @@
 .homepage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $rail-gap;
   max-width: $width-feed;
   margin: $page-top auto;
+
+  .feed-rail,
+  .feed-aside {
+    display: none;
+  }
+
+  .feed-column {
+    flex: 1;
+    min-width: 0;
+    max-width: $width-feed;
+  }
 
   .form-upload {
     @extend %surface-card;
@@ -319,6 +334,194 @@
   }
 }
 
+
+.feed-rail {
+  flex-direction: column;
+  gap: $space-1;
+  width: $width-rail;
+  flex: none;
+  position: sticky;
+  top: $space-8;
+}
+
+.feed-rail__item {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: 11px 13px;
+  border-radius: $radius-md;
+  color: $ink-muted;
+  font-size: $text-md;
+
+  &:hover {
+    background-color: $surface-hover;
+    color: $ink-muted;
+    text-decoration: none;
+  }
+
+  &.is-active {
+    background-color: $accent-tint;
+    color: $link;
+    font-weight: $weight-semibold;
+
+    &:hover {
+      background-color: $accent-tint;
+      color: $link;
+    }
+  }
+
+  i.fa {
+    width: $icon-md;
+    font-size: $icon-md;
+    text-align: center;
+  }
+}
+
+.feed-rail__item--inert:hover {
+  background-color: transparent;
+}
+
+.feed-rail__avatar {
+  @include avatar(20px);
+}
+
+.feed-rail__new {
+  margin: $space-3 0 0;
+  padding: $space-3;
+  border-radius: $radius-md;
+  background-color: $accent;
+  color: $ink-inverse;
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $accent-hover;
+  }
+}
+
+.feed-aside {
+  flex-direction: column;
+  gap: $space-5;
+  width: $width-aside;
+  flex: none;
+  position: sticky;
+  top: $space-8;
+}
+
+.feed-account {
+  @extend %surface-panel;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-4;
+
+  .avatar {
+    @include avatar(44px);
+  }
+}
+
+.feed-account__identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.feed-account__name {
+  color: $ink;
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+
+  &:hover {
+    color: $ink;
+    text-decoration: none;
+  }
+}
+
+.feed-account__meta {
+  color: $ink-muted;
+  font-size: $text-xs;
+}
+
+.feed-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.feed-suggestions__title {
+  @extend %meta-mono;
+  letter-spacing: .12em;
+  color: $ink-muted;
+}
+
+.feed-suggestion {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  .avatar {
+    @include avatar(36px);
+    background-color: $surface-hover;
+  }
+
+  .follow-control {
+    margin-left: auto;
+  }
+}
+
+.feed-suggestion__identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.feed-suggestion__name {
+  color: $ink;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+
+  &:hover {
+    color: $ink;
+    text-decoration: none;
+  }
+}
+
+.feed-suggestion__meta {
+  color: $ink-muted;
+  font-size: $text-xs;
+}
+
+.feed-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1 $space-3;
+  color: $ink-muted;
+  font-size: $text-xs;
+}
+
+.feed-footer__copy {
+  width: 100%;
+  color: $ink-meta;
+  font-family: $font-mono;
+}
+
+@media (min-width: $bp-shell) {
+  .homepage {
+    max-width: none;
+
+    .feed-rail,
+    .feed-aside {
+      display: flex;
+    }
+
+    .feed-column {
+      flex: none;
+      width: $width-feed;
+    }
+  }
+}
 @media (max-width: $bp-sm) {
   .homepage {
     margin: $space-4 auto;
