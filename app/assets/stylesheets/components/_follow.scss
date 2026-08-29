@@ -3,18 +3,31 @@
 }
 
 .follow-control__button {
-  padding: $space-2 $space-4;
-  border: none;
-  border-radius: $radius-md;
-  background-color: $border-subtle;
-  color: $ink;
-  font-size: $text-base;
+  padding: 7px $space-4;
+  border: 1px solid transparent;
+  border-radius: $radius-pill;
+  background-color: $accent;
+  color: $ink-inverse;
+  font-size: $text-sm;
   font-weight: $weight-semibold;
   line-height: $leading-tight;
   cursor: pointer;
 
   &:hover,
   &:focus {
-    background-color: $border;
+    background-color: $accent-hover;
+    color: $ink-inverse;
+  }
+
+  &.is-following {
+    border-color: $following-border;
+    background-color: $following-bg;
+    color: $following-fg;
+
+    &:hover,
+    &:focus {
+      background-color: darken($following-bg, 4%);
+      color: $following-fg;
+    }
   }
 }

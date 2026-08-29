@@ -1,6 +1,12 @@
 %surface-card {
   background-color: $surface;
-  border: 1px solid $border;
-  border-radius: $radius-md;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
   box-shadow: $shadow-card;
+}
+
+%surface-panel {
+  background-color: $surface;
+  border: 1px solid $border;
+  border-radius: 14px;
 }
