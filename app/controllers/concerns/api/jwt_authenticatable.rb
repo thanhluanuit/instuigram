@@ -1,6 +1,10 @@
 module Api::JwtAuthenticatable
   extend ActiveSupport::Concern
 
+  def self.secret_key
+    Rails.application.credentials.jwt_secret_key || Rails.application.secret_key_base
+  end
+
   included do
     include ActionController::HttpAuthentication::Token::ControllerMethods
     before_action :authenticate_request!
@@ -26,7 +30,7 @@ module Api::JwtAuthenticatable
   end
 
   def jwt_secret_key
-    Rails.application.credentials.jwt_secret_key
+    Api::JwtAuthenticatable.secret_key
   end
 
   def render_unauthorized

@@ -92,7 +92,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
   def encode_access_token(client)
     JWT.encode(
       { sub: client.client_id, iat: Time.current.to_i, exp: 1.hour.from_now.to_i },
-      Rails.application.credentials.jwt_secret_key, "HS256"
+      Api::JwtAuthenticatable.secret_key, "HS256"
     )
   end
 end
