@@ -1,8 +1,6 @@
 <div class="avatar">
-  <% if user.avatar.attached? %>
-    <%= link_to user_path(user) do %>
-      <%= image_tag user.avatar.variant(resize_to_fill: [ avatar_size, avatar_size ]) %>
-    <% end %>
+  <%= link_to user_path(user) do %>
+    <%= render "users/avatar_image", user: user, size: avatar_size %>
   <% end %>
 </div>
 <%= link_to user.username, user_path(user), class: 'username' %>

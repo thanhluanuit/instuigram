@@ -24,7 +24,7 @@
   border: 12px solid $ink;
   border-radius: 40px;
   background-color: $ink;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+  box-shadow: $shadow-shell;
   overflow: hidden;
 
   &::before {

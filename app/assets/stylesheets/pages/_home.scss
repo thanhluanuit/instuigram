@@ -1,11 +1,26 @@
 .homepage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $rail-gap;
   max-width: $width-feed;
   margin: $page-top auto;
 
+  .feed-rail,
+  .feed-aside {
+    display: none;
+  }
+
+  .feed-column {
+    flex: 1;
+    min-width: 0;
+    max-width: $width-feed;
+  }
+
   .form-upload {
     @extend %surface-card;
-    padding: $space-5 $space-6;
-    margin-bottom: $space-8;
+    padding: $space-4;
+    margin-bottom: $space-5;
 
     .composer {
       display: flex;
@@ -14,12 +29,7 @@
     }
 
     .composer-avatar {
-      @include avatar(48px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: $ink-muted;
-      font-size: $icon-md;
+      @include avatar(36px);
     }
 
     .composer-main {
@@ -27,11 +37,73 @@
       min-width: 0;
     }
 
+    .composer-form {
+      display: flex;
+      flex-direction: column;
+      gap: $space-3;
+    }
+
     .composer-input {
       @extend .field-plain;
-      padding-top: $space-3;
-      padding-bottom: $space-3;
-      font-size: $text-lg;
+      border-bottom: none;
+      padding: $space-1 0 0;
+      font-size: $text-md;
+      line-height: $leading-normal;
+      resize: none;
+    }
+
+    .composer-dropzone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 104px;
+      margin: 0;
+      padding: $space-3;
+      overflow: hidden;
+      border: 1px dashed $border-dashed;
+      border-radius: $radius-md;
+      background-color: $canvas-sunk;
+      cursor: pointer;
+
+      &:hover,
+      &.is-dragging {
+        border-color: $accent;
+        background-color: $accent-tint;
+      }
+    }
+
+    .composer-dropzone__hint {
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+      min-width: 0;
+      color: $ink-muted;
+      font-size: $text-sm;
+
+      i.fa {
+        font-size: $icon-md;
+      }
+    }
+
+    .composer-preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .composer-filename {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .composer-error {
+      margin: 0;
+      color: $danger;
+      font-size: $text-sm;
     }
 
     .composer-toolbar {
@@ -39,40 +111,43 @@
       align-items: center;
       justify-content: space-between;
       gap: $space-3;
-      padding-top: $space-3;
+    }
+
+    .composer-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $space-1;
+      min-width: 0;
+    }
+
+    .composer-tag {
+      padding: 5px 9px;
+      border: 1px solid transparent;
+      border-radius: $radius-pill;
+      background-color: $accent-tint;
+      color: $link;
+      font-family: $font-mono;
+      font-size: $text-xs;
+      white-space: nowrap;
+
+      &--hint {
+        border-color: $border-dashed;
+        background-color: transparent;
+        color: $ink-muted;
+      }
     }
 
     .composer-actions {
       display: flex;
       align-items: center;
-      min-width: 0;
+      gap: $space-3;
+      flex: none;
     }
 
-    .composer-icon-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      margin: 0;
-      flex-shrink: 0;
-      border-radius: $radius-circle;
-      color: $accent;
-      font-size: $icon-md;
-      cursor: pointer;
-
-      &:hover {
-        background-color: $accent-wash;
-      }
-    }
-
-    .composer-filename {
-      margin-left: $space-2;
-      overflow: hidden;
+    .composer-counter {
       color: $ink-muted;
-      font-size: $text-sm;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-family: $font-mono;
+      font-size: $text-xs;
     }
   }
 
@@ -80,14 +155,13 @@
     .post {
       @extend %surface-card;
       overflow: hidden;
-      margin-bottom: $space-8;
+      margin-bottom: $space-5;
 
       .user {
         display: flex;
         align-items: center;
         gap: $space-3;
         padding: $space-3 $space-4;
-        border-bottom: 1px solid $border-subtle;
       }
 
       .follow-control {
@@ -96,12 +170,14 @@
 
       .avatar {
         @include avatar(36px);
+        @include avatar-ring;
+        margin: 2px;
       }
 
       .username {
         color: $ink;
         font-size: $text-base;
-        font-weight: $weight-bold;
+        font-weight: $weight-semibold;
 
         &:hover {
           color: $ink;
@@ -109,18 +185,52 @@
         }
       }
 
+      .post-overflow {
+        display: flex;
+        color: $ink-muted;
+        font-size: $icon-md;
+        line-height: 1;
+      }
+
       .main-image-link {
         display: block;
         line-height: 0;
+        background-color: $image-bg;
       }
 
       .main-image {
         width: 100%;
         display: block;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+      }
+
+      .post-body {
+        display: flex;
+        flex-direction: column;
+        gap: $space-2;
+        padding: $space-3 $space-4 $space-4;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: $space-5;
+      }
+
+      .post-action {
+        display: flex;
+        color: $ink;
+        font-size: $icon-lg;
+        line-height: 1;
+
+        &--end {
+          margin-left: auto;
+        }
       }
 
       .description {
-        padding: $space-4;
+        margin: 0;
         font-size: $text-base;
         line-height: $leading-relaxed;
         color: $ink;
@@ -130,12 +240,74 @@
         }
       }
 
-      .actions {
+      .description-author {
+        color: $ink;
+        font-weight: $weight-semibold;
+
+        &:hover {
+          color: $ink;
+        }
+      }
+
+      .post-comments-link {
+        color: $ink-muted;
+        font-size: $text-sm;
+
+        &:hover {
+          color: $ink-muted;
+        }
+      }
+
+      .post-comment {
         display: flex;
         align-items: center;
-        gap: $space-5;
-        padding: $space-2 $space-4 $space-4;
+        gap: $space-2;
+        padding-top: $space-1;
         border-top: 1px solid $border-subtle;
+
+        .avatar {
+          @include avatar(26px);
+          box-shadow: none;
+          margin: 0;
+        }
+
+        .comment-form {
+          flex: 1;
+          min-width: 0;
+        }
+
+        form {
+          display: flex;
+          align-items: center;
+          gap: $space-2;
+        }
+
+        .field-pill {
+          flex: 1;
+          min-width: 0;
+          padding: $space-2 0;
+          border-color: transparent;
+          background-color: transparent;
+          font-size: $text-sm;
+        }
+
+        .btn-accent {
+          padding: 0;
+          background-color: transparent;
+          color: $link;
+          font-size: $text-sm;
+
+          &:hover,
+          &:focus {
+            background-color: transparent;
+            color: $accent;
+          }
+        }
+      }
+
+      .post-time {
+        @extend %meta-mono;
+        font-size: 10.5px;
       }
     }
   }
@@ -168,6 +340,208 @@
   }
 }
 
+
+.feed-rail {
+  flex-direction: column;
+  gap: $space-1;
+  width: $width-rail;
+  flex: none;
+  position: sticky;
+  top: $space-8;
+}
+
+.feed-rail__item {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: 11px 13px;
+  border-radius: $radius-md;
+  color: $ink-muted;
+  font-size: $text-md;
+
+  &:hover {
+    background-color: $surface-hover;
+    color: $ink-muted;
+    text-decoration: none;
+  }
+
+  &.is-active {
+    background-color: $accent-tint;
+    color: $link;
+    font-weight: $weight-semibold;
+
+    &:hover {
+      background-color: $accent-tint;
+      color: $link;
+    }
+  }
+
+  i.fa {
+    width: $icon-md;
+    font-size: $icon-md;
+    text-align: center;
+  }
+}
+
+.feed-rail__item--inert:hover {
+  background-color: transparent;
+}
+
+.feed-rail__avatar {
+  @include avatar(20px);
+}
+
+.feed-rail__new {
+  display: block;
+  margin: $space-3 0 0;
+  padding: $space-3;
+  border-radius: $radius-md;
+  background-color: $accent;
+  color: $ink-inverse;
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: $accent-hover;
+    color: $ink-inverse;
+    text-decoration: none;
+  }
+}
+
+.feed-aside {
+  flex-direction: column;
+  gap: $space-5;
+  width: $width-aside;
+  flex: none;
+  position: sticky;
+  top: $space-8;
+}
+
+.feed-account {
+  @extend %surface-panel;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-4;
+
+  .avatar {
+    @include avatar(44px);
+  }
+}
+
+.feed-account__identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.feed-account__name {
+  color: $ink;
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+
+  &:hover {
+    color: $ink;
+    text-decoration: none;
+  }
+}
+
+.feed-account__meta {
+  display: flex;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: $ink-muted;
+  font-size: $text-xs;
+
+  li + li::before {
+    content: "·";
+    margin-right: $space-2;
+  }
+}
+
+.feed-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.feed-suggestions__title {
+  @extend %meta-mono;
+  letter-spacing: .12em;
+  color: $ink-muted;
+}
+
+.feed-suggestion {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  .avatar {
+    @include avatar(36px);
+    background-color: $surface-hover;
+  }
+
+  .follow-control {
+    margin-left: auto;
+  }
+}
+
+.feed-suggestion__identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.feed-suggestion__name {
+  color: $ink;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+
+  &:hover {
+    color: $ink;
+    text-decoration: none;
+  }
+}
+
+.feed-suggestion__meta {
+  color: $ink-muted;
+  font-size: $text-xs;
+}
+
+.feed-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1 $space-3;
+  color: $ink-muted;
+  font-size: $text-xs;
+}
+
+.feed-footer__copy {
+  width: 100%;
+  color: $ink-meta;
+  font-family: $font-mono;
+}
+
+@media (min-width: $bp-shell) {
+  .homepage {
+    max-width: none;
+
+    .feed-rail,
+    .feed-aside {
+      display: flex;
+    }
+
+    .feed-column {
+      flex: none;
+      width: $width-feed;
+    }
+  }
+}
 @media (max-width: $bp-sm) {
   .homepage {
     margin: $space-4 auto;

@@ -19,7 +19,7 @@
     </div>
     <%= render partial: "comments/list", locals: { post: post } %>
     <% if current_user %>
-      <%= render partial: "comments/form", locals: { post: post } %>
+      <%= render partial: "comments/form", locals: { post: post, form_id_prefix: :comment_form, comment: Comment.new } %>
     <% end %>
   </div>
 </div>

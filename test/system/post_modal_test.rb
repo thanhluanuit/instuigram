@@ -14,7 +14,7 @@ class PostModalTest < ApplicationSystemTestCase
     open_popup_for posts(:two)
 
     assert_selector ".post-modal", text: comments(:two).body
-    assert_selector ".post-modal #comment_body"
+    assert_selector ".post-modal ##{dom_id(posts(:two), :comment_form_body)}"
     assert_current_path root_path
   end
 

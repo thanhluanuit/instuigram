@@ -1,0 +1,89 @@
+@font-face {
+  font-family: "Righteous";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: font-url("righteous-400-latin.woff2") format("woff2");
+  unicode-range: $unicode-latin;
+}
+
+@font-face {
+  font-family: "Righteous";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: font-url("righteous-400-latin-ext.woff2") format("woff2");
+  unicode-range: $unicode-latin-ext;
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: font-url("rubik-variable-latin.woff2") format("woff2");
+  unicode-range: $unicode-latin;
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: font-url("rubik-variable-latin-ext.woff2") format("woff2");
+  unicode-range: $unicode-latin-ext;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: font-url("space-mono-400-latin.woff2") format("woff2");
+  unicode-range: $unicode-latin;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: font-url("space-mono-400-latin-ext.woff2") format("woff2");
+  unicode-range: $unicode-latin-ext;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: font-url("space-mono-400-vietnamese.woff2") format("woff2");
+  unicode-range: $unicode-vietnamese;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: font-url("space-mono-700-latin.woff2") format("woff2");
+  unicode-range: $unicode-latin;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: font-url("space-mono-700-latin-ext.woff2") format("woff2");
+  unicode-range: $unicode-latin-ext;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: font-url("space-mono-700-vietnamese.woff2") format("woff2");
+  unicode-range: $unicode-vietnamese;
+}

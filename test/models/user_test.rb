@@ -166,6 +166,32 @@ class UserTest < ActiveSupport::TestCase
     assert_empty User.matching_username("%")
   end
 
+  test "suggested_for excludes the user themselves" do
+    assert_not_includes User.suggested_for(users(:one)), users(:one)
+  end
+
+  test "suggested_for excludes users the given user already follows" do
+    users(:one).following << users(:two)
+
+    assert_not_includes User.suggested_for(users(:one)), users(:two)
+    assert_includes User.suggested_for(users(:one)), users(:admin)
+  end
+
+  test "suggested_for excludes users whose username is nil or blank" do
+    nameless = User.create!(email: "nameless@instuigram.com", password: "password123", username: nil)
+    blank    = User.create!(email: "blank@instuigram.com", password: "password123", username: "")
+
+    assert_not_includes User.suggested_for(users(:one)), nameless
+    assert_not_includes User.suggested_for(users(:one)), blank
+  end
+
+  test "suggested_for orders the most followed users first" do
+    users(:admin).update!(followers_count: 5)
+    users(:two).update!(followers_count: 1)
+
+    assert_equal [ users(:admin), users(:two) ], User.suggested_for(users(:one)).to_a
+  end
+
   private
 
   def build_user(email: "new_user@example.com", password: "password123", username: "new_user", website: nil)

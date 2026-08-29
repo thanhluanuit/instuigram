@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Instagram</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -13,7 +14,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="<%= yield(:body_class) %>">
     <% if user_signed_in? %>
       <div id="realtime" data-turbo-permanent data-controller="inbox presence"></div>
       <%= turbo_stream_from current_user, :follow_state %>

@@ -11,8 +11,11 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :reactions, as: :reactable, dependent: :destroy
 
+  DESCRIPTION_LIMIT = 2200
+
   validate :image_presence
   validates :image, image: true
+  validates :description, length: { maximum: DESCRIPTION_LIMIT }
   after_commit :create_hash_tags, on: :create
 
   def image_presence

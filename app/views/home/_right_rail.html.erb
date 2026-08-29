@@ -1,0 +1,43 @@
+<aside class="feed-aside">
+  <%= turbo_stream_from current_user, :follows %>
+  <div class="feed-account">
+    <div class="avatar">
+      <%= render "users/avatar_image", user: current_user, size: 88 %>
+    </div>
+    <div class="feed-account__identity">
+      <%= link_to current_user.username, user_path(current_user), class: "feed-account__name" %>
+      <ul class="feed-account__meta">
+        <%= render "users/following_count", user: current_user %>
+        <%= render "users/followers_count", user: current_user %>
+      </ul>
+    </div>
+  </div>
+
+  <% if suggestions.any? %>
+    <div class="feed-suggestions">
+      <span class="feed-suggestions__title">Suggested for you</span>
+      <% suggestions.each do |user| %>
+        <div class="feed-suggestion">
+          <div class="avatar">
+            <%= link_to user_path(user) do %>
+              <%= render "users/avatar_image", user: user, size: 72 %>
+            <% end %>
+          </div>
+          <div class="feed-suggestion__identity">
+            <%= link_to user.username, user_path(user), class: "feed-suggestion__name" %>
+            <span class="feed-suggestion__meta"><%= pluralize(user.followers_count, "follower") %></span>
+          </div>
+          <%= render "users/follow_button", user: user, following: false %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="feed-footer" aria-hidden="true">
+    <span>About</span>
+    <span>Support</span>
+    <span>Privacy</span>
+    <span>Terms</span>
+    <span class="feed-footer__copy">© <%= Date.current.year %> Instuigram</span>
+  </div>
+</aside>

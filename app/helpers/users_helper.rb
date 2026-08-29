@@ -14,6 +14,11 @@ module UsersHelper
     "Privacy and Security" => "v-pills-privacy"
   }.freeze
 
+  def user_monogram(user)
+    source = user.username.presence || user.email.to_s
+    source.strip.first.to_s.upcase
+  end
+
   def external_url(url)
     return "" if url.blank?
 
