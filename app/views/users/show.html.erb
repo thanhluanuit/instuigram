@@ -2,10 +2,8 @@
 
 <div class="user-profile">
   <div class="profile-header">
-    <div class="profile-header__avatar">
-      <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar.variant(:large), alt: "" %>
-      <% end %>
+    <div class="profile-header__avatar avatar">
+      <%= render "users/avatar_image", user: @user, variant: :large %>
     </div>
 
     <div class="profile-header__details">
@@ -25,8 +23,13 @@
         <%= render "users/following_count", user: @user %>
       </ul>
 
-      <p class="profile-header__name"><%= @user.name %></p>
-      <%= link_to @user.website, external_url(@user.website), class: "profile-header__website" %>
+      <div class="profile-header__about">
+        <p class="profile-header__name"><%= @user.name %></p>
+        <% if @user.bio.present? %>
+          <p class="profile-header__bio"><%= @user.bio %></p>
+        <% end %>
+        <%= link_to @user.website, external_url(@user.website), class: "profile-header__website" %>
+      </div>
     </div>
   </div>
 

@@ -22,6 +22,30 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "nav.app-rail", false
   end
 
+  test "shows the bio when the profile has one" do
+    users(:one).update!(bio: "Baking bread and chasing light.")
+
+    get user_path(users(:one))
+
+    assert_select ".profile-header__bio", text: "Baking bread and chasing light."
+  end
+
+  test "omits the bio element when the profile has none" do
+    users(:one).update!(bio: nil)
+
+    get user_path(users(:one))
+
+    assert_select ".profile-header__bio", false
+  end
+
+  test "falls back to the monogram when the profile has no avatar" do
+    users(:one).avatar.purge
+
+    get user_path(users(:one))
+
+    assert_select ".profile-header__avatar .avatar-monogram"
+  end
+
   test "responds not found for a nonexistent user" do
     get user_path(id: -1)
 
