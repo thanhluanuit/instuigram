@@ -80,14 +80,13 @@
     .post {
       @extend %surface-card;
       overflow: hidden;
-      margin-bottom: $space-8;
+      margin-bottom: $space-5;
 
       .user {
         display: flex;
         align-items: center;
         gap: $space-3;
         padding: $space-3 $space-4;
-        border-bottom: 1px solid $border-subtle;
       }
 
       .follow-control {
@@ -96,12 +95,14 @@
 
       .avatar {
         @include avatar(36px);
+        @include avatar-ring;
+        margin: 2px;
       }
 
       .username {
         color: $ink;
         font-size: $text-base;
-        font-weight: $weight-bold;
+        font-weight: $weight-semibold;
 
         &:hover {
           color: $ink;
@@ -109,18 +110,52 @@
         }
       }
 
+      .post-overflow {
+        display: flex;
+        color: $ink-muted;
+        font-size: $icon-md;
+        line-height: 1;
+      }
+
       .main-image-link {
         display: block;
         line-height: 0;
+        background-color: $image-bg;
       }
 
       .main-image {
         width: 100%;
         display: block;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+      }
+
+      .post-body {
+        display: flex;
+        flex-direction: column;
+        gap: $space-2;
+        padding: $space-3 $space-4 $space-4;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: $space-5;
+      }
+
+      .post-action {
+        display: flex;
+        color: $ink;
+        font-size: $icon-lg;
+        line-height: 1;
+
+        &--end {
+          margin-left: auto;
+        }
       }
 
       .description {
-        padding: $space-4;
+        margin: 0;
         font-size: $text-base;
         line-height: $leading-relaxed;
         color: $ink;
@@ -130,12 +165,74 @@
         }
       }
 
-      .actions {
+      .description-author {
+        color: $ink;
+        font-weight: $weight-semibold;
+
+        &:hover {
+          color: $ink;
+        }
+      }
+
+      .post-comments-link {
+        color: $ink-muted;
+        font-size: $text-sm;
+
+        &:hover {
+          color: $ink-muted;
+        }
+      }
+
+      .post-comment {
         display: flex;
         align-items: center;
-        gap: $space-5;
-        padding: $space-2 $space-4 $space-4;
+        gap: $space-2;
+        padding-top: $space-1;
         border-top: 1px solid $border-subtle;
+
+        .avatar {
+          @include avatar(26px);
+          box-shadow: none;
+          margin: 0;
+        }
+
+        .comment-form {
+          flex: 1;
+          min-width: 0;
+        }
+
+        form {
+          display: flex;
+          align-items: center;
+          gap: $space-2;
+        }
+
+        .field-pill {
+          flex: 1;
+          min-width: 0;
+          padding: $space-2 0;
+          border-color: transparent;
+          background-color: transparent;
+          font-size: $text-sm;
+        }
+
+        .btn-accent {
+          padding: 0;
+          background-color: transparent;
+          color: $link;
+          font-size: $text-sm;
+
+          &:hover,
+          &:focus {
+            background-color: transparent;
+            color: $accent;
+          }
+        }
+      }
+
+      .post-time {
+        @extend %meta-mono;
+        font-size: 10.5px;
       }
     }
   }
