@@ -1,4 +1,4 @@
-<%= turbo_stream.replace dom_id(@user, :follow) do %>
+<%= turbo_stream.replace_all "[data-follow-user-id='#{@user.id}']" do %>
   <%= render "users/follow_button", user: @user, following: current_user.following?(@user) %>
 <% end %>
 <%= turbo_stream.replace dom_id(@user, :followers_count) do %>

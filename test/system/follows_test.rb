@@ -14,17 +14,17 @@ class FollowsTest < ApplicationSystemTestCase
 
     click_button "Follow"
 
-    assert_selector "##{dom_id(@other, :follow)} button", exact_text: "Following"
+    assert_selector "[data-follow-user-id='#{@other.id}'] button", exact_text: "Following"
     assert_selector "##{dom_id(@other, :followers_count)}", text: "1 followers"
   end
 
   test "unfollowing reverts the button and the follower count" do
     click_button "Follow"
-    assert_selector "##{dom_id(@other, :follow)} button", exact_text: "Following"
+    assert_selector "[data-follow-user-id='#{@other.id}'] button", exact_text: "Following"
 
     click_button "Following"
 
-    assert_selector "##{dom_id(@other, :follow)} button", exact_text: "Follow"
+    assert_selector "[data-follow-user-id='#{@other.id}'] button", exact_text: "Follow"
     assert_selector "##{dom_id(@other, :followers_count)}", text: "0 followers"
   end
 end

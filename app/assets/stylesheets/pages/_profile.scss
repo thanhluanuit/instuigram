@@ -21,6 +21,14 @@
   flex-wrap: wrap;
   gap: $space-5;
   margin-bottom: $space-5;
+
+  .follow-control__button {
+    @extend %btn-accent;
+
+    &.is-following {
+      @extend %btn-outline;
+    }
+  }
 }
 
 .profile-header__username {
