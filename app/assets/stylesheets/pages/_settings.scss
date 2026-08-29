@@ -51,7 +51,6 @@
   .avatar {
     @include avatar(56px);
     @include avatar-ring;
-    margin: 2px;
   }
 }
 
@@ -87,7 +86,14 @@
 }
 
 .settings-form__actions {
-  padding-left: 140px + $space-4;
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: $space-4;
+
+  .btn-accent {
+    grid-column: 2;
+    justify-self: start;
+  }
 }
 
 .settings-form__placeholder {
@@ -132,6 +138,6 @@
   }
 
   .settings-form__actions {
-    padding-left: 0;
+    grid-template-columns: minmax(0, 1fr);
   }
 }

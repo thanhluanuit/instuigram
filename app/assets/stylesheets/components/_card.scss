@@ -5,6 +5,11 @@
   box-shadow: $shadow-card;
 }
 
+%feed-column {
+  max-width: $width-feed;
+  margin: 0 auto;
+}
+
 %surface-panel {
   background-color: $surface;
   border: 1px solid $border;

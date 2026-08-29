@@ -1,50 +1,48 @@
 <%= turbo_stream_from @user, :follows %>
 
-<div class="user-profile">
-  <div class="profile-header">
-    <div class="profile-header__avatar avatar">
-      <%= render "users/avatar_image", user: @user, variant: :large %>
-    </div>
-
-    <div class="profile-header__details">
-      <div class="profile-header__identity">
-        <h1 class="profile-header__username"><%= @user.username %></h1>
-        <% if @user == current_user %>
-          <%= link_to "Edit profile", edit_user_path(@user), class: "btn-outline" %>
-        <% elsif user_signed_in? %>
-          <%= render "users/follow_button", user: @user, following: current_user.following?(@user) %>
-          <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "btn-outline" %>
-        <% end %>
-      </div>
-
-      <ul class="profile-header__stats">
-        <li><span><%= @posts.total_count %></span> posts</li>
-        <%= render "users/followers_count", user: @user %>
-        <%= render "users/following_count", user: @user %>
-      </ul>
-
-      <div class="profile-header__about">
-        <p class="profile-header__name"><%= @user.name %></p>
-        <% if @user.bio.present? %>
-          <p class="profile-header__bio"><%= @user.bio %></p>
-        <% end %>
-        <%= link_to @user.website, external_url(@user.website), class: "profile-header__website" %>
-      </div>
-    </div>
+<div class="profile-header">
+  <div class="profile-header__avatar">
+    <%= render "users/avatar_image", user: @user, variant: :large %>
   </div>
 
-  <div class="user-tabs">
-    <span class="user-tabs__tab is-active">
-      <i class="fa fa-th"></i>
-      Posts
-    </span>
-    <% UsersHelper::PROFILE_PLACEHOLDER_TABS.each do |label, icon| %>
-      <button type="button" class="user-tabs__tab" disabled>
-        <i class="fa fa-<%= icon %>"></i>
-        <%= label %>
-      </button>
-    <% end %>
-  </div>
+  <div class="profile-header__details">
+    <div class="profile-header__identity">
+      <h1 class="profile-header__username"><%= @user.username %></h1>
+      <% if @user == current_user %>
+        <%= link_to "Edit profile", edit_user_path(@user), class: "btn-outline" %>
+      <% elsif user_signed_in? %>
+        <%= render "users/follow_button", user: @user, following: current_user.following?(@user) %>
+        <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "btn-outline" %>
+      <% end %>
+    </div>
 
-  <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>
+    <ul class="profile-header__stats">
+      <li><span><%= @posts.total_count %></span> posts</li>
+      <%= render "users/followers_count", user: @user %>
+      <%= render "users/following_count", user: @user %>
+    </ul>
+
+    <div class="profile-header__about">
+      <p class="profile-header__name"><%= @user.name %></p>
+      <% if @user.bio.present? %>
+        <p class="profile-header__bio"><%= @user.bio %></p>
+      <% end %>
+      <%= link_to @user.website, external_url(@user.website), class: "profile-header__website" %>
+    </div>
+  </div>
 </div>
+
+<div class="user-tabs">
+  <span class="user-tabs__tab is-active">
+    <i class="fa fa-th"></i>
+    Posts
+  </span>
+  <% UsersHelper::PROFILE_PLACEHOLDER_TABS.each do |label, icon| %>
+    <button type="button" class="user-tabs__tab" disabled>
+      <i class="fa fa-<%= icon %>"></i>
+      <%= label %>
+    </button>
+  <% end %>
+</div>
+
+<%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>

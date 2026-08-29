@@ -1,6 +1,5 @@
 .homepage {
-  max-width: $width-feed;
-  margin: 0 auto;
+  @extend %feed-column;
 
   .form-upload {
     @extend %surface-card;
@@ -156,7 +155,6 @@
       .avatar {
         @include avatar(36px);
         @include avatar-ring;
-        margin: 2px;
       }
 
       .username {
@@ -326,16 +324,6 @@
 }
 
 
-.feed-aside {
-  display: none;
-  flex-direction: column;
-  gap: $space-5;
-  width: $width-aside;
-  flex: none;
-  position: sticky;
-  top: $space-8;
-}
-
 .feed-account {
   @extend %surface-panel;
   display: flex;
@@ -443,11 +431,6 @@
   font-family: $font-mono;
 }
 
-@media (min-width: $bp-shell) {
-  .feed-aside {
-    display: flex;
-  }
-}
 @media (max-width: $bp-sm) {
   .homepage {
     .form-upload,

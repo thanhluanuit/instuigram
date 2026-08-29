@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  NAV_RAIL_PLACEHOLDERS = {
+    "Explore" => "search",
+    "Activity" => "heart-o",
+    "Saved" => "bookmark-o"
+  }.freeze
+
   def nav_rail_link_options(section)
     active = nav_rail_active?(section)
 
@@ -10,11 +16,15 @@ module ApplicationHelper
     }
   end
 
+  private
+
   def nav_rail_active?(section)
     case section
-    when :home     then controller_name == "home"
-    when :messages then controller_name.in?(%w[conversations messages])
-    when :profile  then controller_name == "users" || (controller_name == "registrations" && action_name == "edit")
+    when :home     then current_page?(root_path)
+    when :messages then controller_name == "conversations"
+    when :profile  then current_page?(user_path(current_user)) ||
+                        current_page?(edit_user_path(current_user)) ||
+                        current_page?(edit_user_registration_path)
     end
   end
 end

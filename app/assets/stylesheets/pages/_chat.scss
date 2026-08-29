@@ -1,6 +1,5 @@
 .conversations {
-  max-width: $width-feed;
-  margin: 0 auto;
+  @extend %feed-column;
 }
 
 .conversations__search {
@@ -34,7 +33,6 @@
 .conversation-row__avatar {
   position: relative;
   @include avatar(56px);
-  background-color: $accent-tint;
 }
 
 .conversation-row__body {
@@ -69,12 +67,11 @@
 }
 
 .chat {
+  @extend %feed-column;
   @extend %surface-card;
   display: flex;
   flex-direction: column;
-  max-width: $width-feed;
   height: 70vh;
-  margin: 0 auto;
   overflow: hidden;
 }
 
@@ -96,7 +93,6 @@
   position: relative;
   @include avatar(40px);
   @include avatar-ring;
-  margin: 2px;
 }
 
 .chat__identity {
@@ -185,11 +181,6 @@
 
 
 @media (max-width: $bp-sm) {
-  .conversations,
-  .chat {
-    margin: $space-4 auto;
-  }
-
   .conversations__list,
   .chat {
     border-left: none;

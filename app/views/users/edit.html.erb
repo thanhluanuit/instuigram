@@ -12,30 +12,16 @@
       <%= form_with model: current_user, local: true, html: { class: "settings-form" } do |f| %>
         <%= render "users/form_identity", user: current_user %>
 
-        <%= render "users/form_row",
-                   label: f.label(:avatar, class: "settings-form__label"),
+        <%= render "users/form_row", f: f, attribute: :avatar,
                    control: f.file_field(:avatar, class: "field") %>
-        <%= render "users/form_row",
-                   label: f.label(:name, class: "settings-form__label"),
-                   control: f.text_field(:name, class: "field") %>
-        <%= render "users/form_row",
-                   label: f.label(:username, class: "settings-form__label"),
-                   control: f.text_field(:username, class: "field") %>
-        <%= render "users/form_row",
-                   label: f.label(:website, class: "settings-form__label"),
-                   control: f.text_field(:website, class: "field") %>
-        <%= render "users/form_row",
-                   label: f.label(:bio, class: "settings-form__label"),
+        <% %i[name username website].each do |attribute| %>
+          <%= render "users/form_row", f: f, attribute: attribute %>
+        <% end %>
+        <%= render "users/form_row", f: f, attribute: :bio,
                    control: f.text_area(:bio, class: "field", rows: 3) %>
-        <%= render "users/form_row",
-                   label: f.label(:email, class: "settings-form__label"),
-                   control: f.text_field(:email, class: "field") %>
-        <%= render "users/form_row",
-                   label: f.label(:phone, class: "settings-form__label"),
-                   control: f.text_field(:phone, class: "field") %>
-        <%= render "users/form_row",
-                   label: f.label(:gender, class: "settings-form__label"),
-                   control: f.text_field(:gender, class: "field") %>
+        <% %i[email phone gender].each do |attribute| %>
+          <%= render "users/form_row", f: f, attribute: attribute %>
+        <% end %>
 
         <div class="settings-form__actions">
           <%= f.submit "Save changes", class: "btn-accent" %>

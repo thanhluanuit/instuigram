@@ -12,6 +12,16 @@
   max-width: $width-wide;
 }
 
+.app-shell__aside {
+  display: none;
+  flex-direction: column;
+  gap: $space-5;
+  width: $width-aside;
+  flex: none;
+  position: sticky;
+  top: $space-8;
+}
+
 .app-rail {
   display: none;
   flex-direction: column;
@@ -64,27 +74,15 @@
 }
 
 .app-rail__new {
-  display: block;
-  margin: $space-3 0 0;
+  margin-top: $space-3;
   padding: $space-3;
   border-radius: $radius-md;
-  background-color: $accent;
-  color: $ink-inverse;
   font-size: $text-md;
-  font-weight: $weight-semibold;
-  text-align: center;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: $accent-hover;
-    color: $ink-inverse;
-    text-decoration: none;
-  }
 }
 
 @media (min-width: $bp-shell) {
-  .app-rail {
+  .app-rail,
+  .app-shell__aside {
     display: flex;
   }
 }

@@ -45,7 +45,6 @@
   .avatar {
     @include avatar(44px);
     @include avatar-ring;
-    margin: 2px;
   }
 
   .username {

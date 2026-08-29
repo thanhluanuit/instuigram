@@ -14,7 +14,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="<%= yield(:body_class) %>">
+  <body>
     <% if user_signed_in? %>
       <div id="realtime" data-turbo-permanent data-controller="inbox presence"></div>
       <%= turbo_stream_from current_user, :follow_state %>
@@ -35,7 +35,9 @@
           <%= yield %>
         </div>
 
-        <%= yield :aside %>
+        <% if content_for?(:aside) %>
+          <aside class="app-shell__aside"><%= yield :aside %></aside>
+        <% end %>
       </div>
     </main>
 

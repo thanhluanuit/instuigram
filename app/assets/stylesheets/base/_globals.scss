@@ -44,6 +44,10 @@ body {
   color: $ink-meta;
 }
 
+.is-hidden {
+  display: none;
+}
+
 .page-subtitle {
   margin: 0;
   color: $ink-muted;

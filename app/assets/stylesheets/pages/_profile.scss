@@ -11,7 +11,7 @@
 .profile-header__avatar {
   @include avatar(140px);
   @include avatar-ring;
-  margin: 0 auto;
+  margin: 2px auto;
 }
 
 .profile-header__identity {

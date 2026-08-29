@@ -1,2 +1,2 @@
-<%= render "users/avatar_image", user: user %>
+<%= render "users/avatar_image", user: user if user %>
 <span class="presence-dot <%= "is-online" if user&.online? %>" data-presence-user-id="<%= user&.id %>"></span>

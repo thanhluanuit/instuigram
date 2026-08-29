@@ -9,7 +9,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     get search_path
 
     assert_select ".empty-state p", /No posts match/
-    assert_select ".search-page__header", false
+    assert_select ".page-title", false
   end
 
   test "echoes the query back as a chip in the result header" do
