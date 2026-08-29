@@ -18,3 +18,7 @@
     background-color: $border;
   }
 }
+
+.user .follow-control__button.is-following {
+  display: none;
+}

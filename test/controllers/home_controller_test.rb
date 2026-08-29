@@ -93,13 +93,13 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "form[data-follow-user-id=?]", users(:one).id.to_s, count: 0
   end
 
-  test "shows the following state on posts by a user you already follow" do
+  test "stops offering Follow on posts by a user you already follow" do
     Follows::Create.call(follower: users(:one), followed: users(:two))
     sign_in users(:one)
 
     get root_path
 
-    assert_select "form[data-follow-user-id=?] button", users(:two).id.to_s, text: "Following"
+    assert_select "form[data-follow-user-id=?] button", users(:two).id.to_s, text: "Follow", count: 0
   end
 
   test "shows a comment icon opening the post popup for each post" do

@@ -30,7 +30,7 @@ class FollowsTest < ApplicationSystemTestCase
     assert_selector "##{dom_id(@other, :followers_count)}", text: "0 followers"
   end
 
-  test "following from a post in the feed flips that post's button" do
+  test "following from a post in the feed hides that post's button" do
     visit root_path
     wait_for_page_to_settle
 
@@ -38,7 +38,7 @@ class FollowsTest < ApplicationSystemTestCase
 
     click_button "Follow"
 
-    assert_selector "section.post #{follow_button_selector}", exact_text: "Following", count: 1
+    assert_no_selector "section.post #{follow_button_selector}"
   end
 
   test "following in one tab flips the button in another tab" do
