@@ -2,7 +2,11 @@ class Post < ApplicationRecord
   include Searchable
 
   belongs_to :user
-  has_one_attached :image
+  has_one_attached :image do |attachable|
+    attachable.variant :feed, resize_to_limit: [ 600, 600 ]
+    attachable.variant :detail, resize_to_limit: [ 1200, 1200 ]
+    attachable.variant :thumb, resize_to_fill: [ 440, 440 ]
+  end
 
   scope :created_recently, -> { order(created_at: :desc) }
 
