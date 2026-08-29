@@ -83,7 +83,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     get post_path(posts(:one))
 
-    assert_select "a.delete-icon[aria-label='Delete']"
+    assert_select "a.delete-icon[aria-label='Delete post']"
   end
 
   test "when signed in as a different user, hides the Delete icon" do
@@ -196,7 +196,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     get post_path(posts(:one)), headers: { "Turbo-Frame" => "post_modal" }
 
     assert_response :success
-    assert_select "turbo-frame#post_modal .post-modal .post-show"
+    assert_select "turbo-frame#post_modal .post-modal .post-detail"
     assert_select "turbo-frame##{dom_id(posts(:one), :modal_reaction)}"
     assert_select "turbo-frame##{dom_id(posts(:one), :reaction)}", count: 0
   end

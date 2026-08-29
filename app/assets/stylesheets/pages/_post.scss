@@ -1,0 +1,102 @@
+.post-detail {
+  @extend %surface-card;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr);
+  max-width: $width-wide;
+  margin: $page-top auto 0;
+  overflow: hidden;
+
+  &__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    background-color: $ink;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-height: 80vh;
+    padding: $space-6;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding-bottom: $space-4;
+    margin-bottom: $space-4;
+    border-bottom: 1px solid $border-subtle;
+  }
+
+  .avatar {
+    @include avatar(44px);
+  }
+
+  .username {
+    color: $ink;
+    font-size: $text-md;
+    font-weight: $weight-bold;
+
+    &:hover {
+      color: $ink;
+      text-decoration: none;
+    }
+  }
+
+  .description {
+    font-size: $text-base;
+    line-height: $leading-relaxed;
+    color: $ink;
+
+    a {
+      @extend %link-accent;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-4;
+    margin-top: $space-5;
+    padding-top: $space-4;
+    border-top: 1px solid $border-subtle;
+  }
+
+  .delete-icon {
+    font-size: $icon-md;
+    line-height: 1;
+    color: $ink-muted;
+
+    &:hover {
+      color: $danger;
+      text-decoration: none;
+    }
+  }
+}
+
+@media (max-width: $bp-md) {
+  .post-detail {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: $space-4;
+
+    &__panel {
+      max-height: none;
+      padding: $space-4;
+    }
+
+    &__image {
+      max-height: 60vh;
+    }
+  }
+}

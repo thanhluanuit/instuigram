@@ -1,0 +1,26 @@
+.reaction {
+  display: flex;
+  align-items: center;
+
+  .reaction-icon {
+    margin-right: $space-2;
+    font-size: $icon-lg;
+    line-height: 1;
+    color: $ink;
+
+    &:hover {
+      color: $ink-muted;
+      text-decoration: none;
+    }
+
+    &.liked {
+      color: $danger;
+    }
+  }
+
+  .reactions-count {
+    font-size: $text-base;
+    font-weight: $weight-semibold;
+    color: $ink;
+  }
+}

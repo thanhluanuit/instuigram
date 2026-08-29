@@ -1,10 +1,7 @@
 <div id="<%= dom_id(post, :comment_form) %>" class="comment-form">
   <%= form_for [ post, Comment.new ] do |f| %>
-    <div class="mb-3">
-      <%= f.text_field :body, class: 'form-control', placeholder: "Add a comment..." %>
-    </div>
-    <div class="text-end">
-      <%= f.submit "Comment", class: "btn btn-primary btn-sm" %>
-    </div>
+    <%= f.label :body, "Comment", class: "visually-hidden" %>
+    <%= f.text_field :body, class: 'field-pill', placeholder: "Add a comment..." %>
+    <%= f.submit "Post", class: "btn-accent" %>
   <% end %>
 </div>

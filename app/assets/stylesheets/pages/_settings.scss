@@ -1,0 +1,87 @@
+.user-edit-page {
+  @extend %surface-card;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  margin: $page-top auto;
+  overflow: hidden;
+}
+
+.user-edit-page__nav {
+  border-right: 1px solid $border;
+  background-color: $surface;
+
+  .nav-link {
+    padding: $space-3 $space-6;
+    border-radius: 0;
+    color: $ink;
+    font-size: $text-base;
+
+    &:hover {
+      background-color: $surface-hover;
+      cursor: pointer;
+    }
+
+    &.active {
+      border-left: 2px solid $ink;
+      background-color: $surface;
+      color: $ink;
+      font-weight: $weight-semibold;
+    }
+  }
+}
+
+.user-edit-page__pane {
+  min-width: 0;
+  padding: $space-8;
+}
+
+.form-edit-user {
+  max-width: 480px;
+
+  .col-form-label {
+    font-weight: $weight-semibold;
+    text-align: right;
+  }
+
+  .avatar {
+    @include avatar(38px);
+  }
+
+  .username {
+    margin-bottom: 0;
+    font-size: $text-lg;
+    line-height: $leading-tight;
+  }
+}
+
+@media (max-width: $bp-md) {
+  .user-edit-page {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: $space-4;
+  }
+
+  .user-edit-page__nav {
+    display: flex;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid $border;
+
+    .nav-link {
+      flex: 0 0 auto;
+      padding: $space-3 $space-4;
+
+      &.active {
+        border-left: none;
+        border-bottom: 2px solid $ink;
+      }
+    }
+  }
+
+  .user-edit-page__pane {
+    padding: $space-5;
+  }
+
+  .form-edit-user .col-form-label {
+    text-align: left;
+  }
+}

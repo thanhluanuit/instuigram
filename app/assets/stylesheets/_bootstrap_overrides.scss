@@ -1,0 +1,28 @@
+$primary: $accent;
+$body-color: $ink;
+$body-bg: $canvas;
+$body-secondary-color: $ink-muted;
+
+$border-color: $border;
+$border-radius: $radius-sm;
+$border-radius-sm: $radius-sm;
+$border-radius-lg: $radius-md;
+
+$font-size-base: .875rem;
+$line-height-base: $leading-normal;
+$headings-color: $ink;
+$headings-font-weight: $weight-semibold;
+
+$link-color: $link;
+$link-hover-color: $link;
+
+$input-bg: $surface;
+$input-color: $ink;
+$input-border-color: $border;
+$input-placeholder-color: $ink-muted;
+$input-focus-border-color: $accent;
+
+$focus-ring-width: 3px;
+$focus-ring-color: $focus-ring;
+$input-btn-focus-box-shadow: 0 0 0 3px $focus-ring;
+$input-focus-box-shadow: 0 0 0 3px $focus-ring;

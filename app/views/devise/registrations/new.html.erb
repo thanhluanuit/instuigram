@@ -7,25 +7,25 @@
 
     <%= f.label :email, class: "visually-hidden" %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email",
-                      class: "form-control", placeholder: "Email" %>
+                      class: "field", placeholder: "Email" %>
     <%= f.label :name, "Full Name", class: "visually-hidden" %>
     <%= f.text_field :name, autocomplete: "name",
-                     class: "form-control", placeholder: "Full Name" %>
+                     class: "field", placeholder: "Full Name" %>
     <%= f.label :username, class: "visually-hidden" %>
     <%= f.text_field :username, autocomplete: "username",
-                     class: "form-control", placeholder: "Username" %>
+                     class: "field", placeholder: "Username" %>
     <%= f.label :password, class: "visually-hidden" %>
     <%= f.password_field :password, autocomplete: "new-password",
-                         class: "form-control", placeholder: "Password" %>
+                         class: "field", placeholder: "Password" %>
     <%= f.label :password_confirmation, "Confirm Password", class: "visually-hidden" %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password",
-                         class: "form-control", placeholder: "Confirm Password" %>
+                         class: "field", placeholder: "Confirm Password" %>
 
     <p class="auth-terms">
       By signing up, you agree to our Terms, Data Policy and Cookies Policy.
     </p>
 
-    <%= f.submit "Sign Up", class: "btn btn-primary auth-submit" %>
+    <%= f.submit "Sign Up", class: "btn-accent btn-block" %>
   <% end %>
 </div>
 

@@ -1,7 +1,7 @@
 <div class="composer">
   <div class="composer-avatar">
     <% if current_user.avatar.attached? %>
-      <%= image_tag current_user.avatar.variant(resize_to_fill: [ 76, 76 ]) %>
+      <%= image_tag current_user.avatar.variant(resize_to_fill: [ 96, 96 ]) %>
     <% else %>
       <i class="fa fa-user"></i>
     <% end %>
@@ -19,7 +19,7 @@
           <%= f.file_field :image, class: 'visually-hidden', data: { composer_target: "fileInput", action: "change->composer#updateFilename" } %>
           <span class="composer-filename" data-composer-target="filename">No photo selected</span>
         </div>
-        <%= f.submit 'Post', class: 'btn composer-submit', data: { composer_target: "submit" } %>
+        <%= f.submit 'Post', class: 'btn-accent', data: { composer_target: "submit" } %>
       </div>
     <% end %>
   </div>
