@@ -2,7 +2,8 @@ module Api::JwtAuthenticatable
   extend ActiveSupport::Concern
 
   def self.secret_key
-    Rails.application.credentials.jwt_secret_key || Rails.application.secret_key_base
+    Rails.application.credentials.jwt_secret_key ||
+      Rails.application.key_generator.generate_key("Api::JwtAuthenticatable access token", 32)
   end
 
   included do
