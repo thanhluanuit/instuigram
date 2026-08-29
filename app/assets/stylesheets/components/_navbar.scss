@@ -1,27 +1,40 @@
 .navbar {
+  padding: 0;
   border-bottom: 1px solid $border;
   background-color: $surface;
 
   > .container {
     display: flex;
     align-items: center;
-    gap: $space-4;
+    gap: $space-8;
+    min-height: 66px;
   }
 
   .navbar-brand {
-    font-size: $text-lg;
-    font-weight: $weight-semibold;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-family: $font-display;
+    font-size: 19px;
+    font-weight: $weight-normal;
+    letter-spacing: .01em;
     color: $ink;
+
+    .fa-circle {
+      color: $brand;
+    }
   }
 }
 
 .navbar-search {
   flex: 1;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 
   .field-pill {
-    max-width: 260px;
+    max-width: 340px;
+    background-color: $canvas;
+    border-color: transparent;
     font-size: $text-sm;
   }
 }
@@ -29,7 +42,8 @@
 .user-section {
   display: flex;
   align-items: center;
-  gap: $space-4;
+  gap: $space-5;
+  margin-left: auto;
 
   a {
     display: flex;
