@@ -1,10 +1,20 @@
 <div class="search-page">
-  <% if @posts.any? %>
-    <div class="page-header">
-      <h1 class="page-title">Top posts</h1>
-      <p class="page-subtitle"><%= pluralize(@posts.total_count, "result") %> for <%= params[:query] %></p>
+  <% if params[:query].present? %>
+    <div class="search-page__header">
+      <div class="page-header">
+        <h1 class="page-title">Top posts</h1>
+        <p class="page-subtitle"><%= pluralize(@posts.total_count, "result") %></p>
+      </div>
+      <p class="search-page__query">
+        Matching <span class="search-page__term"><%= params[:query] %></span>
+      </p>
     </div>
-    <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>
+  <% end %>
+
+  <% if @posts.any? %>
+    <div class="search-page__results">
+      <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>
+    </div>
   <% else %>
     <div class="empty-state">
       <i class="fa fa-search"></i>

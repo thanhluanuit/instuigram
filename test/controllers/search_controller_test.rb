@@ -5,10 +5,17 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
 
   setup { index_all_posts! }
 
-  test "with a blank query, shows no matching posts" do
+  test "with a blank query, shows no matching posts and no result header" do
     get search_path
 
     assert_select ".empty-state p", /No posts match/
+    assert_select ".search-page__header", false
+  end
+
+  test "echoes the query back as a chip in the result header" do
+    get search_path(query: "sunset")
+
+    assert_select ".search-page__term", "sunset"
   end
 
   test "with a hashtag query, finds only posts tagged with that hashtag" do

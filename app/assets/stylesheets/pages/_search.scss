@@ -1,0 +1,34 @@
+.search-page__header {
+  margin-bottom: $space-5;
+}
+
+.search-page__query {
+  @extend %meta-mono;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin: 0;
+}
+
+.search-page__term {
+  padding: $space-1 $space-3;
+  border-radius: $radius-pill;
+  background-color: $accent-tint;
+  color: $link;
+  font-weight: $weight-bold;
+  letter-spacing: .04em;
+  text-transform: none;
+}
+
+.search-page__results {
+  @extend %surface-card;
+  padding: $space-5;
+
+  .thumbnail-grid {
+    padding: 0;
+  }
+
+  .pagination {
+    margin-top: $space-5;
+  }
+}
