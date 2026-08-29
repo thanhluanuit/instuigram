@@ -77,22 +77,24 @@
   font-size: $text-base;
 
   a {
-    color: $accent;
-    font-weight: $weight-semibold;
-    text-decoration: none;
+    @extend %link-accent;
   }
 }
 
 .auth-logo {
   margin-bottom: $space-6;
+  font-family: $font-display;
   font-size: $text-display;
   font-weight: $weight-normal;
+  letter-spacing: .01em;
+  color: $ink;
 }
 
 .auth-heading {
   margin-bottom: $space-3;
+  font-family: $font-display;
   font-size: $text-lg;
-  font-weight: $weight-semibold;
+  font-weight: $weight-normal;
 }
 
 .auth-tagline {
@@ -110,8 +112,9 @@
   width: 96px;
   height: 96px;
   margin: $space-3 auto $space-5;
-  border: 2px solid $ink;
   border-radius: $radius-circle;
+  background-color: $accent-tint;
+  color: $accent-hover;
 
   i.fa {
     font-size: $icon-xl;
@@ -147,13 +150,18 @@
   line-height: $leading-normal;
 }
 
+.auth-remember,
+.auth-terms {
+  a {
+    @extend %link-accent;
+  }
+}
+
 .auth-divider {
+  @extend %meta-mono;
   display: flex;
   align-items: center;
   margin: $space-5 0;
-  color: $ink-muted;
-  font-size: $text-sm;
-  font-weight: $weight-semibold;
 
   &::before,
   &::after {
@@ -169,9 +177,8 @@
 }
 
 .auth-muted-link {
-  color: $link;
+  @extend %link-accent;
   font-size: $text-xs;
-  text-decoration: none;
 }
 
 @media (max-width: $bp-sm) {
