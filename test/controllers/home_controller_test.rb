@@ -3,6 +3,8 @@ require "test_helper"
 class HomeControllerTest < ActionDispatch::IntegrationTest
   include ActionView::RecordIdentifier
 
+  TURBO_NAVIGATION_ACCEPT = "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"
+
   test "when unauthenticated, redirects to sign in" do
     get root_path
 
@@ -48,11 +50,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     sign_in_and_absorb_trackable_update users(:one)
     11.times { |n| create_post!(users(:one), description: "post #{n}") }
 
-    assert_queries_count(10) { get root_path }
+    assert_queries_count(9) { get root_path }
 
     create_post!(users(:one), description: "one more post")
 
-    assert_queries_count(10) { get root_path }
+    assert_queries_count(9) { get root_path }
   end
 
   test "shows the newest post first" do
@@ -144,6 +146,16 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "#feed_sentinel a", false
     assert_select "#feed_sentinel", text: /caught up/i
+  end
+
+  test "a turbo navigation to the feed renders the full page rather than a bare stream" do
+    sign_in users(:one)
+
+    get root_path, headers: { "Accept" => TURBO_NAVIGATION_ACCEPT }
+
+    assert_response :success
+    assert_select "turbo-stream", false
+    assert_select ".homepage"
   end
 
   test "requesting a page as turbo stream appends posts and replaces the sentinel" do
