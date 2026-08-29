@@ -36,6 +36,18 @@ class Follows::CreateTest < ActiveSupport::TestCase
     assert_no_enqueued_jobs(only: Turbo::Streams::ActionBroadcastJob) { create_follow }
   end
 
+  test "broadcasts the following button to the follower's own stream" do
+    broadcast = capture_broadcasts(follow_state_stream(@follower)) { create_follow }.first
+
+    assert_includes broadcast, "Following"
+  end
+
+  test "following again broadcasts no button" do
+    create_follow
+
+    assert_no_broadcasts(follow_state_stream(@follower)) { create_follow }
+  end
+
   test "returns the winning row when a concurrent request wins the insert race" do
     follow = losing_the_insert_race { create_follow }
 
