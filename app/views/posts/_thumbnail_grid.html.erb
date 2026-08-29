@@ -3,7 +3,7 @@
     <% posts.each do |post| %>
       <div class="wrapper">
         <%= link_to post_path(post) do %>
-          <%= image_tag post.image.variant(resize_to_fill: [ 440, 440 ]), loading: "lazy", alt: "" %>
+          <%= image_tag post.image.variant(:thumb), loading: "lazy", alt: "" %>
         <% end %>
       </div>
     <% end %>
