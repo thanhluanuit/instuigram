@@ -100,6 +100,12 @@
       white-space: nowrap;
     }
 
+    .composer-error {
+      margin: 0;
+      color: $danger;
+      font-size: $text-sm;
+    }
+
     .composer-toolbar {
       display: flex;
       align-items: center;
@@ -444,8 +450,18 @@
 }
 
 .feed-account__meta {
+  display: flex;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   color: $ink-muted;
   font-size: $text-xs;
+
+  li + li::before {
+    content: "·";
+    margin-right: $space-2;
+  }
 }
 
 .feed-suggestions {

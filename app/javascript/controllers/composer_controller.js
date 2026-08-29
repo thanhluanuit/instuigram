@@ -9,7 +9,7 @@ const EMPTY_HINT = "Drag a photo here, or click to browse"
 // acceptValue/maxBytesValue mirror ImageValidator so a file the server would
 // reject never reaches it — a rejected create redirects and discards the caption.
 export default class extends Controller {
-  static targets = ["fileInput", "filename", "submit", "caption", "counter", "tags", "preview", "dropzone"]
+  static targets = ["fileInput", "filename", "error", "submit", "caption", "counter", "tags", "preview", "dropzone"]
   static values = { limit: Number, accept: String, maxBytes: Number }
 
   connect() {
@@ -22,6 +22,12 @@ export default class extends Controller {
   }
 
   syncFile() {
+    if (this.fileInputTarget.files[0] && !this.acceptable(this.fileInputTarget.files[0])) {
+      this.fileInputTarget.value = ""
+    } else {
+      this.clearError()
+    }
+
     const file = this.fileInputTarget.files[0]
     this.filenameTarget.textContent = file ? file.name : EMPTY_HINT
     this.showPreview(file)
@@ -44,7 +50,7 @@ export default class extends Controller {
     this.dropzoneTarget.classList.remove("is-dragging")
 
     const file = event.dataTransfer.files[0]
-    if (!this.acceptable(file)) return
+    if (!file || !this.acceptable(file)) return
 
     const transfer = new DataTransfer()
     transfer.items.add(file)
@@ -53,20 +59,27 @@ export default class extends Controller {
   }
 
   acceptable(file) {
-    if (!file) return false
-
     if (!this.acceptValue.split(",").includes(file.type)) {
-      this.filenameTarget.textContent = `${file.name} is not a PNG, JPEG or WebP`
-      return false
+      return this.reject(`${file.name} is not a PNG, JPEG or WebP`)
     }
 
     if (file.size > this.maxBytesValue) {
       const megabytes = Math.floor(this.maxBytesValue / 1048576)
-      this.filenameTarget.textContent = `${file.name} is larger than ${megabytes}MB`
-      return false
+      return this.reject(`${file.name} is larger than ${megabytes}MB`)
     }
 
     return true
+  }
+
+  reject(message) {
+    this.errorTarget.textContent = message
+    this.errorTarget.hidden = false
+    return false
+  }
+
+  clearError() {
+    this.errorTarget.textContent = ""
+    this.errorTarget.hidden = true
   }
 
   captionChanged() {

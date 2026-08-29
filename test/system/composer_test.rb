@@ -30,6 +30,24 @@ class ComposerTest < ApplicationSystemTestCase
            "the blob: preview did not load — check img_src in the content security policy"
   end
 
+  test "a file the server would reject is refused at the picker, not on submit" do
+    attach_file "post_image", browser_readable_fixture_file("not_an_image.txt"), make_visible: true
+
+    assert_selector ".composer-error", text: /is not a PNG, JPEG or WebP/
+    assert_selector ".composer-filename", text: "Drag a photo here, or click to browse"
+    assert_button "Share", disabled: true
+  end
+
+  test "choosing a valid photo after a rejected one clears the error" do
+    attach_file "post_image", browser_readable_fixture_file("not_an_image.txt"), make_visible: true
+    assert_selector ".composer-error", text: /is not a PNG/
+
+    attach_file "post_image", browser_readable_fixture_file("test_image.png"), make_visible: true
+
+    assert_no_selector ".composer-error", visible: true
+    assert_button "Share", disabled: false
+  end
+
   test "the caption's hashtags appear as chips as you type" do
     assert_selector ".composer-tag", text: "add #hashtags"
 
