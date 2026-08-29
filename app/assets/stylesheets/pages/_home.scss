@@ -1,0 +1,188 @@
+.homepage {
+  max-width: $width-feed;
+  margin: $page-top auto;
+
+  .form-upload {
+    @extend %surface-card;
+    padding: $space-5 $space-6;
+    margin-bottom: $space-8;
+
+    .composer {
+      display: flex;
+      align-items: flex-start;
+      gap: $space-3;
+    }
+
+    .composer-avatar {
+      @include avatar(48px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $ink-muted;
+      font-size: $icon-md;
+    }
+
+    .composer-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .composer-input {
+      @extend .field-plain;
+      padding-top: $space-3;
+      padding-bottom: $space-3;
+      font-size: $text-lg;
+    }
+
+    .composer-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $space-3;
+      padding-top: $space-3;
+    }
+
+    .composer-actions {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .composer-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      margin: 0;
+      flex-shrink: 0;
+      border-radius: $radius-circle;
+      color: $accent;
+      font-size: $icon-md;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $accent-wash;
+      }
+    }
+
+    .composer-filename {
+      margin-left: $space-2;
+      overflow: hidden;
+      color: $ink-muted;
+      font-size: $text-sm;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .posts {
+    .post {
+      @extend %surface-card;
+      overflow: hidden;
+      margin-bottom: $space-8;
+
+      .user {
+        display: flex;
+        align-items: center;
+        gap: $space-3;
+        padding: $space-3 $space-4;
+        border-bottom: 1px solid $border-subtle;
+      }
+
+      .avatar {
+        @include avatar(36px);
+      }
+
+      .username {
+        color: $ink;
+        font-size: $text-base;
+        font-weight: $weight-bold;
+
+        &:hover {
+          color: $ink;
+          text-decoration: none;
+        }
+      }
+
+      .main-image-link {
+        display: block;
+        line-height: 0;
+      }
+
+      .main-image {
+        width: 100%;
+        display: block;
+      }
+
+      .description {
+        padding: $space-4;
+        font-size: $text-base;
+        line-height: $leading-relaxed;
+        color: $ink;
+
+        a {
+          @extend %link-accent;
+        }
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: $space-5;
+        padding: $space-2 $space-4 $space-4;
+        border-top: 1px solid $border-subtle;
+      }
+    }
+  }
+
+  .feed-sentinel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $space-6 0;
+    color: $ink-muted;
+    font-size: $text-base;
+
+    &__end {
+      margin: 0;
+    }
+
+    &__loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__spinner i {
+      font-size: $icon-md;
+    }
+
+    &__link {
+      @extend %link-accent;
+    }
+  }
+}
+
+@media (max-width: $bp-sm) {
+  .homepage {
+    margin: $space-4 auto;
+
+    .form-upload,
+    .posts .post {
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .form-upload {
+      padding: $space-4;
+      margin-bottom: $space-4;
+    }
+
+    .posts .post {
+      margin-bottom: $space-4;
+    }
+  }
+}

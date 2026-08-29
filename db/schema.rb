@@ -129,6 +129,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_041500) do
     t.integer "reactions_count", default: 0, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "user_id", null: false
+    t.index ["created_at"], name: "index_posts_on_created_at", order: :desc
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
