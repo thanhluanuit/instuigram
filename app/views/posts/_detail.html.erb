@@ -9,6 +9,7 @@
     <div class="description">
       <%= render partial: "posts/description", locals: { post: post } %>
     </div>
+    <time class="post-detail__time" datetime="<%= post.created_at.iso8601 %>"><%= time_ago_in_words(post.created_at) %> ago</time>
     <div class="actions">
       <%= render partial: "posts/reaction_button", locals: { post: post, user_reaction: user_reaction, frame_id: reaction_frame_id } %>
       <% if current_user && current_user.id == post.user_id %>

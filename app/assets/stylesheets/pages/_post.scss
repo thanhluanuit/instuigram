@@ -44,12 +44,14 @@
 
   .avatar {
     @include avatar(44px);
+    @include avatar-ring;
+    margin: 2px;
   }
 
   .username {
     color: $ink;
     font-size: $text-md;
-    font-weight: $weight-bold;
+    font-weight: $weight-semibold;
 
     &:hover {
       color: $ink;
@@ -65,6 +67,12 @@
     a {
       @extend %link-accent;
     }
+  }
+
+  &__time {
+    @extend %meta-mono;
+    display: block;
+    margin-top: $space-3;
   }
 
   .actions {
