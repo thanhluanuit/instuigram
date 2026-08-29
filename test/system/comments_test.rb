@@ -12,7 +12,7 @@ class CommentsTest < ApplicationSystemTestCase
 
     within ".post-modal" do
       fill_in "comment_body", with: "Great shot"
-      click_button "Comment"
+      click_button "Post"
 
       assert_selector ".comment", text: "Great shot"
     end
