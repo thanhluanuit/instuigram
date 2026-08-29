@@ -36,10 +36,10 @@ class FollowsTest < ApplicationSystemTestCase
 
     assert_selector "section.post #{follow_button_selector}", exact_text: "Follow", count: 1
 
-    click_button "Follow"
+    find("section.post #{follow_button_selector}").click
     assert_selector "section.post #{follow_button_selector}", exact_text: "Following", count: 1
 
-    click_button "Following"
+    find("section.post #{follow_button_selector}").click
 
     assert_selector "section.post #{follow_button_selector}", exact_text: "Follow", count: 1
   end
@@ -47,7 +47,7 @@ class FollowsTest < ApplicationSystemTestCase
   test "a followed user's posts carry no follow button on the next page load" do
     visit root_path
     wait_for_page_to_settle
-    click_button "Follow"
+    find("section.post #{follow_button_selector}").click
     assert_selector "section.post #{follow_button_selector}", exact_text: "Following"
 
     visit root_path
@@ -66,7 +66,7 @@ class FollowsTest < ApplicationSystemTestCase
       assert_selector follow_button_selector, exact_text: "Follow"
     end
 
-    click_button "Follow"
+    find("section.post #{follow_button_selector}").click
 
     using_session :second_tab do
       assert_selector follow_button_selector, exact_text: "Following"

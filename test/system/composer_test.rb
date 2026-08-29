@@ -7,15 +7,15 @@ class ComposerTest < ApplicationSystemTestCase
   end
 
   test "the Post button stays disabled until a photo is attached" do
-    assert_button "Post", disabled: true
+    assert_button "Share", disabled: true
 
     attach_file "post_image", browser_readable_fixture_file("test_image.png"), make_visible: true
 
-    assert_button "Post", disabled: false
+    assert_button "Share", disabled: false
   end
 
   test "attaching a photo shows its filename in the composer" do
-    assert_selector ".composer-filename", text: "No photo selected"
+    assert_selector ".composer-filename", text: "Drag a photo here, or click to browse"
 
     attach_file "post_image", browser_readable_fixture_file("test_image.png"), make_visible: true
 

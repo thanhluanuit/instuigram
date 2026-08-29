@@ -10,7 +10,7 @@ class PostsTest < ApplicationSystemTestCase
     fill_in "post_description", with: "a fresh #capybara photo"
     attach_file "post_image", browser_readable_fixture_file("test_image.png"), make_visible: true
 
-    click_button "Post"
+    click_button "Share"
 
     assert_selector "section.post", text: "a fresh #capybara photo"
   end
