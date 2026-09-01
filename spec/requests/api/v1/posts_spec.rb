@@ -8,13 +8,15 @@ RSpec.describe "Api::V1::Posts", type: :request do
   let(:client) { Client.create!(user: user) }
   let(:Authorization) { "Bearer #{issue_access_token(client)}" }
 
-  def build_post(owner, description: "a sunset over the bay #sunset")
-    post = owner.posts.new(description: description)
-    post.image.attach(
-      io: File.open(Rails.root.join("test/fixtures/files/test_image.png")),
-      filename: "test_image.png", content_type: "image/png"
-    )
-    post.save!
+  let(:post_description) { "a sunset over the bay #sunset" }
+  let(:test_image_path) { Rails.root.join("test/fixtures/files/test_image.png") }
+
+  def build_post(owner)
+    post = owner.posts.new(description: post_description)
+    test_image_path.open do |io|
+      post.image.attach(io: io, filename: "test_image.png", content_type: "image/png")
+      post.save!
+    end
     post
   end
 
@@ -73,16 +75,14 @@ RSpec.describe "Api::V1::Posts", type: :request do
       }
 
       let(:image_upload) do
-        Rack::Test::UploadedFile.new(
-          Rails.root.join("test/fixtures/files/test_image.png"), "image/png"
-        )
+        Rack::Test::UploadedFile.new(test_image_path, "image/png")
       end
 
       response "201", "post created" do
         schema "$ref" => "#/components/schemas/Post"
 
         let(:post_body) do
-          { description: "a sunset over the bay #sunset", image: image_upload }
+          { description: post_description, image: image_upload }
         end
 
         run_test! do |response|
@@ -120,7 +120,7 @@ RSpec.describe "Api::V1::Posts", type: :request do
         let(:id) { build_post(user).id }
 
         run_test! do |response|
-          expect(JSON.parse(response.body)["description"]).to eq("a sunset over the bay #sunset")
+          expect(JSON.parse(response.body)["description"]).to eq(post_description)
         end
       end
 

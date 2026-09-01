@@ -6,13 +6,9 @@ require_relative "../config/environment"
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require "rspec/rails"
 
-Rails.root.glob("spec/support/**/*.rb").sort_by(&:to_s).each { |f| require f }
+Rails.root.glob("spec/support/**/*.rb").each { |file| require file }
 
-begin
-  ActiveRecord::Migration.maintain_test_schema!
-rescue ActiveRecord::PendingMigrationError => e
-  abort e.to_s.strip
-end
+ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
