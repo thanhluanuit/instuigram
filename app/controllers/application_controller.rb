@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   layout :layout_by_resource
 
-  helper_method :render_aside?, :aside_suggestions, :trending_hashtags
+  helper_method :render_aside?, :aside_suggestions
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -18,12 +18,6 @@ class ApplicationController < ActionController::Base
                                .includes(avatar_attachment: :blob)
                                .limit(5)
                                .load
-  end
-
-  def trending_hashtags
-    return HashTag.none unless render_aside?
-
-    @trending_hashtags ||= HashTag.trending.limit(6).load
   end
 
   def layout_by_resource

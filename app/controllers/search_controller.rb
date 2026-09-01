@@ -14,6 +14,10 @@ class SearchController < ApplicationController
 
   private
 
+  def render_aside?
+    false
+  end
+
   def redirect_signed_in_to_explore
     redirect_to explore_path if user_signed_in? && search_params[:query].blank?
   end

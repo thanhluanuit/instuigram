@@ -6,4 +6,10 @@ class ExploreController < ApplicationController
                  .includes(image_attachment: :blob)
                  .page(params[:page]).per(12)
   end
+
+  private
+
+  def render_aside?
+    false
+  end
 end

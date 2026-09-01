@@ -20,14 +20,13 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to explore_path
   end
 
-  test "renders the aside with trending hashtags for a signed in visitor" do
+  test "omits the aside so results span the full column" do
     sign_in users(:one)
 
     get search_path(query: "sunset")
 
-    assert_select "aside.app-shell__aside .aside-hashtags" do
-      assert_select "a[href=?]", search_path(query: "##{hash_tags(:one).name}")
-    end
+    assert_select "nav.app-rail"
+    assert_select "aside.app-shell__aside", false
   end
 
   test "marks Explore as the current rail section, since search is its query surface" do
@@ -36,12 +35,6 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     get search_path(query: "sunset")
 
     assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Explore/
-  end
-
-  test "omits the aside for an anonymous visitor" do
-    get search_path(query: "sunset")
-
-    assert_select "aside.app-shell__aside", false
   end
 
   test "echoes the query back as a chip in the result header" do
@@ -164,7 +157,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   test "skips the people lookup entirely for a hashtag query, which can never match a username" do
     sign_in users(:one)
 
-    assert_queries_count(12) { get search_path(query: "##{hash_tags(:one).name}") }
+    assert_queries_count(9) { get search_path(query: "##{hash_tags(:one).name}") }
 
     assert_select ".people-results", false
   end

@@ -36,14 +36,13 @@ class ExploreControllerTest < ActionDispatch::IntegrationTest
     assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Explore/
   end
 
-  test "renders the aside with trending hashtags" do
+  test "omits the aside so the grid spans the full column" do
     sign_in @user
 
     get explore_path
 
-    assert_select "aside.app-shell__aside .aside-hashtags" do
-      assert_select "a[href=?]", search_path(query: "##{hash_tags(:one).name}")
-    end
+    assert_select "nav.app-rail"
+    assert_select "aside.app-shell__aside", false
   end
 
   test "paginates the grid to 12 per page" do
@@ -61,7 +60,7 @@ class ExploreControllerTest < ActionDispatch::IntegrationTest
     create_post!(users(:two), description: "second discoverable post")
     sign_in @user
 
-    assert_queries_count(11) { get explore_path }
+    assert_queries_count(8) { get explore_path }
 
     assert_select ".thumbnail-grid .wrapper", count: 2
   end

@@ -27,6 +27,10 @@ class PostsController < ApplicationController
 
   private
 
+  def render_aside?
+    false
+  end
+
   def post_params
     params.require(:post).permit(:description, :image)
   end
