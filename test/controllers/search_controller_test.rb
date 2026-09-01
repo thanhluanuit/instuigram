@@ -96,6 +96,51 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_select ".empty-state p", /No posts match/
   end
 
+  test "with a username query, lists the matching person" do
+    get search_path(query: "user_two")
+
+    assert_select ".people-result .people-result__name", text: users(:two).username
+  end
+
+  test "with a query matching no username, omits the people panel" do
+    get search_path(query: "nobody_is_called_this")
+
+    assert_select ".people-results", false
+  end
+
+  test "offers a Follow button for a person the signed in visitor does not follow" do
+    sign_in users(:one)
+
+    get search_path(query: "user_two")
+
+    assert_select ".people-result form.follow-control button", text: "Follow"
+  end
+
+  test "offers an Unfollow button for a person the signed in visitor already follows" do
+    users(:one).following_relationships.create!(followed: users(:two))
+    sign_in users(:one)
+
+    get search_path(query: "user_two")
+
+    assert_select ".people-result form.follow-control button", text: "Following"
+  end
+
+  test "omits a follow button for the signed in visitor's own row" do
+    sign_in users(:one)
+
+    get search_path(query: "user_one")
+
+    assert_select ".people-result .people-result__name", text: users(:one).username
+    assert_select ".people-result form.follow-control", false
+  end
+
+  test "omits follow buttons from people results for an anonymous visitor" do
+    get search_path(query: "user_two")
+
+    assert_select ".people-result .people-result__name", text: users(:two).username
+    assert_select ".people-result form.follow-control", false
+  end
+
   test "with a multi-word query, finds the post whose description contains those words" do
     get search_path(query: "walk beach")
 
@@ -108,7 +153,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     create_post!(users(:two), description: "shared marker two")
     index_pending_posts!
 
-    assert_queries_count(3) { get search_path(query: "shared marker") }
+    assert_queries_count(4) { get search_path(query: "shared marker") }
 
     assert_select ".page-title", "Top posts"
     assert_select ".thumbnail-grid .wrapper", count: 2
