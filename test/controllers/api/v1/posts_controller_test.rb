@@ -11,12 +11,14 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     get api_v1_posts_path
 
     assert_response :unauthorized
+    assert_response_schema_confirm(401)
   end
 
   test "index returns only the current user's posts" do
     get api_v1_posts_path, headers: auth_headers
 
     assert_response :success
+    assert_response_schema_confirm(200)
     ids = JSON.parse(response.body)["posts"].map { |post| post["id"] }
     assert_includes ids, posts(:one).id
     assert_not_includes ids, posts(:two).id
@@ -28,6 +30,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     get api_v1_posts_path, headers: auth_headers
 
     assert_response :success
+    assert_response_schema_confirm(200)
     body = JSON.parse(response.body)
     assert_equal 10, body["posts"].size
     assert_equal 1, body["current_page"]
@@ -38,6 +41,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     get api_v1_post_path(posts(:one)), headers: auth_headers
 
     assert_response :success
+    assert_response_schema_confirm(200)
     assert_equal posts(:one).description, JSON.parse(response.body)["description"]
   end
 
@@ -45,6 +49,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     get api_v1_post_path(posts(:two)), headers: auth_headers
 
     assert_response :not_found
+    assert_response_schema_confirm(404)
   end
 
   test "create with valid params creates a post owned by the token's user" do
@@ -55,6 +60,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :created
+    assert_response_schema_confirm(201)
     assert_equal @user, Post.last.user
   end
 
@@ -64,6 +70,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
+    assert_response_schema_confirm(422)
   end
 
   test "destroy removes the current user's own post" do
@@ -80,6 +87,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     delete api_v1_post_path(posts(:two)), headers: auth_headers
 
     assert_response :not_found
+    assert_response_schema_confirm(404)
     assert Post.exists?(posts(:two).id)
   end
 

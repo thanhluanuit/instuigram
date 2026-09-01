@@ -7,6 +7,7 @@ class Api::V1::ClientsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :created
+    assert_response_schema_confirm(201)
     body = JSON.parse(response.body)
     assert_equal Client.last.client_id, body["client_id"]
     assert Client.last.authenticate_client_secret(body["client_secret"])
@@ -19,6 +20,7 @@ class Api::V1::ClientsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unauthorized
+    assert_response_schema_confirm(401)
     assert_equal({ "message" => "Invalid email or password" }, JSON.parse(response.body))
   end
 
@@ -26,6 +28,7 @@ class Api::V1::ClientsControllerTest < ActionDispatch::IntegrationTest
     post api_v1_clients_path, params: { email: "nobody@example.com", password: "whatever" }
 
     assert_response :unauthorized
+    assert_response_schema_confirm(401)
     assert_equal({ "message" => "Invalid email or password" }, JSON.parse(response.body))
   end
 end

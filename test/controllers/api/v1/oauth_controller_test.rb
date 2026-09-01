@@ -12,6 +12,7 @@ class Api::V1::OauthControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_response :created
+    assert_response_schema_confirm(201)
     assert_equal "Bearer", JSON.parse(response.body)["token_type"]
     assert_not_nil JSON.parse(response.body)["access_token"]
   end
@@ -25,6 +26,7 @@ class Api::V1::OauthControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_response :unauthorized
+    assert_response_schema_confirm(401)
     assert_nil JSON.parse(response.body)["access_token"]
     assert_equal "Invalid credentials", JSON.parse(response.body)["message"]
   end
@@ -40,6 +42,15 @@ class Api::V1::OauthControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_response :unauthorized
+    assert_response_schema_confirm(401)
     assert_equal "Invalid credentials", JSON.parse(response.body)["message"]
+  end
+
+  test "without the token parameter, responds bad request" do
+    post api_v1_oauth_path, params: {}
+
+    assert_response :bad_request
+    assert_response_schema_confirm(400)
+    assert_includes JSON.parse(response.body)["message"], "token"
   end
 end
