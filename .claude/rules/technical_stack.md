@@ -36,6 +36,10 @@
 - **Linters**: RuboCop, via `rubocop-rails-omakase` (Rails 8's own default style — inherited wholesale in `.rubocop.yml` via `inherit_gem`, no project-specific overrides yet). Run locally with `bundle exec rubocop` (`-A` to autofix); enforced as a CI step. No ERB Lint.
 - **Security scanners**: Brakeman (`development, test` group in the Gemfile, `require: false`), run via `bundle exec brakeman` locally and as a CI step (`.github/workflows/ci.yml`); all confidence levels (Weak/Medium/High) fail the build, no `-w` filter. No `config/brakeman.ignore.json` exists yet (there's nothing to baseline — Brakeman currently reports 0 warnings); if a future false positive needs suppressing, baseline it there with a justification note (`brakeman -I` generates the file) rather than raising `-w`. `bundler-audit` (same Gemfile group, `require: false`) flags gems with known CVEs against the `ruby-advisory-db`; run locally via `bundle exec bundle-audit check --update` (the `--update` refreshes the advisory DB first) and enforced as a CI step alongside Brakeman — see [`security.md`](security.md).
 
+## Developer tooling
+
+- **Model schema annotations**: `annotaterb` 4.24.0 (`gem "annotaterb"`, `group :development` only) — the maintained fork of the unmaintained `annotate` gem, which last shipped in 2021 and breaks on Rails 7.1+. Writes the `# == Schema Information` block (columns, types, defaults, indexes, foreign keys) above each `app/models/*.rb` class. Configured in `.annotaterb.yml` for **models only** — `exclude_tests`/`exclude_fixtures`/`exclude_factories`/`exclude_serializers` are all `true`, and `routes: false`, so `test/`, fixtures and `config/routes.rb` stay clean. `lib/tasks/annotate_rb.rake` hooks the `db:migrate`/`db:rollback` tasks so annotations can't drift; skip it with `ANNOTATERB_SKIP_ON_DB_TASKS=1`. Regenerate by hand with `bundle exec annotaterb models`. The blocks are generated, never authored — see the carve-out in [`code_style.md`](code_style.md)'s otherwise-absolute "no comments in code" rule.
+
 ## Conventions for keeping this file honest
 
 - Bump the versions here in the same PR that bumps them in `Gemfile.lock`.
