@@ -36,12 +36,13 @@ RSpec.describe "Api::V1::Posts", type: :request do
 
         before do
           build_post(user)
+          build_post(user)
           build_post(other_user)
         end
 
         run_test! do |response|
           body = JSON.parse(response.body)
-          expect(body["posts"].map { |p| p["id"] }).to eq(user.posts.pluck(:id))
+          expect(body["posts"].map { |p| p["id"] }).to eq(user.posts.created_recently.pluck(:id))
           expect(body["current_page"]).to eq(1)
           expect(body["total_pages"]).to eq(1)
         end
