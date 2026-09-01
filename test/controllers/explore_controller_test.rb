@@ -18,13 +18,14 @@ class ExploreControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", post_path(posts(:two))
   end
 
-  test "omits posts by people the signed-in user already follows" do
+  test "omits posts by people the signed-in user already follows, emptying the grid" do
     @user.following_relationships.create!(followed: users(:two))
     sign_in @user
 
     get explore_path
 
     assert_select "a[href=?]", post_path(posts(:two)), count: 0
+    assert_select ".empty-state p", /already following everyone/
   end
 
   test "renders the navigation rail with Explore marked current" do
@@ -56,20 +57,11 @@ class ExploreControllerTest < ActionDispatch::IntegrationTest
     assert_select ".thumbnail-grid .wrapper", count: 1
   end
 
-  test "when the user follows everyone with posts, shows the Explore empty state" do
-    @user.following_relationships.create!(followed: users(:two))
-    sign_in @user
-
-    get explore_path
-
-    assert_select ".empty-state p", /already following everyone/
-  end
-
   test "avoids N+1 queries when rendering multiple posts in the grid" do
     create_post!(users(:two), description: "second discoverable post")
     sign_in @user
 
-    assert_queries_count(12) { get explore_path }
+    assert_queries_count(11) { get explore_path }
 
     assert_select ".thumbnail-grid .wrapper", count: 2
   end

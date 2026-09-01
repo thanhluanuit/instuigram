@@ -1,6 +1,6 @@
-<% if @hashtags&.any? %>
+<% if trending_hashtags.any? %>
   <% content_for :aside do %>
-    <%= render "layouts/aside_hashtags", hashtags: @hashtags %>
+    <%= render "layouts/aside_hashtags", hashtags: trending_hashtags %>
   <% end %>
 <% end %>
 

@@ -1,6 +1,6 @@
-<% if @hashtags&.any? %>
+<% if trending_hashtags.any? %>
   <% content_for :aside do %>
-    <%= render "layouts/aside_hashtags", hashtags: @hashtags %>
+    <%= render "layouts/aside_hashtags", hashtags: trending_hashtags %>
   <% end %>
 <% end %>
 
@@ -22,13 +22,8 @@
   <%= render "search/people", users: @users, following_ids: @following_ids %>
 <% end %>
 
-<% if @posts.any? %>
-  <div class="thumbnail-card">
-    <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>
-  </div>
-<% else %>
-  <div class="empty-state">
-    <i class="fa fa-search"></i>
-    <p>No posts match <%= params[:query].presence || "that search" %>. Try another word or a #hashtag.</p>
-  </div>
-<% end %>
+<div class="thumbnail-card">
+  <%= render partial: "posts/thumbnail_grid",
+             locals: { posts: @posts, empty_icon: "search",
+                       empty_message: "No posts match #{params[:query].presence || "that search"}. Try another word or a #hashtag." } %>
+</div>

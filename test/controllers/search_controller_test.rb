@@ -96,13 +96,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_select ".empty-state p", /No posts match/
   end
 
-  test "with a username query, lists the matching person" do
-    get search_path(query: "user_two")
-
-    assert_select ".people-result .people-result__name", text: users(:two).username
-  end
-
-  test "when only a person matches, omits the posts result header" do
+  test "when only a person matches, lists them and omits the posts result header" do
     get search_path(query: "user_two")
 
     assert_select ".people-result .people-result__name", text: users(:two).username
@@ -165,6 +159,14 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
 
     assert_select ".page-title", "Top posts"
     assert_select ".thumbnail-grid .wrapper", count: 2
+  end
+
+  test "skips the people lookup entirely for a hashtag query, which can never match a username" do
+    sign_in users(:one)
+
+    assert_queries_count(12) { get search_path(query: "##{hash_tags(:one).name}") }
+
+    assert_select ".people-results", false
   end
 
   private
