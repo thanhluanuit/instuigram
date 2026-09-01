@@ -2,6 +2,7 @@ class User < ApplicationRecord
   include Followable
   include Conversable
   include Avatarable
+  include Presenceable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -21,8 +22,4 @@ class User < ApplicationRecord
 
     where("username ILIKE ?", "%#{sanitize_sql_like(query)}%")
   }
-
-  def online?
-    last_seen_at.present? && last_seen_at > 1.minute.ago
-  end
 end
