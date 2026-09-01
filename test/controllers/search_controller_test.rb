@@ -102,6 +102,14 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_select ".people-result .people-result__name", text: users(:two).username
   end
 
+  test "when only a person matches, omits the posts result header" do
+    get search_path(query: "user_two")
+
+    assert_select ".people-result .people-result__name", text: users(:two).username
+    assert_select ".page-title", false
+    assert_select ".search-page__term", "user_two"
+  end
+
   test "with a query matching no username, omits the people panel" do
     get search_path(query: "nobody_is_called_this")
 

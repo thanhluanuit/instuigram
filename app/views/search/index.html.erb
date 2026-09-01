@@ -6,10 +6,12 @@
 
 <% if params[:query].present? %>
   <div class="search-page__header">
-    <div class="page-header">
-      <h1 class="page-title">Top posts</h1>
-      <p class="page-subtitle"><%= pluralize(@posts.total_count, "result") %></p>
-    </div>
+    <% if @posts.any? %>
+      <div class="page-header">
+        <h1 class="page-title">Top posts</h1>
+        <p class="page-subtitle"><%= pluralize(@posts.total_count, "result") %></p>
+      </div>
+    <% end %>
     <p class="search-page__query">
       Matching <span class="search-page__term"><%= params[:query] %></span>
     </p>
