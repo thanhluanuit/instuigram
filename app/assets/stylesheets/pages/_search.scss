@@ -20,15 +20,54 @@
   text-transform: none;
 }
 
-.search-page__results {
+.people-results {
   @extend %surface-card;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
   padding: $space-5;
+  margin-bottom: $space-5;
+}
 
-  .thumbnail-grid {
-    padding: 0;
+.people-results__title {
+  @extend %meta-mono;
+  letter-spacing: .12em;
+  color: $ink-muted;
+}
+
+.people-result {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  .avatar {
+    @include avatar(44px);
+    background-color: $surface-hover;
   }
 
-  .pagination {
-    margin-top: $space-5;
+  .follow-control {
+    margin-left: auto;
   }
+}
+
+.people-result__identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.people-result__name {
+  color: $ink;
+  font-size: $text-md;
+  font-weight: $weight-semibold;
+
+  &:hover {
+    color: $ink;
+    text-decoration: none;
+  }
+}
+
+.people-result__meta {
+  color: $ink-muted;
+  font-size: $text-xs;
 }

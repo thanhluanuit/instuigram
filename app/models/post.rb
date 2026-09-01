@@ -9,6 +9,11 @@ class Post < ApplicationRecord
   end
 
   scope :created_recently, -> { order(created_at: :desc) }
+  scope :discoverable_for, ->(user) {
+    where.not(user_id: user.id)
+      .where.not(user_id: Follow.select(:followed_id).where(follower_id: user.id))
+      .order(Arel.sql("posts.reactions_count + posts.comments_count DESC"), created_at: :desc)
+  }
 
   has_many :post_hash_tags, dependent: :destroy
   has_many :hash_tags, through: :post_hash_tags

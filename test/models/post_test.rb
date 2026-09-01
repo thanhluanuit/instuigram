@@ -61,6 +61,38 @@ class PostTest < ActiveSupport::TestCase
     assert_equal [ newer, older ], ordered
   end
 
+  test "discoverable_for excludes the given user's own posts" do
+    discoverable = Post.discoverable_for(@user)
+
+    assert_not_includes discoverable, posts(:one)
+    assert_includes discoverable, posts(:two)
+  end
+
+  test "discoverable_for excludes posts by users the given user already follows" do
+    @user.following_relationships.create!(followed: users(:two))
+
+    assert_not_includes Post.discoverable_for(@user), posts(:two)
+  end
+
+  test "discoverable_for ranks a more engaged post above a newer one" do
+    popular = travel_to(2.days.ago) { create_post!(users(:two), description: "popular") }
+    quiet   = travel_to(1.day.ago) { create_post!(users(:two), description: "quiet") }
+    popular.reactions.create!(user: @user, reaction_type: :love)
+
+    ordered = Post.discoverable_for(@user).where(id: [ popular.id, quiet.id ]).to_a
+
+    assert_equal [ popular, quiet ], ordered
+  end
+
+  test "discoverable_for falls back to recency for equally engaged posts" do
+    older = travel_to(2.days.ago) { create_post!(users(:two), description: "older") }
+    newer = travel_to(1.day.ago) { create_post!(users(:two), description: "newer") }
+
+    ordered = Post.discoverable_for(@user).where(id: [ older.id, newer.id ]).to_a
+
+    assert_equal [ newer, older ], ordered
+  end
+
   test "extracts every #word token from the description" do
     post = build_post(description: "loving this #sunset over the #beach today", attach_image: false)
 

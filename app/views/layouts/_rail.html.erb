@@ -7,6 +7,10 @@
     <i class="fa fa-paper-plane-o"></i>
     Messages
   <% end %>
+  <%= link_to explore_path, nav_rail_link_options(:explore) do %>
+    <i class="fa fa-search"></i>
+    Explore
+  <% end %>
   <% ApplicationHelper::NAV_RAIL_PLACEHOLDERS.each do |label, icon| %>
     <span class="app-rail__item app-rail__item--inert" aria-hidden="true">
       <i class="fa fa-<%= icon %>"></i>
