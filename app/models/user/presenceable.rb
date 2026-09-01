@@ -8,4 +8,8 @@ module User::Presenceable
   def online?
     last_seen_at.present? && last_seen_at > ONLINE_WINDOW.ago
   end
+
+  def touch_last_seen!
+    update_column(:last_seen_at, Time.current)
+  end
 end

@@ -16,4 +16,12 @@ class User::PresenceableTest < ActiveSupport::TestCase
   test "online? is false when the user has never been seen" do
     assert_not users(:one).online?
   end
+
+  test "touch_last_seen! marks the user as online" do
+    assert_not users(:one).online?
+
+    users(:one).touch_last_seen!
+
+    assert_predicate users(:one).reload, :online?
+  end
 end
