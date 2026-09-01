@@ -40,12 +40,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "aside.app-shell__aside", false
   end
 
-  test "renders the aside on the settings page" do
+  test "omits the aside on the settings page so the form spans the full column" do
     sign_in users(:one)
 
     get edit_user_path(users(:one))
 
-    assert_select "aside.app-shell__aside .aside-account__name", text: users(:one).username
+    assert_select "nav.app-rail"
+    assert_select "aside.app-shell__aside", false
   end
 
   test "shows the bio when the profile has one" do

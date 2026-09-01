@@ -3,22 +3,21 @@ class ApplicationController < ActionController::Base
 
   layout :layout_by_resource
 
-  helper_method :render_aside?
+  helper_method :render_aside?, :aside_suggestions
 
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :load_aside_suggestions, if: :render_aside?
 
   private
 
   def render_aside?
-    user_signed_in? && request.get? && request.format.symbol == :html && !turbo_frame_request?
+    user_signed_in? && !turbo_frame_request?
   end
 
-  def load_aside_suggestions
-    @aside_suggestions = User.suggested_for(current_user)
-                             .includes(avatar_attachment: :blob)
-                             .limit(3)
-                             .load
+  def aside_suggestions
+    @aside_suggestions ||= User.suggested_for(current_user)
+                               .includes(avatar_attachment: :blob)
+                               .limit(5)
+                               .load
   end
 
   def layout_by_resource

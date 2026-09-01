@@ -67,6 +67,15 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_select "aside.app-shell__aside .aside-account__name", text: users(:one).username
   end
 
+  test "renders the aside on a conversation reached by a turbo form redirect" do
+    sign_in users(:one)
+
+    get conversation_path(conversations(:one_and_two)),
+        headers: { "HTTP_ACCEPT" => "text/vnd.turbo-stream.html, text/html, application/xhtml+xml" }
+
+    assert_select "aside.app-shell__aside .aside-account__name", text: users(:one).username
+  end
+
   test "renders the inbox with a bounded number of queries" do
     sign_in users(:one)
 
