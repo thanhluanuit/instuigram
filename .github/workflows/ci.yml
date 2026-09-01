@@ -133,6 +133,11 @@ jobs:
       - name: Run test suite
         run: bin/rails test
 
+      - name: Check model annotations match the schema
+        run: |
+          bundle exec annotaterb models
+          git diff --exit-code app/models
+
   system_test:
     runs-on: ubuntu-latest
     timeout-minutes: 20

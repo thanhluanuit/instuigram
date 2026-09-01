@@ -18,6 +18,10 @@
 #  fk_rails_...  (followed_id => users.id)
 #  fk_rails_...  (follower_id => users.id)
 #
+# Check Constraints
+#
+#  follows_no_self_follow  (follower_id <> followed_id)
+#
 class Follow < ApplicationRecord
   belongs_to :follower, class_name: "User", counter_cache: :following_count
   belongs_to :followed, class_name: "User", counter_cache: :followers_count
