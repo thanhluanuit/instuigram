@@ -32,6 +32,12 @@ module ActiveStorageTestHelper
   end
 end
 
+module UserTestHelper
+  def build_user(email: "new_user@example.com", password: "password123", website: nil)
+    User.new(email: email, password: password, username: "new_user", website: website)
+  end
+end
+
 module PostTestHelper
   def create_post!(user, description:)
     post = user.posts.new(description: description)
@@ -70,6 +76,7 @@ class ActiveSupport::TestCase
   end
   fixtures :all
   include ActiveStorageTestHelper
+  include UserTestHelper
   include PostTestHelper
   include TurboStreamTestHelper
   include ActionCable::TestHelper

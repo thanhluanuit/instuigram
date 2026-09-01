@@ -1,5 +1,5 @@
 class PresenceChannel < ApplicationCable::Channel
-  periodically :touch_presence, every: 30.seconds
+  periodically :touch_presence, every: User::Presenceable::HEARTBEAT_INTERVAL
 
   def subscribed
     return reject unless current_user
@@ -11,14 +11,14 @@ class PresenceChannel < ApplicationCable::Channel
   def unsubscribed
     return unless current_user
 
-    current_user.update_column(:last_seen_at, Time.current)
+    current_user.touch_last_seen
   end
 
   private
 
   def touch_presence
     came_online = !current_user.online?
-    current_user.update_column(:last_seen_at, Time.current)
+    current_user.touch_last_seen
 
     return unless came_online
 

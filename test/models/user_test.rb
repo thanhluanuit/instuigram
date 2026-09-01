@@ -40,29 +40,6 @@ class UserTest < ActiveSupport::TestCase
     assert user.admin?
   end
 
-  test "can have an attached avatar" do
-    user = build_user
-    attach_test_image(user.avatar)
-
-    assert user.avatar.attached?
-  end
-
-  test "is invalid with a non-image avatar" do
-    user = build_user
-    attach_non_image_file(user.avatar)
-
-    assert_not user.valid?
-    assert_includes user.errors[:avatar], "must be a PNG, JPEG, or WebP"
-  end
-
-  test "is invalid with an avatar over the size limit" do
-    user = build_user
-    attach_oversized_image(user.avatar)
-
-    assert_not user.valid?
-    assert_includes user.errors[:avatar], "must be smaller than 10MB"
-  end
-
   test "has many posts through the :one fixture" do
     assert_equal [ posts(:one) ], users(:one).posts
   end
@@ -107,22 +84,6 @@ class UserTest < ActiveSupport::TestCase
     user.destroy
 
     assert_not Reaction.exists?(reaction_id)
-  end
-
-  test "online? is true when last seen within the last minute" do
-    users(:one).update_column(:last_seen_at, 30.seconds.ago)
-
-    assert_predicate users(:one).reload, :online?
-  end
-
-  test "online? is false when last seen more than a minute ago" do
-    users(:one).update_column(:last_seen_at, 2.minutes.ago)
-
-    assert_not users(:one).reload.online?
-  end
-
-  test "online? is false when the user has never been seen" do
-    assert_not users(:one).online?
   end
 
   test "unread_messages_count sums unread counts across all conversations" do
@@ -190,11 +151,5 @@ class UserTest < ActiveSupport::TestCase
     users(:two).update!(followers_count: 1)
 
     assert_equal [ users(:admin), users(:two) ], User.suggested_for(users(:one)).to_a
-  end
-
-  private
-
-  def build_user(email: "new_user@example.com", password: "password123", username: "new_user", website: nil)
-    User.new(email: email, password: password, username: username, website: website)
   end
 end
