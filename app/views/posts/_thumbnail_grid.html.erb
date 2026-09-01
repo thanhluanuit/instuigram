@@ -12,7 +12,7 @@
   <%= paginate posts %>
 <% else %>
   <div class="empty-state">
-    <i class="fa fa-camera"></i>
-    <p>No posts yet.</p>
+    <i class="fa fa-<%= local_assigns.fetch(:empty_icon, "camera") %>"></i>
+    <p><%= local_assigns.fetch(:empty_message, "No posts yet.") %></p>
   </div>
 <% end %>

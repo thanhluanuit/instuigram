@@ -1,0 +1,16 @@
+<% if @hashtags&.any? %>
+  <% content_for :aside do %>
+    <%= render "layouts/aside_hashtags", hashtags: @hashtags %>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h1 class="page-title">Explore</h1>
+  <p class="page-subtitle">Posts from people you don't follow yet</p>
+</div>
+
+<div class="thumbnail-card">
+  <%= render partial: "posts/thumbnail_grid",
+             locals: { posts: @posts, empty_icon: "compass",
+                       empty_message: "You're already following everyone posting right now." } %>
+</div>

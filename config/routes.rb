@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   end
   resources :comments, only: [ :destroy ]
   get "search" => "search#index"
+  get "explore" => "explore#index"
 
   resources :conversations, only: [ :index, :show, :new, :create ] do
     resources :messages, only: [ :create ]
