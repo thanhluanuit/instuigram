@@ -1,4 +1,5 @@
 require "simplecov"
+SimpleCov.command_name "Minitest"
 SimpleCov.start "rails"
 
 require File.expand_path("../../config/environment", __FILE__)
