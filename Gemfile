@@ -45,7 +45,7 @@ gem "kaminari"
 gem "sidekiq", "~> 8.0"
 gem "elasticsearch-model", "~> 8.0"
 gem "elasticsearch-rails", "~> 8.0"
-# Serve the generated OpenAPI document and its Swagger UI at /api-docs.
+# Serve swagger/v1/swagger.yaml and its Swagger UI at /api-docs.
 gem "rswag-api"
 gem "rswag-ui"
 
@@ -59,12 +59,12 @@ group :development, :test do
   gem "bundler-audit", require: false
   gem "rubocop-rails-omakase", require: false
   gem "bullet"
-  gem "rspec-rails"
-  gem "rswag-specs"
 end
 
 group :test do
   gem "simplecov", require: false
+  # Validates API responses against swagger/v1/swagger.yaml from the Minitest suite.
+  gem "committee-rails"
 end
 
 group :development do
