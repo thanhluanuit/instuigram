@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  before_action :redirect_signed_in_to_explore
   before_action :load_trending_hashtags, if: :render_aside?
 
   def index
@@ -11,6 +12,10 @@ class SearchController < ApplicationController
   end
 
   private
+
+  def redirect_signed_in_to_explore
+    redirect_to explore_path if user_signed_in? && search_params[:query].blank?
+  end
 
   def load_trending_hashtags
     @hashtags = HashTag.trending.limit(6)

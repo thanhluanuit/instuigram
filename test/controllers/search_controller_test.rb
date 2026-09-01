@@ -12,6 +12,14 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_select ".page-title", false
   end
 
+  test "with a blank query for a signed in visitor, redirects to Explore" do
+    sign_in users(:one)
+
+    get search_path
+
+    assert_redirected_to explore_path
+  end
+
   test "renders the aside with trending hashtags for a signed in visitor" do
     sign_in users(:one)
 
