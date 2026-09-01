@@ -1,0 +1,281 @@
+---
+openapi: 3.0.1
+info:
+  title: Instuigram API V1
+  version: v1
+  description: Register a client with a user's credentials, exchange it for a bearer
+    token, then read and write that user's posts.
+servers:
+- url: http://localhost:3000
+  description: Development
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Not found
+      required:
+      - message
+    ClientCredentials:
+      type: object
+      properties:
+        client_id:
+          type: string
+          format: uuid
+        client_secret:
+          type: string
+          description: Returned only once, at creation time. It is stored hashed.
+      required:
+      - client_id
+      - client_secret
+    AccessToken:
+      type: object
+      properties:
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          example: 3600
+        access_token:
+          type: string
+      required:
+      - token_type
+      - expires_in
+      - access_token
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+          nullable: true
+        image_url:
+          type: string
+          nullable: true
+        hash_tags:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - description
+      - image_url
+      - hash_tags
+      - created_at
+    PostsPage:
+      type: object
+      properties:
+        posts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Post"
+        current_page:
+          type: integer
+        total_pages:
+          type: integer
+      required:
+      - posts
+      - current_page
+      - total_pages
+paths:
+  "/api/v1/clients":
+    post:
+      summary: Registers an API client for a user
+      tags:
+      - Clients
+      description: Exchanges a user's sign-in credentials for a client id and secret.
+        The secret is returned only in this response and is stored hashed.
+      parameters: []
+      responses:
+        '201':
+          description: client registered
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ClientCredentials"
+        '401':
+          description: invalid email or password
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+              - email
+              - password
+  "/api/v1/oauth":
+    post:
+      summary: Exchanges client credentials for an access token
+      tags:
+      - Oauth
+      description: 'Returns a bearer token valid for one hour. Send it as `Authorization:
+        Bearer <access_token>` on every posts request.'
+      parameters: []
+      responses:
+        '201':
+          description: access token issued
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AccessToken"
+        '401':
+          description: invalid client credentials
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '400':
+          description: token parameter missing
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: object
+                  properties:
+                    client_id:
+                      type: string
+                      format: uuid
+                    client_secret:
+                      type: string
+                  required:
+                  - client_id
+                  - client_secret
+              required:
+              - token
+  "/api/v1/posts":
+    get:
+      summary: Lists the authenticated user's posts
+      tags:
+      - Posts
+      description: Newest first, ten per page. Only posts owned by the token's user
+        are returned.
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      responses:
+        '200':
+          description: posts listed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PostsPage"
+        '401':
+          description: missing or invalid bearer token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    post:
+      summary: Creates a post for the authenticated user
+      tags:
+      - Posts
+      description: Multipart upload. An image is required; hashtags are parsed out
+        of the description.
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: post created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Post"
+        '422':
+          description: image missing
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                post[image]:
+                  type: string
+                  format: binary
+                post[description]:
+                  type: string
+                  maxLength: 2200
+              required:
+              - post[image]
+        required: true
+  "/api/v1/posts/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Shows one of the authenticated user's posts
+      tags:
+      - Posts
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: post found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Post"
+        '404':
+          description: post belongs to another user
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    delete:
+      summary: Deletes one of the authenticated user's posts
+      tags:
+      - Posts
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: post deleted
+        '404':
+          description: post belongs to another user
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
