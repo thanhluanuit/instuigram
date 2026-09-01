@@ -1,12 +1,22 @@
 ---
 paths:
   - "test/**"
+  - "spec/**"
 ---
 
 # Testing
 
-This project uses Minitest (Rails' default) with fixtures — not RSpec, not
-FactoryBot (see [`technical_stack.md`](technical_stack.md)). SimpleCov
+This project uses Minitest (Rails' default) with fixtures — not FactoryBot
+(see [`technical_stack.md`](technical_stack.md)). **RSpec exists for exactly
+one purpose: driving rswag under `spec/requests/api/`**, which generates
+`swagger/v1/swagger.yaml` and the `/api-docs` Swagger UI from executable
+request specs — rswag's DSL has no Minitest equivalent. That exception does
+not generalize: a new model, controller, helper, mailer or system test goes
+in `test/` as Minitest, and `spec/` grows only when an API endpoint is added
+or its contract changes. The two suites are complementary, not redundant —
+the Minitest API tests in `test/controllers/api/v1/` remain the regression
+safety net, while the specs assert the documented contract (status codes plus
+JSON Schema validation of each response body). SimpleCov
 measures coverage locally (`coverage/index.html`, generated on every
 `bin/rails test` run), report-only — CI (`.github/workflows/ci.yml`) prints
 the summary percentage to the `test` job's log but doesn't enforce a
@@ -40,6 +50,19 @@ that keep it worth trusting, and match what `test/` already does.
   "request spec" gives in RSpec. Assert on response status, redirects, DB
   state (`assert_difference`), and `assert_select` for markup — not on
   instance variables.
+- **API contract specs** (`spec/requests/api/v1`, RSpec + rswag) describe each
+  endpoint in rswag's `path`/`response` DSL. They are documentation and test
+  at once: `run_test!` issues the real request, asserts the declared status,
+  and validates the body against the `schema` — so a response that drifts from
+  the published contract fails the build. Declare shared shapes once in
+  `spec/swagger_helper.rb` under `components.schemas` and `$ref` them; don't
+  inline a response body shape in a spec. Bearer auth comes from
+  `security [bearer_auth: []]` plus a `let(:Authorization)` — that exact
+  constant-looking name is required, since rswag hardcodes `Authorization` as
+  the header for any non-`apiKey` scheme. Build records inline (plain
+  `ActiveRecord`, no fixtures and no FactoryBot); the shared `test_instuigram`
+  database still holds the Minitest fixture rows, so scope every assertion to
+  the records the spec created rather than to a global `Model.count`.
 - **System tests** (`test/system`, Capybara + Selenium already in the Gemfile)
   are not feature-complete coverage and never will be — the faster layers
   above do the heavy lifting. A system test earns its place only when the
