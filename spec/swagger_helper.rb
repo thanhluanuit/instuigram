@@ -28,6 +28,7 @@ RSpec.configure do |config|
         schemas: {
           Error: {
             type: :object,
+            additionalProperties: false,
             properties: {
               message: { type: :string, example: "Not found" }
             },
@@ -35,6 +36,7 @@ RSpec.configure do |config|
           },
           ClientCredentials: {
             type: :object,
+            additionalProperties: false,
             properties: {
               client_id: { type: :string, format: :uuid },
               client_secret: {
@@ -46,6 +48,7 @@ RSpec.configure do |config|
           },
           AccessToken: {
             type: :object,
+            additionalProperties: false,
             properties: {
               token_type: { type: :string, example: "Bearer" },
               expires_in: { type: :integer, example: 3600 },
@@ -55,6 +58,7 @@ RSpec.configure do |config|
           },
           Post: {
             type: :object,
+            additionalProperties: false,
             properties: {
               id: { type: :integer },
               description: { type: :string, nullable: true },
@@ -66,6 +70,7 @@ RSpec.configure do |config|
           },
           PostsPage: {
             type: :object,
+            additionalProperties: false,
             properties: {
               posts: { type: :array, items: { "$ref" => "#/components/schemas/Post" } },
               current_page: { type: :integer },

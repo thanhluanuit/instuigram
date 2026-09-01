@@ -17,6 +17,7 @@ components:
   schemas:
     Error:
       type: object
+      additionalProperties: false
       properties:
         message:
           type: string
@@ -25,6 +26,7 @@ components:
       - message
     ClientCredentials:
       type: object
+      additionalProperties: false
       properties:
         client_id:
           type: string
@@ -37,6 +39,7 @@ components:
       - client_secret
     AccessToken:
       type: object
+      additionalProperties: false
       properties:
         token_type:
           type: string
@@ -52,6 +55,7 @@ components:
       - access_token
     Post:
       type: object
+      additionalProperties: false
       properties:
         id:
           type: integer
@@ -76,6 +80,7 @@ components:
       - created_at
     PostsPage:
       type: object
+      additionalProperties: false
       properties:
         posts:
           type: array
