@@ -23,10 +23,4 @@ class User::AvatarableTest < ActiveSupport::TestCase
     assert_not user.valid?
     assert_includes user.errors[:avatar], "must be smaller than 10MB"
   end
-
-  private
-
-  def build_user
-    User.new(email: "avatar_user@example.com", password: "password123", username: "avatar_user")
-  end
 end

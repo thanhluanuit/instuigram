@@ -152,10 +152,4 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal [ users(:admin), users(:two) ], User.suggested_for(users(:one)).to_a
   end
-
-  private
-
-  def build_user(email: "new_user@example.com", password: "password123", username: "new_user", website: nil)
-    User.new(email: email, password: password, username: username, website: website)
-  end
 end
