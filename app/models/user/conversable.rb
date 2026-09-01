@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module User::Conversable
   extend ActiveSupport::Concern
 
