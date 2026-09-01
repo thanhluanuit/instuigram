@@ -1,1 +1,7 @@
+<% if user_signed_in? %>
+  <% content_for :aside do %>
+    <%= render "posts/aside_author", user: @post.user %>
+  <% end %>
+<% end %>
+
 <%= render partial: "posts/detail", locals: { post: @post, user_reaction: @user_reaction, reaction_frame_id: dom_id(@post, :reaction) } %>

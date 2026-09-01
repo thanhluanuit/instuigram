@@ -1,4 +1,6 @@
 class SearchController < ApplicationController
+  before_action :load_trending_hashtags, if: :render_aside?
+
   def index
     search_response = Post.search(search_params[:query])
     @posts = if search_response
@@ -9,6 +11,10 @@ class SearchController < ApplicationController
   end
 
   private
+
+  def load_trending_hashtags
+    @hashtags = HashTag.trending.limit(6)
+  end
 
   def search_params
     params.permit(:query, :page)

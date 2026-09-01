@@ -35,8 +35,8 @@
           <%= yield %>
         </div>
 
-        <% if content_for?(:aside) %>
-          <aside class="app-shell__aside"><%= yield :aside %></aside>
+        <% if render_aside? %>
+          <aside class="app-shell__aside"><%= render "layouts/aside" %></aside>
         <% end %>
       </div>
     </main>

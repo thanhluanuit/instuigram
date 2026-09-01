@@ -1,0 +1,13 @@
+<%= turbo_stream_from current_user, :follows %>
+<div class="aside-account">
+  <div class="avatar">
+    <%= render "users/avatar_image", user: current_user %>
+  </div>
+  <div class="aside-account__identity">
+    <%= link_to current_user.username, user_path(current_user), class: "aside-account__name" %>
+    <ul class="aside-account__meta">
+      <%= render "users/following_count", user: current_user %>
+      <%= render "users/followers_count", user: current_user %>
+    </ul>
+  </div>
+</div>

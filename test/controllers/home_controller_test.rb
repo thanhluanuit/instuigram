@@ -62,7 +62,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     get root_path
 
-    assert_select ".feed-suggestion__name", text: users(:two).username
+    assert_select ".aside-suggestion__name", text: users(:two).username
   end
 
   test "leaves an already-followed user out of the suggestions" do
@@ -71,7 +71,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     get root_path
 
-    assert_select ".feed-suggestion__name", text: users(:two).username, count: 0
+    assert_select ".aside-suggestion__name", text: users(:two).username, count: 0
   end
 
   test "shows the signed-in user's own follow counts in the account card" do

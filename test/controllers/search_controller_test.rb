@@ -12,6 +12,22 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_select ".page-title", false
   end
 
+  test "renders the aside with trending hashtags for a signed in visitor" do
+    sign_in users(:one)
+
+    get search_path(query: "sunset")
+
+    assert_select "aside.app-shell__aside .aside-hashtags" do
+      assert_select "a[href=?]", search_path(query: "##{hash_tags(:one).name}")
+    end
+  end
+
+  test "omits the aside for an anonymous visitor" do
+    get search_path(query: "sunset")
+
+    assert_select "aside.app-shell__aside", false
+  end
+
   test "echoes the query back as a chip in the result header" do
     get search_path(query: "sunset")
 

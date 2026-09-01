@@ -18,6 +18,14 @@ class UsersController < ApplicationController
 
   private
 
+  def render_aside?
+    super && !settings_page?
+  end
+
+  def settings_page?
+    action_name.in?(%w[edit update])
+  end
+
   def user_params
     params.require(:user).permit(:username, :name, :website,
                                  :bio, :email, :phone, :gender, :avatar)

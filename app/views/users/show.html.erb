@@ -1,5 +1,9 @@
 <%= turbo_stream_from @user, :follows %>
 
+<% content_for :aside do %>
+  <%= render "users/aside_profile", user: @user %>
+<% end %>
+
 <div class="profile-header">
   <div class="profile-header__avatar">
     <%= render "users/avatar_image", user: @user, variant: :large %>

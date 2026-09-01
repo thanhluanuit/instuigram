@@ -1,0 +1,24 @@
+<div class="aside-panel aside-profile">
+  <div class="aside-profile__head">
+    <div class="avatar">
+      <%= render "users/avatar_image", user: user %>
+    </div>
+    <div class="aside-profile__identity">
+      <%= link_to user.username, user_path(user), class: "aside-account__name" %>
+      <span class="aside-profile__name"><%= user.name %></span>
+    </div>
+  </div>
+
+  <ul class="aside-account__meta">
+    <%= render "users/followers_count", user: user %>
+    <%= render "users/following_count", user: user %>
+  </ul>
+
+  <% if user.bio.present? %>
+    <p class="aside-profile__bio"><%= user.bio %></p>
+  <% end %>
+
+  <% if external_url(user.website).present? %>
+    <%= link_to user.website, external_url(user.website), class: "aside-profile__website" %>
+  <% end %>
+</div>
