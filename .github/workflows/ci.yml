@@ -138,7 +138,7 @@ jobs:
 
       - name: Check the OpenAPI document is up to date
         run: |
-          RSWAG_DRY_RUN=0 bundle exec rake rswag
+          bundle exec rake rswag
           git diff --exit-code swagger/
 
   system_test:
