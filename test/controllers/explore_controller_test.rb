@@ -27,6 +27,14 @@ class ExploreControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", post_path(posts(:two)), count: 0
   end
 
+  test "renders the navigation rail with Explore marked current" do
+    sign_in @user
+
+    get explore_path
+
+    assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Explore/
+  end
+
   test "renders the aside with trending hashtags" do
     sign_in @user
 

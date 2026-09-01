@@ -22,6 +22,14 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "marks Explore as the current rail section, since search is its query surface" do
+    sign_in users(:one)
+
+    get search_path(query: "sunset")
+
+    assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Explore/
+  end
+
   test "omits the aside for an anonymous visitor" do
     get search_path(query: "sunset")
 

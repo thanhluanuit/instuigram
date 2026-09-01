@@ -2,7 +2,6 @@
 
 module ApplicationHelper
   NAV_RAIL_PLACEHOLDERS = {
-    "Explore" => "search",
     "Activity" => "heart-o",
     "Saved" => "bookmark-o"
   }.freeze
@@ -22,6 +21,7 @@ module ApplicationHelper
     case section
     when :home     then current_page?(root_path)
     when :messages then controller_name == "conversations"
+    when :explore  then controller_name.in?(%w[explore search])
     when :profile  then current_page?(user_path(current_user)) ||
                         current_page?(edit_user_path(current_user)) ||
                         current_page?(edit_user_registration_path)
