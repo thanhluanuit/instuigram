@@ -30,6 +30,7 @@
 ## Testing & quality
 
 - **Test framework**: Minitest (Rails default) — `test/` has `models`, `controllers`, `integration`, `system`, `mailers`, `helpers`
+- **API documentation / contract tests**: `rswag-api` + `rswag-ui` 2.17 mount engines that serve `swagger/v1/swagger.yaml` and Swagger UI at `/api-docs`. Neither depends on RSpec. The document is **hand-maintained** — it is the source of truth, not a build artifact — and `committee-rails` (test group; depends on minitest, not rspec) makes it executable: `assert_response_schema_confirm(<status>)` in `test/controllers/api/v1` validates each real response against it. `rswag-specs` and `rspec-rails` were used briefly to generate the document from an rswag DSL and were removed — a second test framework wasn't worth one gem's DSL; see [`testing.md`](testing.md). Every response schema sets `additionalProperties: false`, so a field *added* to a controller fails the suite too, not just a field removed.
 - **System tests**: Capybara + Selenium, headless Chrome by default (`HEADED=1` for a real window), run in CI by their own `system_test` job via `bin/rails test:system` — `bin/rails test` excludes `test/system` by Rails' default glob, so the two jobs cover disjoint sets
 - **Coverage**: SimpleCov (`SimpleCov.start "rails"` in `test/test_helper.rb`, before any app code loads), report-only — generates `coverage/index.html` locally on every `bin/rails test` run and prints the summary % to CI's `test` job log; no enforced minimum yet.
 - **Factories / fixtures**: fixtures (`test/fixtures/*.yml`) — no FactoryBot

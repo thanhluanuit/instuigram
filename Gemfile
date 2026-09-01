@@ -45,6 +45,9 @@ gem "kaminari"
 gem "sidekiq", "~> 8.0"
 gem "elasticsearch-model", "~> 8.0"
 gem "elasticsearch-rails", "~> 8.0"
+# Serve swagger/v1/swagger.yaml and its Swagger UI at /api-docs.
+gem "rswag-api"
+gem "rswag-ui"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -60,6 +63,8 @@ end
 
 group :test do
   gem "simplecov", require: false
+  # Validates API responses against swagger/v1/swagger.yaml from the Minitest suite.
+  gem "committee-rails"
 end
 
 group :development do

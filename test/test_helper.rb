@@ -79,4 +79,12 @@ end
 
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include Committee::Rails::Test::Methods
+
+  def committee_options
+    @committee_options ||= {
+      schema_path: Rails.root.join("swagger/v1/swagger.yaml").to_s,
+      strict_reference_validation: true
+    }
+  end
 end

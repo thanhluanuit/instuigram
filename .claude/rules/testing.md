@@ -5,8 +5,11 @@ paths:
 
 # Testing
 
-This project uses Minitest (Rails' default) with fixtures — not RSpec, not
-FactoryBot (see [`technical_stack.md`](technical_stack.md)). SimpleCov
+This project uses Minitest (Rails' default) with fixtures — **not RSpec, not
+FactoryBot** (see [`technical_stack.md`](technical_stack.md)). RSpec was tried
+here, as the only way to drive rswag's spec DSL, and deliberately removed: a
+second test framework was not worth one gem's DSL. The API contract is now
+checked from Minitest instead — see "API contract" under Test types. SimpleCov
 measures coverage locally (`coverage/index.html`, generated on every
 `bin/rails test` run), report-only — CI (`.github/workflows/ci.yml`) prints
 the summary percentage to the `test` job's log but doesn't enforce a
@@ -40,6 +43,19 @@ that keep it worth trusting, and match what `test/` already does.
   "request spec" gives in RSpec. Assert on response status, redirects, DB
   state (`assert_difference`), and `assert_select` for markup — not on
   instance variables.
+- **API contract** — `swagger/v1/swagger.yaml` is the hand-maintained OpenAPI
+  document served at `/api-docs`, and `committee-rails` makes it executable
+  from the ordinary Minitest suite. Every test in `test/controllers/api/v1`
+  pairs its `assert_response` with `assert_response_schema_confirm(<status>)`,
+  which validates the real body against the schema for that path and status.
+  Because every schema sets `additionalProperties: false`, drift fails in both
+  directions — a field *added* to a controller breaks the suite just as a
+  removed one does. Two rules follow: when you change an API response, edit
+  `swagger/v1/swagger.yaml` in the same commit; and when you document a new
+  status, add a test that actually returns it, or the documented response has
+  nothing standing behind it. Declare shared shapes once under
+  `components.schemas` and `$ref` them rather than inlining a body shape per
+  path.
 - **System tests** (`test/system`, Capybara + Selenium already in the Gemfile)
   are not feature-complete coverage and never will be — the faster layers
   above do the heavy lifting. A system test earns its place only when the

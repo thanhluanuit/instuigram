@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require_relative "../lib/middleware/rack3_csp_header_normalizer"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -14,12 +15,15 @@ module Instuigram
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w[assets tasks])
+    config.autoload_lib(ignore: %w[assets tasks middleware])
 
     # Use Sidekiq (backed by Redis) as the ActiveJob queue backend.
     config.active_job.queue_adapter = :sidekiq
 
     config.active_storage.variant_processor = :mini_magick
+
+    config.middleware.insert_after ActionDispatch::ContentSecurityPolicy::Middleware,
+                                   Rack3CspHeaderNormalizer
 
     # Configuration for the application, engines, and railties goes here.
     #
