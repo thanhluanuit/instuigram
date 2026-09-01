@@ -17,7 +17,7 @@
 <% end %>
 
 <% if @posts.any? %>
-  <div class="search-page__results">
+  <div class="thumbnail-card">
     <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>
   </div>
 <% else %>

@@ -19,16 +19,3 @@
   letter-spacing: .04em;
   text-transform: none;
 }
-
-.search-page__results {
-  @extend %surface-card;
-  padding: $space-5;
-
-  .thumbnail-grid {
-    padding: 0;
-  }
-
-  .pagination {
-    margin-top: $space-5;
-  }
-}
