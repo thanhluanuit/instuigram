@@ -133,6 +133,14 @@ jobs:
       - name: Run test suite
         run: bin/rails test
 
+      - name: Run API contract specs
+        run: bundle exec rspec
+
+      - name: Check the OpenAPI document is up to date
+        run: |
+          RSWAG_DRY_RUN=0 bundle exec rake rswag
+          git diff --exit-code swagger/
+
   system_test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
