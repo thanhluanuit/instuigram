@@ -129,4 +129,12 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "a.profile-header__website[href=?]", "https://safe.example"
   end
+
+  test "update, when authenticated, cannot grant the account admin rights" do
+    sign_in users(:one)
+
+    patch profile_path, params: { user: { name: "New Name", admin: true } }
+
+    assert_not users(:one).reload.admin?
+  end
 end

@@ -117,4 +117,20 @@ class ReactionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to post_path(posts(:one))
   end
+
+  test "responds not found when the post being reacted to is addressed by its database id" do
+    sign_in users(:one)
+
+    assert_no_difference("Reaction.count") { post post_reaction_path(post_id: posts(:two).id) }
+
+    assert_response :not_found
+  end
+
+  test "when signed in as a different user, destroying leaves their reaction in place" do
+    sign_in users(:one)
+
+    assert_no_difference("Reaction.count") { delete post_reaction_path(posts(:one)) }
+
+    assert Reaction.exists?(reactions(:one).id)
+  end
 end
