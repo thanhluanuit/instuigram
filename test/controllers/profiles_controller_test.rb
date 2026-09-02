@@ -116,4 +116,17 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
 
     assert_not_equal "not-an-email", users(:one).reload.email
   end
+
+  test "update rejects a website that smuggles a javascript: URI, leaving the existing link intact" do
+    sign_in users(:one)
+    users(:one).update!(website: "https://safe.example")
+
+    patch profile_path, params: { user: { website: "https://example.com\njavascript:alert(document.cookie)" } }
+
+    assert_equal "https://safe.example", users(:one).reload.website
+
+    get profile_path
+
+    assert_select "a.profile-header__website[href=?]", "https://safe.example"
+  end
 end

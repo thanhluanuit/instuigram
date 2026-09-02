@@ -25,8 +25,24 @@ class UserTest < ActiveSupport::TestCase
     assert_not build_user(website: "javascript:alert(document.cookie)").valid?
   end
 
+  test "is invalid with a website whose scheme is neither http nor https" do
+    assert_not build_user(website: "ftp://example.com").valid?
+  end
+
+  test "is invalid with a protocol relative website, which inherits any scheme" do
+    assert_not build_user(website: "//example.com").valid?
+  end
+
+  test "is invalid with a valid URL that smuggles a javascript: URI on a second line" do
+    assert_not build_user(website: "https://example.com\njavascript:alert(document.cookie)").valid?
+  end
+
   test "is valid with an http(s) website" do
     assert build_user(website: "https://example.com").valid?
+  end
+
+  test "is valid with an http(s) website carrying a path, query and fragment" do
+    assert build_user(website: "http://example.com/a?b=1#c").valid?
   end
 
   test "defaults to non-admin" do
