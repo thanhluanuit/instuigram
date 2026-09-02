@@ -1,6 +1,10 @@
 require "test_helper"
 
 class MessagesControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    MessagesController.cache_store.clear
+  end
+
   test "when unauthenticated, creates no message" do
     assert_no_difference("Message.count") do
       post conversation_messages_path(conversations(:one_and_two)), params: { message: { body: "hi" } }
@@ -63,5 +67,17 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to conversation_path(conversations(:one_and_two))
+  end
+
+  test "throttles a burst of messages, so the conversation cannot be flooded" do
+    sign_in users(:one)
+
+    30.times { |n| post conversation_messages_path(conversations(:one_and_two)), params: { message: { body: "flood #{n}" } } }
+
+    assert_no_difference("Message.count") do
+      post conversation_messages_path(conversations(:one_and_two)), params: { message: { body: "one too many" } }
+    end
+
+    assert_response :too_many_requests
   end
 end
