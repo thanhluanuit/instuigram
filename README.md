@@ -174,19 +174,16 @@ This project began life as a step-by-step Medium series walking through building
 ## Screenshots
 
 ### Homepage
-![Home page](app/assets/images/home_page.png "Homepage")
-
-### Direct Messaging
-![Direct Messaging](app/assets/images/chat_conversation.png "Direct Messaging")
-
-### Follow a Profile
-![Follow a Profile](app/assets/images/follow_profile.png "Follow a Profile")
+![Homepage](app/assets/images/home_page.png "Homepage")
 
 ### User Profile Page
 ![User Profile Page](app/assets/images/user_profile.png "User Profile Page")
 
-### Edit User Page
-![Edit User Page](app/assets/images/edit_user_profile.png "Edit User Page")
+### Chat
+![Chat](app/assets/images/chat_conversation.png "Chat")
 
-### Search Page
-![Search Page](app/assets/images/search_page.png "Search Page")
+### Follow
+![Follow](app/assets/images/follow_profile.png "Follow")
+
+### Post details
+![Post details](app/assets/images/post_details.png "Post details")
