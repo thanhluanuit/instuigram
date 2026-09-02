@@ -107,13 +107,26 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "section.post:first-of-type", text: /#{newest.description}/
   end
 
-  test "lazy-loads every feed image" do
+  test "eagerly loads the first feed image and lazy-loads the rest" do
     sign_in users(:one)
+    2.times { |n| create_post!(users(:one), description: "post #{n}") }
 
     get root_path
 
     images = css_select("img.main-image")
     assert_equal Post.count, images.size
+    assert_equal "eager", images.first["loading"]
+    assert_equal [ "lazy" ], images.drop(1).map { |image| image["loading"] }.uniq
+  end
+
+  test "lazy-loads every image on a page appended by infinite scroll" do
+    sign_in users(:one)
+    11.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    get root_path(page: 2), as: :turbo_stream
+
+    images = css_select("img.main-image")
+    assert_predicate images, :any?
     assert_equal [ "lazy" ], images.map { |image| image["loading"] }.uniq
   end
 

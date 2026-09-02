@@ -3,9 +3,9 @@
     <%= render partial: "posts/user_header", locals: { user: post.user, following: following } %>
     <span class="post-overflow" aria-hidden="true"><i class="fa fa-ellipsis-h"></i></span>
   </div>
-  <% cache post do %>
+  <% cache [ post, image_loading ] do %>
     <%= link_to post_path(post), class: 'main-image-link' do %>
-      <%= image_tag post.image.variant(:feed), class: 'main-image', loading: "lazy" %>
+      <%= image_tag post.image.variant(:feed), class: 'main-image', loading: image_loading %>
     <% end %>
   <% end %>
   <div class="post-body">

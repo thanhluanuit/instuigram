@@ -1,6 +1,6 @@
 <%= turbo_stream.append "posts" do %>
   <% @posts.each do |post| %>
-    <%= render partial: "post", locals: { post: post, user_reaction: @user_reactions[post.id], following: @following_ids.include?(post.user_id) } %>
+    <%= render partial: "post", locals: { post: post, user_reaction: @user_reactions[post.id], following: @following_ids.include?(post.user_id), image_loading: "lazy" } %>
   <% end %>
 <% end %>
 
