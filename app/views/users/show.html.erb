@@ -15,7 +15,7 @@
       <% if user_signed_in? %>
         <div class="profile-header__actions">
           <% if @user == current_user %>
-            <%= link_to "Edit profile", edit_user_path(@user), class: "btn-outline" %>
+            <%= link_to "Edit profile", edit_profile_path, class: "btn-outline" %>
           <% else %>
             <%= render "users/follow_button", user: @user, following: current_user.following?(@user) %>
             <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "btn-outline" %>
