@@ -9,16 +9,6 @@
 #  conversation_id :bigint           not null
 #  user_id         :bigint           not null
 #
-# Indexes
-#
-#  index_conversation_participants_on_conversation_id_and_user_id  (conversation_id,user_id) UNIQUE
-#  index_conversation_participants_on_user_id_and_unread_count     (user_id,unread_count)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (conversation_id => conversations.id)
-#  fk_rails_...  (user_id => users.id)
-#
 class ConversationParticipant < ApplicationRecord
   belongs_to :conversation
   belongs_to :user

@@ -4,3 +4,5 @@
 :exclude_serializers: true
 :exclude_tests: true
 :show_check_constraints: true
+:show_foreign_keys: false
+:show_indexes: false

@@ -8,16 +8,6 @@
 #  followed_id :bigint           not null
 #  follower_id :bigint           not null
 #
-# Indexes
-#
-#  index_follows_on_followed_id                  (followed_id)
-#  index_follows_on_follower_id_and_followed_id  (follower_id,followed_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (followed_id => users.id)
-#  fk_rails_...  (follower_id => users.id)
-#
 # Check Constraints
 #
 #  follows_no_self_follow  (follower_id <> followed_id)

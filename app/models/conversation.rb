@@ -9,15 +9,6 @@
 #  updated_at       :datetime         not null
 #  last_message_id  :bigint
 #
-# Indexes
-#
-#  index_conversations_on_last_message_id   (last_message_id)
-#  index_conversations_on_participants_key  (participants_key) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (last_message_id => messages.id) ON DELETE => nullify
-#
 class Conversation < ApplicationRecord
   has_many :conversation_participants, dependent: :destroy
   has_many :users, through: :conversation_participants

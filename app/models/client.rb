@@ -9,15 +9,6 @@
 #  client_id            :string           not null
 #  user_id              :bigint           not null
 #
-# Indexes
-#
-#  index_clients_on_client_id  (client_id) UNIQUE
-#  index_clients_on_user_id    (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (user_id => users.id)
-#
 class Client < ApplicationRecord
   belongs_to :user
   has_secure_password :client_secret
