@@ -26,7 +26,7 @@
 **Back-end**
 - Ruby 3.3.11 · Rails 8.1.3.1 (`config.load_defaults 8.1`)
 - PostgreSQL — primary database
-- Redis — Rails cache store, Sidekiq queue backend, and Action Cable pub/sub (`redis` gem 5.4; CI runs Redis 7)
+- Redis — Rails cache store, Sidekiq queue backend, and Action Cable pub/sub (`redis` gem 6.0; CI runs Redis 7)
 - Sidekiq 8.1 — background job processing
 - Elasticsearch 8.x — full-text search through `elasticsearch-model` / `elasticsearch-rails`, the low-level official gems rather than Searchkick, so the index mapping and query DSL are hand-written
 - Puma 8 — application server
