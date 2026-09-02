@@ -1,10 +1,6 @@
 require "test_helper"
 
 class Api::V1::OauthControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    Api::V1::OauthController.cache_store.clear
-  end
-
   test "should create token" do
     client = Client.create!(user: users(:one))
 

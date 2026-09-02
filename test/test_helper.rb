@@ -76,6 +76,7 @@ class ActiveSupport::TestCase
     Post.__elasticsearch__.create_index!(force: true)
   end
   fixtures :all
+  teardown { Rails.configuration.x.rate_limit_store.clear }
   include ActiveStorageTestHelper
   include UserTestHelper
   include PostTestHelper

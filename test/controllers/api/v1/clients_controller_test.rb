@@ -1,10 +1,6 @@
 require "test_helper"
 
 class Api::V1::ClientsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    Api::V1::ClientsController.cache_store.clear
-  end
-
   test "with valid credentials, creates a client owned by that user and returns its id and secret" do
     assert_difference("Client.count", 1) do
       post api_v1_clients_path, params: { email: users(:one).email, password: "password123" }
