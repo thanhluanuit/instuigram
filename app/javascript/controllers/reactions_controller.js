@@ -3,7 +3,7 @@ import consumer from "channels/consumer"
 
 export default class extends Controller {
   static targets = [ "count", "icon" ]
-  static values = { postId: Number }
+  static values = { postId: String }
 
   connect() {
     this.subscription = consumer.subscriptions.create(

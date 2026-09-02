@@ -1,7 +1,7 @@
 <% other = @conversation.other_participant(current_user) %>
 <section class="chat"
          data-controller="conversation"
-         data-conversation-conversation-id-value="<%= @conversation.id %>"
+         data-conversation-conversation-id-value="<%= @conversation.key %>"
          data-conversation-current-user-id-value="<%= current_user.id %>"
          data-conversation-read-url-value="<%= conversation_read_path(@conversation) %>">
   <header class="chat__header">

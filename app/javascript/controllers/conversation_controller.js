@@ -3,7 +3,7 @@ import consumer from "channels/consumer"
 
 export default class extends Controller {
   static targets = [ "list", "input" ]
-  static values = { conversationId: Number, currentUserId: Number, readUrl: String }
+  static values = { conversationId: String, currentUserId: Number, readUrl: String }
 
   connect() {
     this.refresh()

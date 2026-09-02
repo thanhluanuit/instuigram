@@ -3,7 +3,7 @@ require "test_helper"
 class ConversationChannelTest < ActionCable::Channel::TestCase
   test "subscribes and streams for the conversation when the user is a participant" do
     stub_connection(current_user: users(:one))
-    subscribe(id: conversations(:one_and_two).id)
+    subscribe(id: conversations(:one_and_two).key)
 
     assert subscription.confirmed?
     assert_has_stream_for conversations(:one_and_two)
@@ -11,14 +11,14 @@ class ConversationChannelTest < ActionCable::Channel::TestCase
 
   test "rejects the subscription when the user is not a participant" do
     stub_connection(current_user: users(:admin))
-    subscribe(id: conversations(:one_and_two).id)
+    subscribe(id: conversations(:one_and_two).key)
 
     assert subscription.rejected?
   end
 
   test "rejects the subscription when the connection is anonymous" do
     stub_connection(current_user: nil)
-    subscribe(id: conversations(:one_and_two).id)
+    subscribe(id: conversations(:one_and_two).key)
 
     assert subscription.rejected?
   end
