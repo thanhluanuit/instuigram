@@ -51,10 +51,6 @@ module PostTestHelper
     post
   end
 
-  def attach_images_to_all_posts!
-    Post.find_each { |post| attach_test_image(post.image) }
-  end
-
   def index_all_posts!
     Post.__elasticsearch__.create_index!(force: true)
     Post.find_each { |post| post.__elasticsearch__.index_document }

@@ -2,7 +2,6 @@ require "application_system_test_case"
 
 class SettingsTest < ApplicationSystemTestCase
   setup do
-    attach_images_to_all_posts!
     sign_in_as users(:one)
     visit edit_profile_path
     wait_for_page_to_settle

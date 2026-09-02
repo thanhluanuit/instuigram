@@ -2,7 +2,6 @@ require "application_system_test_case"
 
 class CommentsTest < ApplicationSystemTestCase
   setup do
-    attach_images_to_all_posts!
     sign_in_as users(:one)
     wait_for_page_to_settle
   end

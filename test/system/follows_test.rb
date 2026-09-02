@@ -2,7 +2,6 @@ require "application_system_test_case"
 
 class FollowsTest < ApplicationSystemTestCase
   setup do
-    attach_images_to_all_posts!
     @other = users(:two)
     sign_in_as users(:one)
   end

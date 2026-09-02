@@ -2,7 +2,6 @@ require "application_system_test_case"
 
 class PostModalTest < ApplicationSystemTestCase
   setup do
-    attach_images_to_all_posts!
     sign_in_as users(:one)
     assert_selector "section.post", count: 2
     wait_for_page_to_settle
