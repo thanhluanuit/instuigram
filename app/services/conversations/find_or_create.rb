@@ -32,6 +32,6 @@ class Conversations::FindOrCreate < BaseService
   end
 
   def participants_key
-    @participants_key ||= Conversation.key_for(user, other_user)
+    @participants_key ||= Conversation.participants_key_for(user, other_user)
   end
 end

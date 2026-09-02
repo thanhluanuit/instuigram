@@ -12,14 +12,14 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post          = Post.includes(comments: :user).find(params[:id])
+    @post          = Post.includes(comments: :user).find_by!(key: params[:id])
     @user_reaction = current_user&.reactions&.find_by(reactable: @post)
 
     render "modal" if turbo_frame_request?
   end
 
   def destroy
-    @post = current_user.posts.find(params[:id])
+    @post = current_user.posts.find_by!(key: params[:id])
     log_event(event_type: :post_destroyed, subject: @post) if @post.destroy
 
     redirect_to profile_path

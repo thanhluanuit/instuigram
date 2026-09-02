@@ -1,5 +1,5 @@
 <%= turbo_frame_tag frame_id do %>
-  <div class="reaction" data-controller="reactions" data-reactions-post-id-value="<%= post.id %>">
+  <div class="reaction" data-controller="reactions" data-reactions-post-id-value="<%= post.key %>">
     <% if current_user %>
       <% liked = user_reaction.present? %>
       <%= link_to post_reaction_path(post), data: { turbo_method: liked ? :delete : :post, reactions_target: "icon" }, class: liked ? "reaction-icon liked" : "reaction-icon", "aria-label": liked ? "Unlike" : "Like" do %>

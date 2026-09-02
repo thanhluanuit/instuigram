@@ -9,7 +9,7 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
 
   test "when unauthenticated, creates no conversation" do
     assert_no_difference("Conversation.count") do
-      post conversations_path, params: { user_id: users(:two).id }
+      post conversations_path, params: { user_id: users(:two).key }
     end
 
     assert_redirected_to new_user_session_path
@@ -118,7 +118,7 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:two)
 
     assert_difference("Conversation.count", 1) do
-      post conversations_path, params: { user_id: users(:admin).id }
+      post conversations_path, params: { user_id: users(:admin).key }
     end
 
     assert_redirected_to conversation_path(Conversation.last)
@@ -128,7 +128,7 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:one)
 
     assert_no_difference("Conversation.count") do
-      post conversations_path, params: { user_id: users(:two).id }
+      post conversations_path, params: { user_id: users(:two).key }
     end
 
     assert_redirected_to conversation_path(conversations(:one_and_two))
@@ -138,7 +138,7 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:one)
 
     assert_no_difference("Conversation.count") do
-      post conversations_path, params: { user_id: users(:one).id }
+      post conversations_path, params: { user_id: users(:one).key }
     end
 
     assert_redirected_to conversations_path

@@ -1,15 +1,15 @@
 require "test_helper"
 
 class ConversationTest < ActiveSupport::TestCase
-  test "key_for builds the same key regardless of argument order" do
-    assert_equal Conversation.key_for(users(:one), users(:two)),
-                 Conversation.key_for(users(:two), users(:one))
+  test "participants_key_for builds the same key regardless of argument order" do
+    assert_equal Conversation.participants_key_for(users(:one), users(:two)),
+                 Conversation.participants_key_for(users(:two), users(:one))
   end
 
-  test "key_for joins the participant ids in ascending order" do
+  test "participants_key_for joins the participant ids in ascending order" do
     expected = [ users(:one).id, users(:two).id ].sort.join("-")
 
-    assert_equal expected, Conversation.key_for(users(:one), users(:two))
+    assert_equal expected, Conversation.participants_key_for(users(:one), users(:two))
   end
 
   test "other_participant returns the participant who is not the viewer" do

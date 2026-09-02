@@ -5,12 +5,14 @@
 #  id              :bigint           not null, primary key
 #  comments_count  :integer          default(0), not null
 #  description     :string
+#  key             :uuid             not null
 #  reactions_count :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  user_id         :integer          not null
 #
 class Post < ApplicationRecord
+  include Keyable
   include Searchable
   include Imageable
   include HashTaggable

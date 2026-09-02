@@ -1,6 +1,6 @@
 class PostChannel < ApplicationCable::Channel
   def subscribed
-    post = Post.find_by(id: params[:id])
+    post = Post.find_by(key: params[:id])
     return reject unless post
 
     stream_for post

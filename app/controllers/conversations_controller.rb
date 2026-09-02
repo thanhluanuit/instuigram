@@ -13,7 +13,7 @@ class ConversationsController < ApplicationController
   def show
     @conversation = current_user.conversations
                                 .includes(users: { avatar_attachment: :blob })
-                                .find(params[:id])
+                                .find_by!(key: params[:id])
     @messages     = @conversation.messages.includes(:user).chronological.last(50)
 
     @conversation.mark_read_for(current_user)
@@ -28,7 +28,7 @@ class ConversationsController < ApplicationController
   end
 
   def create
-    other_user = User.find(params[:user_id])
+    other_user = User.find_by!(key: params[:user_id])
     return redirect_to conversations_path, alert: "You cannot message yourself." if other_user == current_user
 
     conversation = Conversations::FindOrCreate.call(user: current_user, other_user: other_user)

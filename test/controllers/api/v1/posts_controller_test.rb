@@ -17,9 +17,18 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     get api_v1_posts_path, headers: auth_headers
 
     assert_response :success
-    ids = JSON.parse(response.body)["posts"].map { |post| post["id"] }
-    assert_includes ids, posts(:one).id
-    assert_not_includes ids, posts(:two).id
+    keys = JSON.parse(response.body)["posts"].map { |post| post["key"] }
+    assert_includes keys, posts(:one).key
+    assert_not_includes keys, posts(:two).key
+  end
+
+  test "index exposes the post key and never its database id" do
+    get api_v1_posts_path, headers: auth_headers
+
+    assert_response :success
+    post_json = JSON.parse(response.body)["posts"].first
+    assert_equal posts(:one).key, post_json["key"]
+    assert_not_includes post_json.keys, "id"
   end
 
   test "index paginates results to 10 per page" do

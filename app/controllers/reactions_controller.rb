@@ -24,7 +24,7 @@ class ReactionsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:post_id])
+    @post = Post.find_by!(key: params[:post_id])
   end
 
   def reaction_return_path

@@ -15,6 +15,7 @@
 #  followers_count        :integer          default(0), not null
 #  following_count        :integer          default(0), not null
 #  gender                 :string
+#  key                    :uuid             not null
 #  last_seen_at           :datetime
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
@@ -31,6 +32,7 @@
 #  updated_at             :datetime         not null
 #
 class User < ApplicationRecord
+  include Keyable
   include Followable
   include Conversable
   include Avatarable
