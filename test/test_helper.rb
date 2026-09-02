@@ -39,6 +39,12 @@ module UserTestHelper
 end
 
 module PostTestHelper
+  def build_post(user, description: "hello world", attach_image: true)
+    post = Post.new(user: user, description: description)
+    attach_test_image(post.image) if attach_image
+    post
+  end
+
   def create_post!(user, description:)
     post = user.posts.new(description: description)
     attach_test_image(post.image)

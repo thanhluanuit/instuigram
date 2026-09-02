@@ -3,7 +3,10 @@ class ImageValidator < ActiveModel::EachValidator
   MAX_SIZE      = 10.megabytes
 
   def validate_each(record, attribute, value)
-    return unless value.attached?
+    unless value.attached?
+      record.errors.add(attribute, :blank) if options[:required]
+      return
+    end
 
     unless value.content_type.in?(ALLOWED_TYPES)
       record.errors.add(attribute, "must be a PNG, JPEG, or WebP")
