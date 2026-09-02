@@ -26,12 +26,12 @@ that keep it worth trusting, and match what `test/` already does.
 - Don't write a test for framework behavior you didn't write — a bare
   `validates :email, presence: true` doesn't need its own test proving Rails'
   validation works. Test validations and callbacks that carry real conditional
-  or custom logic (e.g. `Post#extract_name_hash_tags`'s regex parsing).
+  or custom logic (e.g. `Post::HashTaggable`'s `#word` regex parsing).
 
 ## Test types
 
 - **Model tests** (`test/models`) for business logic: validations, callbacks,
-  scopes, instance/class methods — see `post_test.rb`'s hashtag-extraction
+  scopes, instance/class methods — see `post/hash_taggable_test.rb`'s hashtag
   coverage for the pattern.
 - **Controller tests** (`test/controllers`) subclass `ActionDispatch::IntegrationTest`
   (Rails' default since 5.0, not the legacy `ActionController::TestCase`) —
@@ -84,7 +84,7 @@ that keep it worth trusting, and match what `test/` already does.
 - **Fixtures, not factories.** `test/fixtures/*.yml` are loaded once per test
   via `fixtures :all` in `test_helper.rb`. Keep fixtures minimal and
   representative; when a test needs a specific variant, build it inline with a
-  private helper method (see `build_post` in `post_test.rb`) instead of adding
+  shared helper method (see `PostTestHelper#build_post`) instead of adding
   a new fixture row for every case.
 - Add reusable test setup (e.g. attaching a test image) to a helper module
   mixed into `ActiveSupport::TestCase` in `test_helper.rb`, following

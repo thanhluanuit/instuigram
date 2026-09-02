@@ -1,6 +1,10 @@
 require "test_helper"
 
 class User::AvatarableTest < ActiveSupport::TestCase
+  test "is valid without an avatar" do
+    assert build_user.valid?
+  end
+
   test "can have an attached avatar" do
     user = build_user
     attach_test_image(user.avatar)
