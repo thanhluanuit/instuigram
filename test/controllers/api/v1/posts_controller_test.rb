@@ -13,6 +13,47 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
+  test "index with a token signed by a different secret is unauthorized" do
+    forged = JWT.encode({ sub: @client.client_id, exp: 1.hour.from_now.to_i }, "not-the-real-secret", "HS256")
+
+    get api_v1_posts_path, headers: { "Authorization" => "Bearer #{forged}" }
+
+    assert_response :unauthorized
+  end
+
+  test "index with an unsigned token is unauthorized, so the algorithm cannot be downgraded" do
+    unsigned = JWT.encode({ sub: @client.client_id, exp: 1.hour.from_now.to_i }, nil, "none")
+
+    get api_v1_posts_path, headers: { "Authorization" => "Bearer #{unsigned}" }
+
+    assert_response :unauthorized
+  end
+
+  test "index with an expired token is unauthorized" do
+    expired = JWT.encode(
+      { sub: @client.client_id, iat: 2.hours.ago.to_i, exp: 1.hour.ago.to_i },
+      Rails.application.credentials.jwt_secret_key, "HS256"
+    )
+
+    get api_v1_posts_path, headers: { "Authorization" => "Bearer #{expired}" }
+
+    assert_response :unauthorized
+  end
+
+  test "index with a well formed token naming a deleted client is unauthorized" do
+    @client.destroy
+
+    get api_v1_posts_path, headers: auth_headers
+
+    assert_response :unauthorized
+  end
+
+  test "index with a malformed Authorization header is unauthorized" do
+    get api_v1_posts_path, headers: { "Authorization" => "Bearer not-a-jwt" }
+
+    assert_response :unauthorized
+  end
+
   test "index returns only the current user's posts" do
     get api_v1_posts_path, headers: auth_headers
 
