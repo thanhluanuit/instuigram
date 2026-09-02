@@ -156,15 +156,36 @@ on purpose.
 
 ## Getting Started
 
+**Prerequisites** — Ruby 3.3.11 (managed with RVM; `.ruby-version` and `.ruby-gemset` are
+committed), PostgreSQL, Redis, ImageMagick, and an Elasticsearch 8 node.
+
 ```bash
 bundle install
-docker compose up -d              # start Elasticsearch
-bin/rails db:create db:migrate    # set up the database
-bin/rails elasticsearch:reindex   # build the Post search index
+
+# Services. docker-compose.yml defines Elasticsearch only —
+# Postgres and Redis are expected on the host.
+docker compose up -d                       # Elasticsearch on localhost:9200
+brew services start postgresql@14 redis    # or however you prefer to run them
+
+bin/rails db:create db:migrate
+bin/rails db:seed                 # sample users and posts; prints the generated password
+bin/rails elasticsearch:reindex   # create the Post index and backfill
+
+bundle exec sidekiq               # second shell: search indexing and event logging
 bin/rails server                  # http://localhost:3000
 ```
 
-Run the test suite with `bin/rails test` (and `bin/rails test:system` for browser tests).
+Redis is not optional in development — it backs the cache store, the Sidekiq queue and
+Action Cable, so chat, presence and live counts all need it. Any Elasticsearch 8 node will
+do; the app reads `ELASTICSEARCH_URL` (default `http://localhost:9200`), `REDIS_URL`
+(Sidekiq and Action Cable, default DB 1) and `REDIS_CACHE_URL` (the cache store, default
+DB 2, kept separate so cache keys can't collide with queue data).
+
+Seeds are split so either half can run on its own — `bin/rails db:seed:users` and
+`bin/rails db:seed:posts`. Sample avatars and post images live under `db/seeds/`.
+
+Run the test suite with `bin/rails test`, and the browser tests with
+`bin/rails test:system` (headless by default; `HEADED=1` opens a real Chrome window).
 
 ## Article Series
 
