@@ -5,9 +5,9 @@ module Post::Imageable
 
   included do
     has_one_attached :image do |attachable|
-      attachable.variant :feed, resize_to_limit: [ 600, 600 ]
-      attachable.variant :detail, resize_to_limit: [ 1200, 1200 ]
-      attachable.variant :thumb, resize_to_fill: [ 440, 440 ]
+      attachable.variant :feed, resize_to_fill: [ 1200, 1200 ], quality: 100, strip: true
+      attachable.variant :detail, resize_to_limit: [ 1600, 1600 ], quality: 100, strip: true
+      attachable.variant :thumb, resize_to_fill: [ 600, 600 ], quality: 100, strip: true
     end
 
     validates :image, image: { required: true }
