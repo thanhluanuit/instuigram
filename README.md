@@ -4,7 +4,7 @@
 [![Ruby](https://img.shields.io/badge/Ruby-3.3.11-CC342D?logo=ruby&logoColor=white)](.ruby-version)
 [![Rails](https://img.shields.io/badge/Rails-8.1.3.1-CC0000?logo=rubyonrails&logoColor=white)](Gemfile.lock)
 
-**Instuigram** is an Instagram clone built on Ruby on Rails, covering what a real Rails application needs beyond CRUD: authentication, background jobs, caching, full-text search, real-time updates, and a CI pipeline that enforces security and style on every push.
+**Instuigram** is an Instagram clone built on Ruby on Rails, covering what a real Rails application needs beyond CRUD: authentication, background jobs, caching, full-text search, real-time direct messaging, a follow graph, and a CI pipeline that enforces security and style on every push.
 
 ## What you'll learn from this project
 
@@ -54,6 +54,77 @@
 - `bullet` — N+1 query detection in development and test
 - `annotaterb` — schema annotations above each model, with CI failing on drift
 - CI runs five independent, parallel GitHub Actions jobs on every push: `brakeman`, `bundler_audit`, `rubocop`, `test` and `system_test` (Rails' default test glob excludes `test/system`, so the browser suite needs its own job)
+
+## Key features
+
+### Direct messaging
+
+One-to-one chat with live delivery. Start a thread from someone's profile or the inbox, send
+a message, and it lands in the other person's browser immediately — their navbar unread
+badge ticks up and the conversation floats to the top of their inbox even if they are on a
+different page. A dot on each avatar shows who is online right now.
+
+- **Threads are deduplicated by the database.** `Conversation.key_for` sorts the two user
+  ids into a `participants_key` carrying a unique index, so
+  [`Conversations::FindOrCreate`](app/services/conversations/find_or_create.rb) rescues
+  `RecordNotUnique` and re-finds rather than ever creating a second thread for one pair.
+- **One service owns the write.** [`Messages::Create`](app/services/messages/create.rb)
+  saves the message, denormalises `last_message_id` / `last_message_at` onto the
+  conversation, and adjusts unread counts — bumping every other participant with an atomic
+  `update_all("unread_count = unread_count + 1")` and zeroing the sender's — inside a single
+  transaction, and broadcasts only once it commits.
+- **Two broadcasts, two audiences.** `ConversationChannel` pushes a rendered Turbo Stream to
+  whoever has the thread open; `InboxChannel` pushes JSON (unread count, total unread,
+  preview, sender) to each participant so the badge and inbox row update from anywhere.
+- **Read state clears live.** Opening a thread marks it read server-side; while it stays
+  open, `conversation_controller.js` POSTs to `conversations/reads` as each message arrives.
+  That controller also dedupes on message DOM id, because the form response and the
+  broadcast render the same partial.
+- **Presence needs no extra table.** `PresenceChannel` touches `users.last_seen_at` on a
+  `periodically` timer and broadcasts only on the offline→online transition;
+  `HEARTBEAT_INTERVAL` is derived as `ONLINE_WINDOW / 2` so nobody flickers offline between
+  pings.
+
+Conversations are 1:1 by construction — no group threads, typing indicators, or attachments.
+
+### Follow
+
+Follow and unfollow from a profile, a post header in the feed, the people results in search,
+or the "Suggested for you" rail. Follower and following counts and the button's own state
+update without a reload — and in every tab you have open at once.
+
+- **Counts are counter caches**, not `COUNT(*)` — `users.followers_count` and
+  `users.following_count`, maintained by `Follow`'s two `counter_cache` declarations.
+- **Duplicates and self-follows are impossible in the database**: a unique index on
+  `[follower_id, followed_id]` and a `follows_no_self_follow` check constraint sit behind the
+  model validations, so [`Follows::Create`](app/services/follows/create.rb) can rescue
+  `RecordNotUnique` and stay idempotent under a double click.
+- **Two broadcast streams.**
+  [`Follows::BroadcastCounts`](app/services/follows/broadcast_counts.rb) replaces the count
+  partials on both users' `:follows` streams. [`Follows::BroadcastButton`](app/services/follows/broadcast_button.rb)
+  replaces *every* `[data-follow-user-id=…]` element on the actor's own `:follow_state`
+  stream, which the layout subscribes to on every signed-in page — so one click flips the
+  button everywhere you have the app open.
+- **Discovery reads the graph.** `User.suggested_for` fills the suggestions rail by excluding
+  people you already follow; `Post.discoverable_for` does the same for `/explore`, ranking
+  what is left by `reactions_count + comments_count`.
+
+The home feed is deliberately *not* follow-filtered — it stays a global reverse-chronological
+feed, and follow state only decides whether a post header offers a Follow button. Following
+someone sends them no notification; it writes an `EventLog` row.
+
+### Everything else
+
+- Feed with infinite scroll, and a post detail modal
+- Comments and emoji reactions (like/love/haha/wow/sad/angry), both live over Turbo Streams
+- Elasticsearch search across descriptions and hashtags — hashtags boosted `^3`, fuzziness
+  `AUTO`, and a leading `#` stripped so `#sunset` and `sunset` match the same way
+- Explore: posts from people you don't follow yet, ranked by engagement
+- Hashtags parsed out of a post's description on create
+- Active Storage uploads with named, partly preprocessed image variants
+- `EventLog` audit trail, written asynchronously by a Sidekiq job
+- Sidekiq Web dashboard at `/sidekiq`, gated behind `user.admin?`
+- Token-authenticated JSON API at `/api/v1`
 
 ## Architecture
 
