@@ -12,6 +12,8 @@
 #  user_id         :bigint           not null
 #
 class Comment < ApplicationRecord
+  include Keyable
+
   belongs_to :post, counter_cache: true
   belongs_to :user
   has_many :reactions, as: :reactable, dependent: :destroy

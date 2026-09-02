@@ -12,6 +12,7 @@
 #  user_id         :integer          not null
 #
 class Post < ApplicationRecord
+  include Keyable
   include Searchable
   include Imageable
   include HashTaggable

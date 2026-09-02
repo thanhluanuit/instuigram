@@ -11,6 +11,8 @@
 #  last_message_id  :bigint
 #
 class Conversation < ApplicationRecord
+  include Keyable
+
   has_many :conversation_participants, dependent: :destroy
   has_many :users, through: :conversation_participants
   has_many :messages, dependent: :destroy

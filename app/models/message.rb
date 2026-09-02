@@ -11,6 +11,8 @@
 #  user_id         :bigint           not null
 #
 class Message < ApplicationRecord
+  include Keyable
+
   belongs_to :conversation
   belongs_to :user
 

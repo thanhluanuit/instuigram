@@ -32,6 +32,7 @@
 #  updated_at             :datetime         not null
 #
 class User < ApplicationRecord
+  include Keyable
   include Followable
   include Conversable
   include Avatarable
