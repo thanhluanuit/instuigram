@@ -18,8 +18,14 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: $space-5;
+  gap: $space-4;
   margin-bottom: $space-5;
+}
+
+.profile-header__actions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
 
   .follow-control__button {
     padding: $space-2 $space-5;
@@ -29,6 +35,8 @@
 
 .profile-header__username {
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-family: $font-display;
   font-size: $text-xl;
   font-weight: $weight-normal;

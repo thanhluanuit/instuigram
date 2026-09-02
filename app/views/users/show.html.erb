@@ -12,11 +12,15 @@
   <div class="profile-header__details">
     <div class="profile-header__identity">
       <h1 class="profile-header__username"><%= @user.username %></h1>
-      <% if @user == current_user %>
-        <%= link_to "Edit profile", edit_user_path(@user), class: "btn-outline" %>
-      <% elsif user_signed_in? %>
-        <%= render "users/follow_button", user: @user, following: current_user.following?(@user) %>
-        <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "btn-outline" %>
+      <% if user_signed_in? %>
+        <div class="profile-header__actions">
+          <% if @user == current_user %>
+            <%= link_to "Edit profile", edit_user_path(@user), class: "btn-outline" %>
+          <% else %>
+            <%= render "users/follow_button", user: @user, following: current_user.following?(@user) %>
+            <%= button_to "Message", conversations_path, params: { user_id: @user.id }, class: "btn-outline" %>
+          <% end %>
+        </div>
       <% end %>
     </div>
 
