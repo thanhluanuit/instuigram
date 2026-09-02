@@ -2,31 +2,32 @@ require "application_system_test_case"
 
 class CommentsTest < ApplicationSystemTestCase
   setup do
-    attach_test_image(posts(:one).image)
-    attach_test_image(posts(:two).image)
+    attach_images_to_all_posts!
     sign_in_as users(:one)
-    assert_selector "section.post", count: 2
     wait_for_page_to_settle
   end
 
-  test "the comment icon opens a popup with the post and its comments without leaving the feed" do
-    assert_selector "##{dom_id(posts(:two), :comments_count)}", text: "1 comment"
-
+  test "posting a comment in the popup adds it to the list and updates the feed's counter" do
     open_popup_for posts(:two)
 
-    assert_selector ".post-modal", text: comments(:two).body
-    assert_selector ".post-modal #comment_body"
+    within ".post-modal" do
+      fill_in dom_id(posts(:two), :comment_form_body), with: "Great shot"
+      click_button "Post"
+
+      assert_selector ".comment", text: "Great shot"
+    end
+
+    assert_selector "##{dom_id(posts(:two), :comments_count)}", text: "2 comments", visible: :all
     assert_current_path root_path
   end
 
-  test "closing the popup returns to the feed" do
+  test "deleting your own comment removes it and drops the feed's counter" do
     open_popup_for posts(:two)
 
-    find(".post-modal-close").execute_script("this.click()")
+    accept_confirm { find(".post-modal .delete-comment-icon").click }
 
-    assert_no_selector ".post-modal"
-    assert_current_path root_path
-    assert_selector "section.post", count: 2
+    assert_selector ".post-modal .no-comments"
+    assert_selector "##{dom_id(posts(:two), :comments_count)}", text: "0 comments", visible: :all
   end
 
   private

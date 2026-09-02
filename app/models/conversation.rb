@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: conversations
+#
+#  id               :bigint           not null, primary key
+#  last_message_at  :datetime
+#  participants_key :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  last_message_id  :bigint
+#
 class Conversation < ApplicationRecord
   has_many :conversation_participants, dependent: :destroy
   has_many :users, through: :conversation_participants

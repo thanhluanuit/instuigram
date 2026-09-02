@@ -20,4 +20,16 @@ class UsersHelperTest < ActionView::TestCase
   test "returns an empty string for a blank URL" do
     assert_equal "", external_url("")
   end
+
+  test "user_monogram uses the first character of the username, upcased" do
+    assert_equal "U", user_monogram(users(:one))
+  end
+
+  test "user_monogram falls back to the email when the username is blank" do
+    assert_equal "U", user_monogram(User.new(username: "", email: "user_three@instuigram.com"))
+  end
+
+  test "user_monogram is blank when the user has neither a username nor an email" do
+    assert_equal "", user_monogram(User.new)
+  end
 end

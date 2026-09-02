@@ -41,12 +41,35 @@ that keep it worth trusting, and match what `test/` already does.
   state (`assert_difference`), and `assert_select` for markup — not on
   instance variables.
 - **System tests** (`test/system`, Capybara + Selenium already in the Gemfile)
-  cover a deliberately small set of critical end-to-end flows —
-  `posts_test.rb` (sign in → create a post → see it in the feed; delete your
-  own post) and `search_test.rb` (hashtag search) — not feature-complete
-  coverage. Keep additions to one or two critical flows per file; they're the
-  slowest and most flake-prone layer, and the faster layers above should do
-  the heavy lifting.
+  are not feature-complete coverage and never will be — the faster layers
+  above do the heavy lifting. A system test earns its place only when the
+  behavior is **browser-only** — a Stimulus controller, a Turbo Frame or
+  Stream applied client-side, an Action Cable broadcast reaching the DOM, or a
+  native browser interaction (`data-turbo-method`, `turbo_confirm`, a file
+  input, a keypress) — **and cannot be asserted at the controller layer**. If
+  `assert_select` on a rendered response or on a `turbo-stream` tag would
+  prove the same thing, write the controller test instead. The criterion is
+  behavior-shaped, not count-shaped, so there's no per-file cap — but each
+  file stays focused on one browser-only concern (`composer_test.rb`,
+  `post_modal_test.rb`, `reactions_test.rb`, `inbox_test.rb`), and every
+  system test must be justifiable by naming the browser-only behavior it
+  exists for.
+- Judge this layer by which browser-only behaviors are covered, not by
+  SimpleCov — it measures no JavaScript at all, so `app/javascript` is
+  invisible to the coverage number no matter how many system tests you add.
+- Drive a multi-user realtime flow with a second Capybara session
+  (`within_session_as`), and **always wait for the receiving browser's
+  subscription to be confirmed** (`wait_for_cable`) before the other session
+  acts — an unconfirmed subscription silently drops the broadcast and no
+  amount of Capybara waiting will recover it. Broadcasts do reach a real
+  browser even though `test_helper.rb` mixes in `ActionCable::TestHelper`
+  (which swaps `ActionCable.server.pubsub` for the Test adapter) — that
+  adapter subclasses `Async` and calls `super` in `broadcast`, so it records
+  *and* delivers.
+- System tests run in their own CI job (`bin/rails test:system`, headless
+  Chrome). Rails' default test glob excludes `test/system`, so a green `test`
+  job says nothing about them — and unlike controller tests, a real browser
+  fetches Active Storage variants, so the job needs ImageMagick installed.
 - Security-relevant paths need explicit non-owner coverage, not just the happy
   path — see [`security.md`](security.md)'s authorization-testing note.
   `posts_controller_test.rb` already does this (signing in as a different user
@@ -94,7 +117,8 @@ that keep it worth trusting, and match what `test/` already does.
 
 ## Speed
 
-- Model and controller tests should dominate the suite by count; system tests
-  stay the minority, reserved for flows that genuinely need a real browser.
+- Model and controller tests should dominate the suite by count. A system test
+  is added only under the browser-only rule above — that rule, not a quota, is
+  what keeps this layer small.
 - Parallel execution is already on (`parallelize`) — no action needed until
   the suite is slow enough to warrant tuning worker count further.

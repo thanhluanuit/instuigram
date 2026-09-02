@@ -2,7 +2,6 @@
 
 module UsersHelper
   PROFILE_PLACEHOLDER_TABS = {
-    "IGTV" => "tv",
     "Saved" => "bookmark",
     "Tagged" => "tag"
   }.freeze
@@ -13,6 +12,11 @@ module UsersHelper
     "Manage Contacts" => "v-pills-contacts",
     "Privacy and Security" => "v-pills-privacy"
   }.freeze
+
+  def user_monogram(user)
+    source = user.username.presence || user.email.to_s
+    source.strip.first.to_s.upcase
+  end
 
   def external_url(url)
     return "" if url.blank?

@@ -1,6 +1,30 @@
 %surface-card {
   background-color: $surface;
-  border: 1px solid $border;
-  border-radius: $radius-md;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
   box-shadow: $shadow-card;
+}
+
+%feed-column {
+  max-width: $width-feed;
+  margin: 0 auto;
+}
+
+%surface-panel {
+  background-color: $surface;
+  border: 1px solid $border;
+  border-radius: 14px;
+}
+
+.thumbnail-card {
+  @extend %surface-card;
+  padding: $space-5;
+
+  .thumbnail-grid {
+    padding: 0;
+  }
+
+  .pagination {
+    margin-top: $space-5;
+  }
 }

@@ -1,0 +1,7 @@
+---
+:exclude_factories: true
+:exclude_fixtures: true
+:exclude_serializers: true
+:exclude_tests: true
+:show_foreign_keys: false
+:show_indexes: false

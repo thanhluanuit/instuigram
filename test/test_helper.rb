@@ -32,12 +32,22 @@ module ActiveStorageTestHelper
   end
 end
 
+module UserTestHelper
+  def build_user(email: "new_user@example.com", password: "password123", website: nil)
+    User.new(email: email, password: password, username: "new_user", website: website)
+  end
+end
+
 module PostTestHelper
   def create_post!(user, description:)
     post = user.posts.new(description: description)
     attach_test_image(post.image)
     post.save!
     post
+  end
+
+  def attach_images_to_all_posts!
+    Post.find_each { |post| attach_test_image(post.image) }
   end
 
   def index_all_posts!
@@ -52,6 +62,12 @@ module PostTestHelper
   end
 end
 
+module TurboStreamTestHelper
+  def follow_state_stream(user)
+    Turbo::StreamsChannel.send(:stream_name_from, [ user, :follow_state ])
+  end
+end
+
 class ActiveSupport::TestCase
   parallelize(workers: :number_of_processors)
   parallelize_setup do |worker|
@@ -60,7 +76,9 @@ class ActiveSupport::TestCase
   end
   fixtures :all
   include ActiveStorageTestHelper
+  include UserTestHelper
   include PostTestHelper
+  include TurboStreamTestHelper
   include ActionCable::TestHelper
   include ActiveJob::TestHelper
   include ActionMailer::TestHelper

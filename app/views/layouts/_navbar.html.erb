@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="<%= root_path %>">
+      <%= image_tag "/icon.svg", alt: "", class: "brand-mark", size: "28x28" %>
+      Instagram
+    </a>
+    <%= form_with url: search_path, method: :get, local: true, class: 'navbar-search' do |form| %>
+      <%= form.label :query, "Search posts", class: "visually-hidden" %>
+      <%= form.text_field :query, value: params[:query], class: 'field-pill', placeholder: 'Search posts and hashtags' %>
+    <% end %>
+    <div class="user-section">
+      <% if user_signed_in? %>
+        <% unread = current_user.unread_messages_count %>
+        <a href="<%= conversations_path %>" class="messages-link">
+          <i class="fa fa-paper-plane"></i>
+          <span id="unread-badge" class="unread-badge <%= "is-hidden" if unread.zero? %>"><%= unread %></span>
+        </a>
+        <a href="<%= user_path(current_user)%>">
+          <i class="fa fa-user"></i>
+        </a>
+      <% else %>
+        <a href="<%= new_user_session_path%>">
+          <i class="fa fa-sign-in"></i>
+        </a>
+      <% end %>
+    </div>
+  </div>
+</nav>

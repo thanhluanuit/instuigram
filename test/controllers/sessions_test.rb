@@ -13,7 +13,14 @@ class SessionsTest < ActionDispatch::IntegrationTest
   test "the sign in page renders outside the application navbar" do
     get new_user_session_path
 
-    assert_select "nav.navbar-light", false
+    assert_select "nav.navbar", false
+  end
+
+  test "the sign in page renders outside the application shell" do
+    get new_user_session_path
+
+    assert_select "nav.app-rail", false
+    assert_select "aside.app-shell__aside", false
   end
 
   test "the sign in page links to sign up and to password recovery" do

@@ -1,4 +1,41 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :bigint           not null, primary key
+#  admin                  :boolean          default(FALSE), not null
+#  bio                    :text
+#  confirmation_sent_at   :datetime
+#  confirmation_token     :string
+#  confirmed_at           :datetime
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :inet
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  followers_count        :integer          default(0), not null
+#  following_count        :integer          default(0), not null
+#  gender                 :string
+#  last_seen_at           :datetime
+#  last_sign_in_at        :datetime
+#  last_sign_in_ip        :inet
+#  name                   :string
+#  phone                  :integer
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string
+#  sign_in_count          :integer          default(0), not null
+#  unconfirmed_email      :string
+#  username               :string
+#  website                :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
 class User < ApplicationRecord
+  include Followable
+  include Conversable
+  include Avatarable
+  include Presenceable
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -9,43 +46,12 @@ class User < ApplicationRecord
   has_many :reactions, dependent: :destroy
   has_many :clients, dependent: :destroy
   has_many :event_logs, dependent: :destroy
-  has_many :conversation_participants
-  has_many :conversations, through: :conversation_participants
-  has_many :messages, dependent: :destroy
-  has_many :following_relationships, class_name: "Follow",
-                                     foreign_key: :follower_id, dependent: :destroy
-  has_many :following, through: :following_relationships, source: :followed
-  has_many :follower_relationships, class_name: "Follow",
-                                    foreign_key: :followed_id, dependent: :destroy
-  has_many :followers, through: :follower_relationships, source: :follower
-  has_one_attached :avatar
 
   validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true
-  validates :avatar, image: true
-
-  before_destroy :destroy_conversations
 
   scope :matching_username, ->(query) {
     next all if query.blank?
 
     where("username ILIKE ?", "%#{sanitize_sql_like(query)}%")
   }
-
-  def online?
-    last_seen_at.present? && last_seen_at > 1.minute.ago
-  end
-
-  def following?(user)
-    following_relationships.exists?(followed_id: user.id)
-  end
-
-  def unread_messages_count
-    conversation_participants.sum(:unread_count)
-  end
-
-  private
-
-  def destroy_conversations
-    Conversation.where(id: conversations.ids).destroy_all
-  end
 end

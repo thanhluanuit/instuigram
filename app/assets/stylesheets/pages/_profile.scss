@@ -1,18 +1,17 @@
-.user-profile {
-  margin-top: $page-top;
-}
-
 .profile-header {
+  @extend %surface-card;
   display: grid;
   grid-template-columns: 160px minmax(0, 1fr);
   align-items: center;
   gap: $space-10;
-  padding-bottom: $space-10;
+  padding: $space-8;
+  margin-bottom: $space-6;
 }
 
 .profile-header__avatar {
   @include avatar(140px);
-  margin: 0 auto;
+  @include avatar-ring;
+  margin: 2px auto;
 }
 
 .profile-header__identity {
@@ -21,51 +20,72 @@
   flex-wrap: wrap;
   gap: $space-5;
   margin-bottom: $space-5;
+
+  .follow-control__button {
+    padding: $space-2 $space-5;
+    font-size: $text-base;
+  }
 }
 
 .profile-header__username {
   margin: 0;
+  font-family: $font-display;
   font-size: $text-xl;
-  font-weight: $weight-semibold;
+  font-weight: $weight-normal;
+  letter-spacing: .005em;
   line-height: $leading-tight;
 }
 
 .profile-header__stats {
   display: flex;
   flex-wrap: wrap;
-  gap: $space-10;
+  gap: $space-8;
   padding-left: 0;
   margin-bottom: $space-5;
   list-style: none;
-  font-size: $text-md;
+
+  li {
+    @extend %meta-mono;
+  }
 
   span {
-    font-weight: $weight-semibold;
+    font-size: $text-md;
+    font-weight: $weight-bold;
+    color: $ink;
   }
+}
+
+.profile-header__about {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
 }
 
 .profile-header__name {
-  margin: 0 0 $space-1;
+  margin: 0;
   font-size: $text-md;
   font-weight: $weight-semibold;
 }
 
-.profile-header__website {
-  color: $link;
-  font-size: $text-md;
-  font-weight: $weight-semibold;
-  text-decoration: none;
+.profile-header__bio {
+  margin: 0;
+  max-width: 52ch;
+  color: $ink-muted;
+  font-size: $text-base;
+  line-height: $leading-relaxed;
+  white-space: pre-line;
+}
 
-  &:hover {
-    text-decoration: underline;
-  }
+.profile-header__website {
+  @extend %link-accent;
+  font-size: $text-md;
 }
 
 .user-tabs {
   display: flex;
   justify-content: center;
   gap: $space-10;
-  border-top: 1px solid $border-subtle;
+  border-bottom: 1px solid $border-subtle;
 }
 
 .user-tabs__tab {
@@ -74,8 +94,8 @@
   gap: $space-1;
   padding: $space-4 0;
   border: none;
-  border-top: 1px solid transparent;
-  margin-top: -1px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
   background: none;
   color: $ink-muted;
   font-size: $text-xs;
@@ -94,14 +114,14 @@
   }
 
   &.is-active {
-    border-top-color: $ink;
+    border-bottom-color: $accent;
     color: $ink;
   }
 }
 
 .thumbnail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: $space-4;
   padding: $space-6 0;
 
@@ -128,7 +148,7 @@
   .profile-header {
     grid-template-columns: 96px minmax(0, 1fr);
     gap: $space-5;
-    padding-bottom: $space-6;
+    padding: $space-5;
   }
 
   .profile-header__avatar {

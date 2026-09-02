@@ -1,15 +1,5 @@
-.is-hidden {
-  display: none;
-}
-
-.messages-link {
-  position: relative;
-  display: inline-block;
-}
-
 .conversations {
-  max-width: $width-feed;
-  margin: $page-top auto;
+  @extend %feed-column;
 }
 
 .conversations__search {
@@ -68,6 +58,7 @@
 
 .conversation-row__sender {
   color: $ink;
+  font-weight: $weight-semibold;
 }
 
 .conversation-row__unread {
@@ -76,12 +67,11 @@
 }
 
 .chat {
+  @extend %feed-column;
   @extend %surface-card;
   display: flex;
   flex-direction: column;
-  max-width: $width-feed;
   height: 70vh;
-  margin: $page-top auto;
   overflow: hidden;
 }
 
@@ -102,6 +92,7 @@
 .chat__avatar {
   position: relative;
   @include avatar(40px);
+  @include avatar-ring;
 }
 
 .chat__identity {
@@ -117,8 +108,7 @@
 }
 
 .chat__presence {
-  color: $ink-muted;
-  font-size: $text-xs;
+  @extend %meta-mono;
 }
 
 .chat__messages {
@@ -137,13 +127,14 @@
   max-width: 70%;
   padding: $space-2 $space-3;
   border-radius: $radius-lg;
-  background-color: $border-subtle;
+  background-color: $canvas-sunk;
+  border: 1px solid $border-subtle;
 }
 
 .chat-message__author {
+  @extend %meta-mono;
   display: block;
-  color: $ink-muted;
-  font-size: $text-xs;
+  letter-spacing: .08em;
 }
 
 .chat-message__body {
@@ -154,9 +145,10 @@
 }
 
 .chat-message__time {
+  @extend %meta-mono;
   display: block;
-  color: $ink-muted;
-  font-size: $text-xs;
+  font-size: 10.5px;
+  letter-spacing: .08em;
 }
 
 .chat-message--mine {
@@ -164,6 +156,7 @@
 
   .chat-message__bubble {
     background-color: $accent;
+    border-color: $accent;
   }
 
   .chat-message__author,
@@ -188,11 +181,6 @@
 
 
 @media (max-width: $bp-sm) {
-  .conversations,
-  .chat {
-    margin: $space-4 auto;
-  }
-
   .conversations__list,
   .chat {
     border-left: none;

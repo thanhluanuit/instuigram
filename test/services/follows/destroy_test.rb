@@ -37,6 +37,18 @@ class Follows::DestroyTest < ActiveSupport::TestCase
     assert_no_enqueued_jobs(only: Turbo::Streams::ActionBroadcastJob) { destroy_follow }
   end
 
+  test "broadcasts the follow button back to the follower's own stream" do
+    Follows::Create.call(follower: @follower, followed: @followed)
+
+    broadcast = capture_broadcasts(follow_state_stream(@follower)) { destroy_follow }.first
+
+    assert_includes broadcast, "Follow #{@followed.username}"
+  end
+
+  test "unfollowing someone you do not follow broadcasts no button" do
+    assert_no_broadcasts(follow_state_stream(@follower)) { destroy_follow }
+  end
+
   private
 
   def destroy_follow(follower: @follower, followed: @followed)

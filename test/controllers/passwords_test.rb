@@ -12,7 +12,7 @@ class PasswordsTest < ActionDispatch::IntegrationTest
   test "the forgot password page renders outside the application navbar" do
     get new_user_password_path
 
-    assert_select "nav.navbar-light", false
+    assert_select "nav.navbar", false
   end
 
   test "the reset password page renders the new password fields" do
@@ -25,7 +25,7 @@ class PasswordsTest < ActionDispatch::IntegrationTest
   test "the reset password page renders outside the application navbar" do
     get edit_user_password_path(reset_password_token: "a-token")
 
-    assert_select "nav.navbar-light", false
+    assert_select "nav.navbar", false
   end
 
   test "the forgot password page labels its input" do

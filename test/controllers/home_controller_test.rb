@@ -50,11 +50,52 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     sign_in_and_absorb_trackable_update users(:one)
     11.times { |n| create_post!(users(:one), description: "post #{n}") }
 
-    assert_queries_count(9) { get root_path }
+    assert_queries_count(12) { get root_path }
 
     create_post!(users(:one), description: "one more post")
 
-    assert_queries_count(9) { get root_path }
+    assert_queries_count(12) { get root_path }
+  end
+
+  test "suggests users the signed-in user does not already follow" do
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select ".aside-suggestion__name", text: users(:two).username
+  end
+
+  test "leaves an already-followed user out of the suggestions" do
+    users(:one).following << users(:two)
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select ".aside-suggestion__name", text: users(:two).username, count: 0
+  end
+
+  test "shows the signed-in user's own follow counts in the account card" do
+    Follows::Create.call(follower: users(:one), followed: users(:two))
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select "##{dom_id(users(:one), :following_count)}", text: /1 following/
+    assert_select "##{dom_id(users(:one), :followers_count)}", text: /0 followers/
+  end
+
+  test "gives every feed comment field a unique id its label points at" do
+    sign_in users(:one)
+    2.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    get root_path
+
+    field_ids = css_select(".post-comment input[type=text]").map { |input| input["id"] }
+    label_targets = css_select(".post-comment label").map { |label| label["for"] }
+
+    assert_equal css_select("section.post").size, field_ids.size
+    assert_equal field_ids.uniq, field_ids
+    assert_equal field_ids.sort, label_targets.sort
   end
 
   test "shows the newest post first" do
@@ -82,6 +123,24 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_select ".reaction-icon", count: 2
     assert_select ".reaction-icon.liked", count: 1
+  end
+
+  test "shows a follow button on other users' posts and none on your own" do
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select "form[data-follow-user-id=?] button", users(:two).id.to_s, text: "Follow"
+    assert_select "form[data-follow-user-id=?]", users(:one).id.to_s, count: 0
+  end
+
+  test "shows no follow button on posts by a user you already follow" do
+    Follows::Create.call(follower: users(:one), followed: users(:two))
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select "form[data-follow-user-id=?]", users(:two).id.to_s, count: 0
   end
 
   test "shows a comment icon opening the post popup for each post" do

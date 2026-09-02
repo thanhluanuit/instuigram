@@ -6,7 +6,7 @@
   <% if @posts.load.any? %>
     <div class="posts" id="posts">
       <% @posts.each do |post| %>
-        <%= render partial: 'post', locals: { post: post, user_reaction: @user_reactions[post.id] } %>
+        <%= render partial: 'post', locals: { post: post, user_reaction: @user_reactions[post.id], following: @following_ids.include?(post.user_id) } %>
       <% end %>
     </div>
     <%= render "feed_sentinel", posts: @posts %>

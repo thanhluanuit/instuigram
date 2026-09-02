@@ -11,22 +11,24 @@
     display: inline-block;
     min-width: 32px;
     padding: $space-2 $space-3;
-    border-radius: $radius-sm;
-    color: $ink;
+    border-radius: $radius-pill;
+    color: $ink-muted;
+    font-family: $font-mono;
     font-size: $text-sm;
     text-align: center;
     text-decoration: none;
   }
 
   a:hover {
-    background-color: $border-subtle;
+    background-color: $surface-hover;
+    color: $ink;
     text-decoration: none;
   }
 
   span.current {
-    background-color: $ink;
+    background-color: $accent;
     color: $ink-inverse;
-    font-weight: $weight-semibold;
+    font-weight: $weight-bold;
   }
 
   span.disabled {

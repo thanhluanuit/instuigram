@@ -6,7 +6,9 @@ class HomeController < ApplicationController
                           .created_recently
                           .page(params[:page]).per(10).without_count
     @user_reactions = current_user.reactions.where(reactable: @posts).index_by(&:reactable_id)
-
+    @following_ids  = current_user.following_relationships
+                                  .where(followed_id: @posts.map(&:user_id))
+                                  .pluck(:followed_id).to_set
     respond_to do |format|
       format.html
       format.turbo_stream if params[:page].present?

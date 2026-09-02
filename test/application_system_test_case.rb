@@ -3,7 +3,7 @@ require "test_helper"
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include ActionView::RecordIdentifier
 
-  driven_by :selenium, using: :chrome, screen_size: [ 1400, 1400 ] do |options|
+  driven_by :selenium, using: ENV["HEADED"].present? ? :chrome : :headless_chrome, screen_size: [ 1400, 1400 ] do |options|
     options.add_argument("--disable-features=PasswordLeakDetection")
     options.add_preference("profile.password_manager_leak_detection", false)
     options.add_preference("profile.password_manager_enabled", false)
@@ -31,6 +31,33 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     wait_for_script "window.Turbo !== undefined && window.Turbo.session.started"
     wait_for_script "window.Stimulus !== undefined"
     wait_for_script "Array.from(document.images).every((image) => image.complete)"
+  end
+
+  def wait_for_cable(identifier)
+    wait_for_script <<~JS
+      (() => {
+        const element = document.querySelector('[data-controller~="#{identifier}"]')
+        if (!element) return false
+        const controller = window.Stimulus.getControllerForElementAndIdentifier(element, "#{identifier}")
+        if (!controller || !controller.subscription) return false
+        return controller.subscription.consumer.subscriptions.guarantor.pendingSubscriptions.length === 0
+      })()
+    JS
+  end
+
+  def assert_no_navigation
+    page.execute_script("document.body.dataset.navigationMark = 'kept'")
+
+    yield
+
+    assert_selector "body[data-navigation-mark='kept']", visible: :all
+  end
+
+  def within_session_as(name, user)
+    using_session(name) do
+      sign_in_as(user)
+      yield
+    end
   end
 
   private

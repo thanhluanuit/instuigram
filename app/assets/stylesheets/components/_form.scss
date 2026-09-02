@@ -11,6 +11,10 @@
   &::placeholder {
     color: $ink-muted;
   }
+
+  &:focus-visible {
+    box-shadow: none;
+  }
 }
 
 .field {
@@ -42,7 +46,7 @@
   padding: $space-3;
   border: 1px solid $danger;
   border-radius: $radius-sm;
-  background-color: rgba(237, 73, 86, .06);
+  background-color: rgba(179, 38, 30, .06);
   color: $danger;
   font-size: $text-sm;
   text-align: left;

@@ -49,7 +49,9 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
     post user_follow_path(@other), as: :turbo_stream
 
     assert_response :success
-    assert_select "turbo-stream[action=replace][target=?]", dom_id(@other, :follow)
+    assert_select "turbo-stream[action=replace][targets=?]", "[data-follow-user-id='#{@other.id}']" do
+      assert_select "form[data-follow-user-id=?] button", @other.id.to_s, text: "Following"
+    end
     assert_select "turbo-stream[action=replace][target=?]", dom_id(@other, :followers_count) do
       assert_select "li span", text: "1"
     end
@@ -62,9 +64,31 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
     delete user_follow_path(@other), as: :turbo_stream
 
     assert_response :success
+    assert_select "turbo-stream[action=replace][targets=?]", "[data-follow-user-id='#{@other.id}']" do
+      assert_select "form[data-follow-user-id=?] button", @other.id.to_s, text: "Follow"
+    end
     assert_select "turbo-stream[action=replace][target=?]", dom_id(@other, :followers_count) do
       assert_select "li span", text: "0"
     end
+  end
+
+  test "following from the feed returns to the feed" do
+    sign_in @user
+    get root_path
+
+    post user_follow_path(@other), headers: { "HTTP_REFERER" => root_url }
+
+    assert_redirected_to root_url
+  end
+
+  test "unfollowing from the feed returns to the feed" do
+    sign_in @user
+    get root_path
+    post user_follow_path(@other)
+
+    delete user_follow_path(@other), headers: { "HTTP_REFERER" => root_url }
+
+    assert_redirected_to root_url
   end
 
   test "following yourself creates no follow and alerts" do

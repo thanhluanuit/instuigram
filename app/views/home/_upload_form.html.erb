@@ -1,25 +1,35 @@
 <div class="composer">
   <div class="composer-avatar">
-    <% if current_user.avatar.attached? %>
-      <%= image_tag current_user.avatar.variant(resize_to_fill: [ 96, 96 ]) %>
-    <% else %>
-      <i class="fa fa-user"></i>
-    <% end %>
+    <%= render "users/avatar_image", user: current_user %>
   </div>
-  <div class="composer-main" data-controller="composer">
+  <div class="composer-main" data-controller="composer"
+       data-composer-limit-value="<%= Post::DESCRIPTION_LIMIT %>"
+       data-composer-accept-value="<%= ImageValidator::ALLOWED_TYPES.join(",") %>"
+       data-composer-max-bytes-value="<%= ImageValidator::MAX_SIZE %>">
     <%= form_for Post.new, html: { class: "composer-form" } do |f| %>
       <%= f.label :description, "Caption", class: "visually-hidden" %>
-      <%= f.text_field :description, class: 'composer-input', placeholder: "Write a caption... #hashtags welcome" %>
+      <%= f.text_area :description, rows: 2, class: 'composer-input', placeholder: "Write a caption…",
+                      maxlength: Post::DESCRIPTION_LIMIT,
+                      data: { composer_target: "caption", action: "input->composer#captionChanged" } %>
+
+      <%= f.label :image, class: "composer-dropzone", data: { composer_target: "dropzone", action: "dragover->composer#dragOver dragleave->composer#dragLeave drop->composer#drop" } do %>
+        <img class="composer-preview" alt="" hidden data-composer-target="preview">
+
+        <span class="composer-dropzone__hint">
+          <i class="fa fa-picture-o"></i>
+          <span class="composer-filename" data-composer-target="filename">Drag a photo here, or click to browse</span>
+        </span>
+      <% end %>
+      <%= f.file_field :image, accept: ImageValidator::ALLOWED_TYPES.join(","), class: 'visually-hidden',
+                       data: { composer_target: "fileInput", action: "change->composer#updateFilename" } %>
+      <p class="composer-error" role="alert" hidden data-composer-target="error"></p>
 
       <div class="composer-toolbar">
+        <div class="composer-tags" data-composer-target="tags"></div>
         <div class="composer-actions">
-          <%= f.label :image, class: "composer-icon-btn", "aria-label": "Add a photo" do %>
-            <i class="fa fa-camera"></i>
-          <% end %>
-          <%= f.file_field :image, class: 'visually-hidden', data: { composer_target: "fileInput", action: "change->composer#updateFilename" } %>
-          <span class="composer-filename" data-composer-target="filename">No photo selected</span>
+          <span class="composer-counter" data-composer-target="counter"></span>
+          <%= f.submit 'Share', class: 'btn-accent', data: { composer_target: "submit" } %>
         </div>
-        <%= f.submit 'Post', class: 'btn-accent', data: { composer_target: "submit" } %>
       </div>
     <% end %>
   </div>

@@ -1,12 +1,14 @@
 body {
   background-color: $canvas;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
   color: $ink;
+  font-family: $font-body;
   font-size: $text-base;
   line-height: $leading-normal;
 }
 
 .container {
-  max-width: $width-wide;
+  max-width: $width-shell;
   padding-left: $page-gutter;
   padding-right: $page-gutter;
 }
@@ -26,10 +28,24 @@ body {
 
 .page-title {
   margin: 0;
+  font-family: $font-display;
   font-size: $text-xl;
-  font-weight: $weight-semibold;
+  font-weight: $weight-normal;
+  letter-spacing: .005em;
   line-height: $leading-tight;
   color: $ink;
+}
+
+%meta-mono {
+  font-family: $font-mono;
+  font-size: $text-xs;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: $ink-meta;
+}
+
+.is-hidden {
+  display: none;
 }
 
 .page-subtitle {
@@ -62,4 +78,8 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
   }
+}
+
+turbo-cable-stream-source {
+  display: none;
 }

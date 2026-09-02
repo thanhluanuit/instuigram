@@ -1,14 +1,23 @@
-<div class="search-page">
-  <% if @posts.any? %>
-    <div class="page-header">
-      <h1 class="page-title">Top posts</h1>
-      <p class="page-subtitle"><%= pluralize(@posts.total_count, "result") %> for <%= params[:query] %></p>
-    </div>
-    <%= render partial: "posts/thumbnail_grid", locals: { posts: @posts } %>
-  <% else %>
-    <div class="empty-state">
-      <i class="fa fa-search"></i>
-      <p>No posts match <%= params[:query].presence || "that search" %>. Try another word or a #hashtag.</p>
-    </div>
-  <% end %>
+<% if params[:query].present? %>
+  <div class="search-page__header">
+    <% if @posts.any? %>
+      <div class="page-header">
+        <h1 class="page-title">Top posts</h1>
+        <p class="page-subtitle"><%= pluralize(@posts.total_count, "result") %></p>
+      </div>
+    <% end %>
+    <p class="search-page__query">
+      Matching <span class="search-page__term"><%= params[:query] %></span>
+    </p>
+  </div>
+<% end %>
+
+<% if @users.any? %>
+  <%= render "search/people", users: @users, following_ids: @following_ids %>
+<% end %>
+
+<div class="thumbnail-card">
+  <%= render partial: "posts/thumbnail_grid",
+             locals: { posts: @posts, empty_icon: "search",
+                       empty_message: "No posts match #{params[:query].presence || "that search"}. Try another word or a #hashtag." } %>
 </div>

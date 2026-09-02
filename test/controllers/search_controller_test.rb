@@ -5,10 +5,42 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
 
   setup { index_all_posts! }
 
-  test "with a blank query, shows no matching posts" do
+  test "with a blank query, shows no matching posts and no result header" do
     get search_path
 
     assert_select ".empty-state p", /No posts match/
+    assert_select ".page-title", false
+  end
+
+  test "with a blank query for a signed in visitor, redirects to Explore" do
+    sign_in users(:one)
+
+    get search_path
+
+    assert_redirected_to explore_path
+  end
+
+  test "omits the aside so results span the full column" do
+    sign_in users(:one)
+
+    get search_path(query: "sunset")
+
+    assert_select "nav.app-rail"
+    assert_select "aside.app-shell__aside", false
+  end
+
+  test "marks Explore as the current rail section, since search is its query surface" do
+    sign_in users(:one)
+
+    get search_path(query: "sunset")
+
+    assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Explore/
+  end
+
+  test "echoes the query back as a chip in the result header" do
+    get search_path(query: "sunset")
+
+    assert_select ".search-page__term", "sunset"
   end
 
   test "with a hashtag query, finds only posts tagged with that hashtag" do
@@ -57,6 +89,53 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_select ".empty-state p", /No posts match/
   end
 
+  test "when only a person matches, lists them and omits the posts result header" do
+    get search_path(query: "user_two")
+
+    assert_select ".people-result .people-result__name", text: users(:two).username
+    assert_select ".page-title", false
+    assert_select ".search-page__term", "user_two"
+  end
+
+  test "with a query matching no username, omits the people panel" do
+    get search_path(query: "nobody_is_called_this")
+
+    assert_select ".people-results", false
+  end
+
+  test "offers a Follow button for a person the signed in visitor does not follow" do
+    sign_in users(:one)
+
+    get search_path(query: "user_two")
+
+    assert_select ".people-result form.follow-control button", text: "Follow"
+  end
+
+  test "offers an Unfollow button for a person the signed in visitor already follows" do
+    users(:one).following_relationships.create!(followed: users(:two))
+    sign_in users(:one)
+
+    get search_path(query: "user_two")
+
+    assert_select ".people-result form.follow-control button", text: "Following"
+  end
+
+  test "omits a follow button for the signed in visitor's own row" do
+    sign_in users(:one)
+
+    get search_path(query: "user_one")
+
+    assert_select ".people-result .people-result__name", text: users(:one).username
+    assert_select ".people-result form.follow-control", false
+  end
+
+  test "omits follow buttons from people results for an anonymous visitor" do
+    get search_path(query: "user_two")
+
+    assert_select ".people-result .people-result__name", text: users(:two).username
+    assert_select ".people-result form.follow-control", false
+  end
+
   test "with a multi-word query, finds the post whose description contains those words" do
     get search_path(query: "walk beach")
 
@@ -69,10 +148,18 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     create_post!(users(:two), description: "shared marker two")
     index_pending_posts!
 
-    assert_queries_count(3) { get search_path(query: "shared marker") }
+    assert_queries_count(4) { get search_path(query: "shared marker") }
 
     assert_select ".page-title", "Top posts"
     assert_select ".thumbnail-grid .wrapper", count: 2
+  end
+
+  test "skips the people lookup entirely for a hashtag query, which can never match a username" do
+    sign_in users(:one)
+
+    assert_queries_count(9) { get search_path(query: "##{hash_tags(:one).name}") }
+
+    assert_select ".people-results", false
   end
 
   private

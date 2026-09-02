@@ -50,16 +50,42 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 0, conversations(:one_and_two).participant_for(users(:two)).reload.unread_count
   end
 
+  test "falls back to the monogram for a participant with no avatar" do
+    users(:two).avatar.purge
+    sign_in users(:one)
+
+    get conversations_path
+
+    assert_select ".conversation-row__avatar .avatar-monogram"
+  end
+
+  test "renders the aside on the inbox" do
+    sign_in users(:one)
+
+    get conversations_path
+
+    assert_select "aside.app-shell__aside .aside-account__name", text: users(:one).username
+  end
+
+  test "renders the aside on a conversation reached by a turbo form redirect" do
+    sign_in users(:one)
+
+    get conversation_path(conversations(:one_and_two)),
+        headers: { "HTTP_ACCEPT" => "text/vnd.turbo-stream.html, text/html, application/xhtml+xml" }
+
+    assert_select "aside.app-shell__aside .aside-account__name", text: users(:one).username
+  end
+
   test "renders the inbox with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(11) { get conversations_path }
+    assert_queries_count(14) { get conversations_path }
   end
 
   test "renders a conversation with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(10) { get conversation_path(conversations(:one_and_two)) }
+    assert_queries_count(13) { get conversation_path(conversations(:one_and_two)) }
   end
 
   test "when unauthenticated, redirects the new message page to sign in" do
