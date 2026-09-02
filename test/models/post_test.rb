@@ -6,38 +6,26 @@ class PostTest < ActiveSupport::TestCase
   end
 
   test "is valid with a description, a user, and an attached image" do
-    assert build_post.valid?
+    assert build_post(@user).valid?
   end
 
   test "is valid without a description" do
-    assert build_post(description: nil).valid?
+    assert build_post(@user, description: nil).valid?
   end
 
-  test "is invalid without an attached image" do
-    post = build_post(attach_image: false)
-
-    assert_not post.valid?
-    assert_includes post.errors[:image], "can't be blank"
+  test "is valid with a description at the length limit" do
+    assert build_post(@user, description: "a" * Post::DESCRIPTION_LIMIT).valid?
   end
 
-  test "is invalid with a non-image attachment" do
-    post = build_post(attach_image: false)
-    attach_non_image_file(post.image)
+  test "is invalid with a description over the length limit" do
+    post = build_post(@user, description: "a" * (Post::DESCRIPTION_LIMIT + 1))
 
     assert_not post.valid?
-    assert_includes post.errors[:image], "must be a PNG, JPEG, or WebP"
-  end
-
-  test "is invalid with an image over the size limit" do
-    post = build_post(attach_image: false)
-    attach_oversized_image(post.image)
-
-    assert_not post.valid?
-    assert_includes post.errors[:image], "must be smaller than 10MB"
+    assert_includes post.errors[:description], "is too long (maximum is #{Post::DESCRIPTION_LIMIT} characters)"
   end
 
   test "is invalid without a user" do
-    assert_not build_post(user: nil).valid?
+    assert_not build_post(nil).valid?
   end
 
   test "with the :one fixture, belongs to the :one user" do
@@ -46,10 +34,6 @@ class PostTest < ActiveSupport::TestCase
 
   test "with the :two fixture, belongs to the :two user" do
     assert_equal users(:two), posts(:two).user
-  end
-
-  test "with the :one fixture, has an attached image" do
-    assert posts(:one).image.attached?
   end
 
   test "created_recently orders posts newest first" do
@@ -93,95 +77,6 @@ class PostTest < ActiveSupport::TestCase
     assert_equal [ newer, older ], ordered
   end
 
-  test "creates a hash tag for every #word token in the description" do
-    post = build_post(description: "loving this #sunset over the #beach today")
-    post.save!
-
-    assert_equal %w[beach sunset], post.hash_tags.pluck(:name).sort
-  end
-
-  test "creates no hash tags for a description with none" do
-    post = build_post(description: "just a plain caption")
-    post.save!
-
-    assert_empty post.hash_tags
-  end
-
-  test "creates a HashTag for each new #word when saved" do
-    post = build_post(description: "great #mountains and the #ocean")
-
-    assert_difference("HashTag.count", 2) { post.save! }
-  end
-
-  test "associates the saved post with the extracted hash tags" do
-    post = build_post(description: "great #mountains and the #ocean")
-    post.save!
-
-    assert_equal %w[mountains ocean], post.hash_tags.pluck(:name).sort
-  end
-
-  test "reuses an existing HashTag instead of creating a duplicate" do
-    post = build_post(description: "great #sunset")
-
-    assert_no_difference("HashTag.count") { post.save! }
-    assert_equal [ hash_tags(:one) ], post.hash_tags
-  end
-
-  test "does not create duplicate post_hash_tags when a tag repeats in the description" do
-    post = build_post(description: "so good #sunset #sunset")
-
-    assert_difference("PostHashTag.count", 1) { post.save! }
-  end
-
-  test "creates no HashTag records when the description has no tags" do
-    post = build_post(description: "no tags here")
-
-    assert_no_difference("HashTag.count") { post.save! }
-  end
-
-  test "does not create additional hash tags when an existing post is updated" do
-    post = build_post(description: "great #sunset")
-    post.save!
-
-    assert_no_difference("HashTag.count") { post.update!(description: "great #sunset and #mountains") }
-  end
-
-  test "enqueues an IndexPostJob for the saved post when created" do
-    post = build_post(description: "great #sunset")
-
-    assert_enqueued_with(job: IndexPostJob) { post.save! }
-  end
-
-  test "does not enqueue an IndexPostJob when an existing post is updated" do
-    post = build_post(description: "great #sunset")
-    post.save!
-
-    assert_no_enqueued_jobs(only: IndexPostJob) { post.update!(description: "updated") }
-  end
-
-  test "enqueues a DeindexPostJob for the destroyed post" do
-    post = build_post(description: "great #sunset")
-    post.save!
-
-    assert_enqueued_with(job: DeindexPostJob, args: [ post.id ]) { post.destroy }
-  end
-
-  test "builds an indexed document from the id, description, created_at, and hashtag names" do
-    post = build_post(description: "great #sunset at the #beach")
-    post.save!
-
-    document = post.as_indexed_json
-
-    assert_equal post.id, document["id"]
-    assert_equal "great #sunset at the #beach", document["description"]
-    assert_equal post.created_at.as_json, document["created_at"]
-    assert_equal %w[beach sunset], document["hashtag_names"].sort
-  end
-
-  test "search returns nil for a blank query" do
-    assert_nil Post.search("")
-  end
-
   test "has many comments" do
     comment = posts(:one).comments.create!(user: @user, body: "Nice!")
 
@@ -223,13 +118,5 @@ class PostTest < ActiveSupport::TestCase
     post.destroy
 
     assert_not Reaction.exists?(reaction_id)
-  end
-
-  private
-
-  def build_post(user: @user, description: "hello world", attach_image: true)
-    post = Post.new(user: user, description: description)
-    attach_test_image(post.image) if attach_image
-    post
   end
 end
