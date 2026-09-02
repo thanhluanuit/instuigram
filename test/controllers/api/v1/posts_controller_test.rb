@@ -54,6 +54,15 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
+  test "create without the post parameter responds bad request and creates no post" do
+    assert_no_difference("Post.count") do
+      post api_v1_posts_path, headers: auth_headers
+    end
+
+    assert_response :bad_request
+    assert_includes JSON.parse(response.body)["message"], "post"
+  end
+
   test "index returns only the current user's posts" do
     get api_v1_posts_path, headers: auth_headers
 
