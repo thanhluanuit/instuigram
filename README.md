@@ -17,30 +17,43 @@
 - Authentication with Devise, pagination with Kaminari
 - Background jobs with Sidekiq and caching with Redis
 - Full-text search with Elasticsearch
+- Real-time UI with Action Cable and Turbo Streams, no SPA framework
+- Keeping a growing model tidy: concerns, service objects, and counter caches
+- Standing up a token-authenticated JSON API alongside the session-based web app
 
 ## Tech Stack
 
 **Back-end**
-- Ruby 3.3.11
-- Rails 8.1.3.1
+- Ruby 3.3.11 · Rails 8.1.3.1 (`config.load_defaults 8.1`)
 - PostgreSQL — primary database
 - Redis — Rails cache store, Sidekiq queue backend, and Action Cable pub/sub (`redis` gem 5.4; CI runs Redis 7)
 - Sidekiq 8.1 — background job processing
-- Elasticsearch 8.x
-- Devise (authentication) · Kaminari (pagination) · Active Storage (file uploads)
+- Elasticsearch 8.x — full-text search through `elasticsearch-model` / `elasticsearch-rails`, the low-level official gems rather than Searchkick, so the index mapping and query DSL are hand-written
+- Puma 8 — application server
+- Devise 5 (authentication) · Kaminari (pagination) · Active Storage (file uploads)
+- `image_processing` + `mini_magick` — Active Storage named variants, shelling out to ImageMagick rather than libvips
 - JWT 3.2 — token issuance for the `/api/v1` surface
 
+**Real-time**
+- Action Cable over Redis, with hand-written Stimulus controllers — `ConversationChannel`, `InboxChannel`, `PresenceChannel`, `PostChannel`
+- Turbo Streams via declarative `turbo_stream_from` — follow buttons, follower counts, comments and reactions
+
 **Front-end**
-- Server-rendered ERB
-- Turbo 2 + Stimulus 1.3 via importmap-rails (no npm build step)
-- Bootstrap 5.3 (CSS only, no jQuery) via sassc-rails/SCSS
+- Server-rendered ERB (no ViewComponent)
+- Turbo 2 + Stimulus 1.3 via importmap-rails — no npm build step, `package.json` has zero dependencies
+- Bootstrap 5.3 (CSS only, no jQuery) via sassc-rails/SCSS, with every colour, radius and shadow a token in `_tokens.scss`
+- Self-hosted woff2 webfonts and Font Awesome 4 icons — the app's CSP is `style_src :self` / `font_src :self, :data`, which rules out Google Fonts
+- Sprockets serves CSS, fonts and images; importmap-rails serves all JS
 
 **Quality & security**
-- Minitest — unit, integration, and Capybara/Selenium system tests
+- Minitest — model, controller, service, channel, job and Capybara/Selenium system tests
+- SimpleCov — coverage report generated on every local `bin/rails test`
 - RuboCop (`rubocop-rails-omakase`) — style
 - Brakeman 8 — static security analysis
 - bundler-audit — dependency CVE scanning
-- All of these run as independent, parallel GitHub Actions jobs on every push — five in total: `brakeman`, `bundler_audit`, `rubocop`, `test` and `system_test` (Rails' default test glob excludes `test/system`, so the browser suite needs its own job)
+- `bullet` — N+1 query detection in development and test
+- `annotaterb` — schema annotations above each model, with CI failing on drift
+- CI runs five independent, parallel GitHub Actions jobs on every push: `brakeman`, `bundler_audit`, `rubocop`, `test` and `system_test` (Rails' default test glob excludes `test/system`, so the browser suite needs its own job)
 
 ## Architecture
 
