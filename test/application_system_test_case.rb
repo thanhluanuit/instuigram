@@ -30,7 +30,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   def wait_for_page_to_settle
     wait_for_script "window.Turbo !== undefined && window.Turbo.session.started"
     wait_for_script "window.Stimulus !== undefined"
-    wait_for_script "Array.from(document.images).every((image) => image.complete)"
+    wait_for_script <<~JS
+      Array.from(document.images)
+        .filter((image) => image.currentSrc !== "")
+        .every((image) => image.complete)
+    JS
   end
 
   def wait_for_cable(identifier)
