@@ -12,13 +12,6 @@ class Post::HashTaggableTest < ActiveSupport::TestCase
     assert_equal %w[beach sunset], post.hash_tags.pluck(:name).sort
   end
 
-  test "creates no hash tags for a description with none" do
-    post = build_post(@user, description: "just a plain caption")
-    post.save!
-
-    assert_empty post.hash_tags
-  end
-
   test "creates a HashTag for each new #word when saved" do
     post = build_post(@user, description: "great #mountains and the #ocean")
 
@@ -38,10 +31,11 @@ class Post::HashTaggableTest < ActiveSupport::TestCase
     assert_difference("PostHashTag.count", 1) { post.save! }
   end
 
-  test "creates no HashTag records when the description has no tags" do
-    post = build_post(@user, description: "no tags here")
+  test "creates no hash tags for a description with none" do
+    post = build_post(@user, description: "just a plain caption")
 
     assert_no_difference("HashTag.count") { post.save! }
+    assert_empty post.hash_tags
   end
 
   test "does not create additional hash tags when an existing post is updated" do

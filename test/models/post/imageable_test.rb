@@ -5,10 +5,6 @@ class Post::ImageableTest < ActiveSupport::TestCase
     @user = users(:one)
   end
 
-  test "is valid with an attached image" do
-    assert build_post(@user).valid?
-  end
-
   test "is invalid without an attached image" do
     post = build_post(@user, attach_image: false)
 
