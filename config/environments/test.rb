@@ -21,6 +21,7 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
   config.cache_store = :null_store
+  config.action_controller.cache_store = :memory_store
 
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable
@@ -61,6 +62,10 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.bullet_logger = true
     Bullet.raise = true
+
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "Post", association: :user
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "Post", association: :image_attachment
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "ActiveStorage::Attachment", association: :blob
 
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Post", association: :comments
   end

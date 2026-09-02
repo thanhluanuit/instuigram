@@ -49,7 +49,7 @@ class User < ApplicationRecord
   has_many :clients, dependent: :destroy
   has_many :event_logs, dependent: :destroy
 
-  validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true
+  validates :website, format: { with: /\A#{URI::DEFAULT_PARSER.make_regexp(%w[http https])}\z/ }, allow_blank: true
 
   scope :matching_username, ->(query) {
     next all if query.blank?

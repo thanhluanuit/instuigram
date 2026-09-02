@@ -50,8 +50,16 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 0, conversations(:one_and_two).participant_for(users(:two)).reload.unread_count
   end
 
+  test "shows a participant's uploaded avatar in their inbox row" do
+    attach_test_image(users(:two).avatar)
+    sign_in users(:one)
+
+    get conversations_path
+
+    assert_select ".conversation-row__avatar img[alt=?]", users(:two).username
+  end
+
   test "falls back to the monogram for a participant with no avatar" do
-    users(:two).avatar.purge
     sign_in users(:one)
 
     get conversations_path
@@ -142,5 +150,15 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to conversations_path
+  end
+
+  test "responds not found when the other participant is addressed by their database id" do
+    sign_in users(:one)
+
+    assert_no_difference("Conversation.count") do
+      post conversations_path, params: { user_id: users(:admin).id }
+    end
+
+    assert_response :not_found
   end
 end

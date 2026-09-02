@@ -1,15 +1,15 @@
 one:
   email: user_one@instuigram.com
-  encrypted_password: <%= BCrypt::Password.create('password123') %>
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   username: user_one
 
 two:
   email: user_two@instuigram.com
-  encrypted_password: <%= BCrypt::Password.create('password123') %>
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   username: user_two
 
 admin:
   email: admin@instuigram.com
-  encrypted_password: <%= BCrypt::Password.create('password123') %>
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   username: admin_user
   admin: true

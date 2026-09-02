@@ -28,13 +28,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
 
   def wait_for_page_to_settle
-    wait_for_script "window.Turbo !== undefined && window.Turbo.session.started"
-    wait_for_script "window.Stimulus !== undefined"
-    wait_for_script <<~JS
-      Array.from(document.images)
-        .filter((image) => image.currentSrc !== "")
-        .every((image) => image.complete)
-    JS
+    wait_for_turbo_to_start
+    wait_for_stimulus_to_load
+    wait_for_requested_images_to_load
   end
 
   def wait_for_cable(identifier)
@@ -65,6 +61,22 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
 
   private
+
+  def wait_for_turbo_to_start
+    wait_for_script "window.Turbo !== undefined && window.Turbo.session.started"
+  end
+
+  def wait_for_stimulus_to_load
+    wait_for_script "window.Stimulus !== undefined"
+  end
+
+  def wait_for_requested_images_to_load
+    wait_for_script <<~JS
+      Array.from(document.images)
+        .filter((image) => image.currentSrc !== "")
+        .every((image) => image.complete)
+    JS
+  end
 
   def wait_for_script(condition)
     Timeout.timeout(Capybara.default_max_wait_time) do

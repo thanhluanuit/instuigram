@@ -3,7 +3,6 @@ SimpleCov.start "rails"
 
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
-require "bcrypt"
 
 module ActiveStorageTestHelper
   def attach_test_image(attachable)
@@ -52,10 +51,6 @@ module PostTestHelper
     post
   end
 
-  def attach_images_to_all_posts!
-    Post.find_each { |post| attach_test_image(post.image) }
-  end
-
   def index_all_posts!
     Post.__elasticsearch__.create_index!(force: true)
     Post.find_each { |post| post.__elasticsearch__.index_document }
@@ -81,6 +76,7 @@ class ActiveSupport::TestCase
     Post.__elasticsearch__.create_index!(force: true)
   end
   fixtures :all
+  teardown { [ ActionController::Base, ActionController::API ].each { |controller| controller.cache_store.clear } }
   include ActiveStorageTestHelper
   include UserTestHelper
   include PostTestHelper

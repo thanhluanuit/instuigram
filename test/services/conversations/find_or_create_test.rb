@@ -34,4 +34,33 @@ class Conversations::FindOrCreateTest < ActiveSupport::TestCase
       assert_nil Conversations::FindOrCreate.call(user: users(:one), other_user: users(:one))
     end
   end
+
+  test "returns the conversation that won the insert race rather than raising" do
+    winner = Conversations::FindOrCreate.call(user: users(:two), other_user: users(:admin))
+
+    losing_the_insert_race do
+      assert_equal winner, Conversations::FindOrCreate.call(user: users(:two), other_user: users(:admin))
+    end
+  end
+
+  private
+
+  def losing_the_insert_race
+    raced = false
+    inherited_find_by = Conversation.method(:find_by)
+
+    Conversation.define_singleton_method(:find_by) do |*args|
+      raced ? inherited_find_by.call(*args) : nil
+    end
+
+    Conversation.define_singleton_method(:create!) do |*|
+      raced = true
+      raise ActiveRecord::RecordNotUnique
+    end
+
+    yield
+  ensure
+    Conversation.singleton_class.remove_method(:find_by)
+    Conversation.singleton_class.remove_method(:create!)
+  end
 end

@@ -2,19 +2,20 @@ require "application_system_test_case"
 
 class ReactionsTest < ApplicationSystemTestCase
   setup do
-    attach_images_to_all_posts!
     sign_in_as users(:one)
     wait_for_page_to_settle
   end
 
   test "liking a post from the feed swaps the heart in place without leaving the feed" do
-    within feed_post(posts(:two)) do
-      assert_selector ".reaction-icon[aria-label='Like']"
+    assert_no_navigation do
+      within feed_post(posts(:two)) do
+        assert_selector ".reaction-icon[aria-label='Like']"
 
-      find(".reaction-icon").click
+        find(".reaction-icon").click
 
-      assert_selector ".reaction-icon.liked[aria-label='Unlike']"
-      assert_selector ".reactions-count", text: "1 likes"
+        assert_selector ".reaction-icon.liked[aria-label='Unlike']"
+        assert_selector ".reactions-count", text: "1 likes"
+      end
     end
 
     assert_current_path root_path

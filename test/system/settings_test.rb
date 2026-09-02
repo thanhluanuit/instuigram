@@ -2,7 +2,6 @@ require "application_system_test_case"
 
 class SettingsTest < ApplicationSystemTestCase
   setup do
-    attach_images_to_all_posts!
     sign_in_as users(:one)
     visit edit_profile_path
     wait_for_page_to_settle
@@ -24,5 +23,12 @@ class SettingsTest < ApplicationSystemTestCase
     click_link "Authorized Applications"
 
     assert_no_selector "#v-pills-home.active"
+  end
+
+  test "logging out returns to the sign in page" do
+    click_link "Log Out"
+
+    assert_current_path new_user_session_path
+    assert_selector "form#new_user"
   end
 end

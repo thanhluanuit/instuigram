@@ -76,6 +76,8 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     get post_path(posts(:one))
 
     assert_response :success
+    assert_select ".post-detail", text: /#{posts(:one).description}/
+    assert_select "a[href=?]", user_path(posts(:one).user)
   end
 
   test "when signed in as the post's owner, shows a Delete icon" do
