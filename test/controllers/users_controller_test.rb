@@ -73,6 +73,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "shows the uploaded avatar when the profile has one" do
+    attach_test_image(users(:two).avatar)
+
     get user_path(users(:two))
 
     assert_select ".profile-header__avatar img[alt=?]", users(:two).username

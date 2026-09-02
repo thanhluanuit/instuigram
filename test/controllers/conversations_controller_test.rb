@@ -51,6 +51,7 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "shows a participant's uploaded avatar in their inbox row" do
+    attach_test_image(users(:two).avatar)
     sign_in users(:one)
 
     get conversations_path
@@ -59,7 +60,6 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "falls back to the monogram for a participant with no avatar" do
-    users(:two).avatar.purge
     sign_in users(:one)
 
     get conversations_path
@@ -87,13 +87,13 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "renders the inbox with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(15) { get conversations_path }
+    assert_queries_count(14) { get conversations_path }
   end
 
   test "renders a conversation with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(14) { get conversation_path(conversations(:one_and_two)) }
+    assert_queries_count(13) { get conversation_path(conversations(:one_and_two)) }
   end
 
   test "when unauthenticated, redirects the new message page to sign in" do

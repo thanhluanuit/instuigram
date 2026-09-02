@@ -1,3 +1,2 @@
 post_one_image_blob: <%= ActiveStorage::FixtureSet.blob filename: "test_image.png", content_type: "image/png" %>
 post_two_image_blob: <%= ActiveStorage::FixtureSet.blob filename: "test_image.png", content_type: "image/png" %>
-user_two_avatar_blob: <%= ActiveStorage::FixtureSet.blob filename: "test_image.png", content_type: "image/png" %>
