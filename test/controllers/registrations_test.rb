@@ -54,6 +54,26 @@ class RegistrationsTest < ActionDispatch::IntegrationTest
     assert_select "nav.navbar"
   end
 
+  test "the change password page marks Profile current in the navigation rail" do
+    sign_in users(:one)
+
+    get edit_user_registration_path
+
+    assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Profile/
+  end
+
+  test "a rejected password change keeps Profile marked current in the navigation rail" do
+    sign_in users(:one)
+
+    put user_registration_path, params: { user: {
+      current_password: "wrong-password",
+      password: "brand-new-password",
+      password_confirmation: "brand-new-password"
+    } }
+
+    assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Profile/
+  end
+
   test "a wrong current password leaves the password unchanged" do
     user = users(:one)
     sign_in user

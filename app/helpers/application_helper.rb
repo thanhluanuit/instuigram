@@ -22,8 +22,7 @@ module ApplicationHelper
     when :home     then current_page?(root_path)
     when :messages then controller_name == "conversations"
     when :explore  then controller_name.in?(%w[explore search])
-    when :profile  then controller_name == "profiles" ||
-                        current_page?(edit_user_registration_path)
+    when :profile  then controller_name.in?(%w[profiles registrations])
     end
   end
 end

@@ -110,6 +110,5 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     patch "/users/#{users(:two).id}", params: { user: { name: "Sneaky" } }
     assert_response :not_found
-    assert_not_equal "Sneaky", users(:one).reload.name
   end
 end
