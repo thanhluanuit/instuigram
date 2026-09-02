@@ -24,7 +24,7 @@
 - Ruby 3.3.11
 - Rails 8.1.3.1
 - PostgreSQL — primary database
-- Redis 6 — Rails cache store and Sidekiq queue backend
+- Redis — Rails cache store, Sidekiq queue backend, and Action Cable pub/sub (`redis` gem 5.4; CI runs Redis 7)
 - Sidekiq 8.1 — background job processing
 - Elasticsearch 8.x
 - Devise (authentication) · Kaminari (pagination) · Active Storage (file uploads)
@@ -40,7 +40,7 @@
 - RuboCop (`rubocop-rails-omakase`) — style
 - Brakeman 8 — static security analysis
 - bundler-audit — dependency CVE scanning
-- All four run as independent, parallel GitHub Actions jobs on every push
+- All of these run as independent, parallel GitHub Actions jobs on every push — five in total: `brakeman`, `bundler_audit`, `rubocop`, `test` and `system_test` (Rails' default test glob excludes `test/system`, so the browser suite needs its own job)
 
 ## Architecture
 
