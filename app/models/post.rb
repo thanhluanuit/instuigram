@@ -34,14 +34,9 @@ class Post < ApplicationRecord
 
   DESCRIPTION_LIMIT = 2200
 
-  validate :image_presence
-  validates :image, image: true
+  validates :image, image: { required: true }
   validates :description, length: { maximum: DESCRIPTION_LIMIT }
   after_commit :create_hash_tags, on: :create
-
-  def image_presence
-    errors.add(:image, "can't be blank") unless image.attached?
-  end
 
   def create_hash_tags
     extract_name_hash_tags.uniq.each do |name|
