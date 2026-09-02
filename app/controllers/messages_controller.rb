@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   before_action :authenticate_user!
 
-  rate_limit to: 30, within: 1.minute, only: :create, store: Rails.configuration.x.rate_limit_store
+  rate_limit to: 30, within: 1.minute, only: :create
 
   def create
     @conversation = current_user.conversations.find_by!(key: params[:conversation_id])
