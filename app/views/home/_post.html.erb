@@ -5,7 +5,7 @@
   </div>
   <% cache post do %>
     <%= link_to post_path(post), class: 'main-image-link' do %>
-      <%= image_tag post.image.variant(:feed), class: 'main-image' %>
+      <%= image_tag post.image.variant(:feed), class: 'main-image', loading: "lazy" %>
     <% end %>
   <% end %>
   <div class="post-body">

@@ -107,6 +107,16 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "section.post:first-of-type", text: /#{newest.description}/
   end
 
+  test "lazy-loads every feed image" do
+    sign_in users(:one)
+
+    get root_path
+
+    images = css_select("img.main-image")
+    assert_equal Post.count, images.size
+    assert_equal [ "lazy" ], images.map { |image| image["loading"] }.uniq
+  end
+
   test "shows no filled hearts for a user who has reacted to no posts" do
     sign_in users(:one)
 
