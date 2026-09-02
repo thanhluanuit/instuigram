@@ -21,8 +21,7 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
   config.cache_store = :null_store
-  config.action_controller.cache_store = :memory_store
-  config.action_controller.perform_caching = false
+  config.x.rate_limit_store = ActiveSupport::Cache::MemoryStore.new
 
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable

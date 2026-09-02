@@ -30,6 +30,7 @@ Rails.application.configure do
   # Separate logical DB (2) from Sidekiq/ActionCable's DB 1 — see
   # production.rb for the full rationale.
   config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_CACHE_URL", "redis://localhost:6379/2") }
+  config.x.rate_limit_store = ActiveSupport::Cache::RedisCacheStore.new(url: ENV.fetch("REDIS_CACHE_URL", "redis://localhost:6379/2"))
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local

@@ -68,6 +68,7 @@ Rails.application.configure do
   # require, but a separate logical DB (2, vs DB 1 used by Sidekiq's queues and
   # ActionCable pub/sub — see config/initializers/sidekiq.rb and config/cable.yml).
   config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_CACHE_URL", "redis://localhost:6379/2") }
+  config.x.rate_limit_store = ActiveSupport::Cache::RedisCacheStore.new(url: ENV.fetch("REDIS_CACHE_URL", "redis://localhost:6379/2"))
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
   # config.active_job.queue_adapter = :resque
