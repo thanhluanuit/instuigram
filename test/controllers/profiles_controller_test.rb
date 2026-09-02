@@ -16,6 +16,18 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Profile/
   end
 
+  test "renders the aside with a profile summary" do
+    users(:one).update!(bio: "Baking bread and chasing light.")
+    sign_in users(:one)
+
+    get profile_path
+
+    assert_select "aside.app-shell__aside .aside-profile" do
+      assert_select ".aside-account__name", text: users(:one).username
+      assert_select ".aside-profile__bio", text: "Baking bread and chasing light."
+    end
+  end
+
   test "shows an Edit Profile link" do
     sign_in users(:one)
 
