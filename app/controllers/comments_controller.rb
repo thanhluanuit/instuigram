@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @post    = Post.find(params[:post_id])
+    @post    = Post.find_by!(key: params[:post_id])
     @comment = current_user.comments.create(comment_params.merge(post: @post))
 
     return render_rejected_comment unless @comment.persisted?
@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    comment = current_user.comments.find(params[:id])
+    comment = current_user.comments.find_by!(key: params[:id])
     @post   = comment.post
     comment.destroy
 

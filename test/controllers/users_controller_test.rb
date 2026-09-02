@@ -77,6 +77,19 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "addresses a profile by key rather than by id" do
+    get user_path(users(:one))
+
+    assert_response :success
+    assert_equal "/users/#{users(:one).key}", path
+  end
+
+  test "responds not found when a profile is requested by its database id" do
+    get user_path(id: users(:one).id)
+
+    assert_response :not_found
+  end
+
   test "avoids N+1 queries when rendering multiple posts in the grid" do
     create_post!(users(:one), description: "second post")
 

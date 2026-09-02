@@ -10,7 +10,7 @@ class Api::V1::PostsController < Api::BaseController
   end
 
   def show
-    post = current_user_api.posts.find(params[:id])
+    post = current_user_api.posts.find_by!(key: params[:id])
     render json: post_json(post)
   end
 
@@ -24,7 +24,7 @@ class Api::V1::PostsController < Api::BaseController
   end
 
   def destroy
-    post = current_user_api.posts.find(params[:id])
+    post = current_user_api.posts.find_by!(key: params[:id])
     post.destroy
     head :no_content
   end

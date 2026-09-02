@@ -7,6 +7,10 @@ module Keyable
     before_create :assign_key
   end
 
+  def to_param
+    key
+  end
+
   private
 
   def assign_key

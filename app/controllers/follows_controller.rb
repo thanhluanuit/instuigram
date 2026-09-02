@@ -20,7 +20,7 @@ class FollowsController < ApplicationController
   private
 
   def set_user
-    @user = User.find(params[:user_id])
+    @user = User.find_by!(key: params[:user_id])
   end
 
   def render_follow_state

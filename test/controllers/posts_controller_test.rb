@@ -220,6 +220,25 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert Post.exists?(posts(:one).id)
   end
 
+  test "addresses a post by key rather than by id" do
+    get post_path(posts(:one))
+
+    assert_response :success
+    assert_equal "/posts/#{posts(:one).key}", path
+  end
+
+  test "responds not found when a post is requested by its database id" do
+    get post_path(id: posts(:one).id)
+
+    assert_response :not_found
+  end
+
+  test "responds not found when a post is requested with a blank key" do
+    get post_path(id: " ")
+
+    assert_response :not_found
+  end
+
   test "when requested from the post_modal turbo frame, renders the post as a popup" do
     sign_in users(:one)
 

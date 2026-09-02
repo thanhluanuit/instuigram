@@ -4,7 +4,7 @@ class MessagesController < ApplicationController
   rate_limit to: 30, within: 1.minute, only: :create
 
   def create
-    @conversation = current_user.conversations.find(params[:conversation_id])
+    @conversation = current_user.conversations.find_by!(key: params[:conversation_id])
     @message      = Messages::Create.call(conversation: @conversation, user: current_user, body: message_params[:body])
 
     if @message.persisted?
