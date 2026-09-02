@@ -55,7 +55,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_040138) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
-    t.string "key", default: -> { "(gen_random_uuid())::text" }, null: false
+    t.uuid "key", default: -> { "gen_random_uuid()" }, null: false
     t.bigint "post_id", null: false
     t.integer "reactions_count", default: 0, null: false
     t.datetime "updated_at", null: false
@@ -77,7 +77,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_040138) do
 
   create_table "conversations", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "key", default: -> { "(gen_random_uuid())::text" }, null: false
+    t.uuid "key", default: -> { "gen_random_uuid()" }, null: false
     t.datetime "last_message_at"
     t.bigint "last_message_id"
     t.string "participants_key", null: false
@@ -121,7 +121,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_040138) do
     t.text "body", null: false
     t.bigint "conversation_id", null: false
     t.datetime "created_at", null: false
-    t.string "key", default: -> { "(gen_random_uuid())::text" }, null: false
+    t.uuid "key", default: -> { "gen_random_uuid()" }, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["conversation_id", "created_at"], name: "index_messages_on_conversation_id_and_created_at"
@@ -142,7 +142,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_040138) do
     t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", precision: nil, null: false
     t.string "description"
-    t.string "key", default: -> { "(gen_random_uuid())::text" }, null: false
+    t.uuid "key", default: -> { "gen_random_uuid()" }, null: false
     t.integer "reactions_count", default: 0, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "user_id", null: false
@@ -176,7 +176,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_040138) do
     t.integer "followers_count", default: 0, null: false
     t.integer "following_count", default: 0, null: false
     t.string "gender"
-    t.string "key", default: -> { "(gen_random_uuid())::text" }, null: false
+    t.uuid "key", default: -> { "gen_random_uuid()" }, null: false
     t.datetime "last_seen_at"
     t.datetime "last_sign_in_at", precision: nil
     t.inet "last_sign_in_ip"

@@ -4,7 +4,7 @@
 #
 #  id              :bigint           not null, primary key
 #  body            :text             not null
-#  key             :string           not null
+#  key             :uuid             not null
 #  reactions_count :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

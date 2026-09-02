@@ -3,7 +3,7 @@
 # Table name: conversations
 #
 #  id               :bigint           not null, primary key
-#  key              :string           not null
+#  key              :uuid             not null
 #  last_message_at  :datetime
 #  participants_key :string           not null
 #  created_at       :datetime         not null

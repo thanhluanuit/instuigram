@@ -3,11 +3,11 @@ class AddKeyToKeyables < ActiveRecord::Migration[8.1]
 
   def up
     TABLES.each do |table|
-      add_column table, :key, :string, default: -> { "gen_random_uuid()::text" }
+      add_column table, :key, :uuid, default: -> { "gen_random_uuid()" }
 
       execute <<~SQL
         UPDATE #{quote_table_name(table)}
-        SET key = gen_random_uuid()::text
+        SET key = gen_random_uuid()
         WHERE key IS NULL
       SQL
     end
