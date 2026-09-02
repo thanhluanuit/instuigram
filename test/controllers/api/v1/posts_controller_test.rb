@@ -30,10 +30,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index with an expired token is unauthorized" do
-    expired = JWT.encode(
-      { sub: @client.client_id, iat: 2.hours.ago.to_i, exp: 1.hour.ago.to_i },
-      Rails.application.credentials.jwt_secret_key, "HS256"
-    )
+    expired = encode_access_token(@client, expires_at: 1.hour.ago)
 
     get api_v1_posts_path, headers: { "Authorization" => "Bearer #{expired}" }
 
@@ -60,7 +57,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :bad_request
-    assert_includes JSON.parse(response.body)["message"], "post"
+    assert_equal({ "message" => "param is missing or the value is empty or invalid: post" }, JSON.parse(response.body))
   end
 
   test "index returns only the current user's posts" do
@@ -148,9 +145,9 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     { "Authorization" => "Bearer #{@token}" }
   end
 
-  def encode_access_token(client)
+  def encode_access_token(client, expires_at: 1.hour.from_now)
     JWT.encode(
-      { sub: client.client_id, iat: Time.current.to_i, exp: 1.hour.from_now.to_i },
+      { sub: client.client_id, iat: Time.current.to_i, exp: expires_at.to_i },
       Rails.application.credentials.jwt_secret_key, "HS256"
     )
   end

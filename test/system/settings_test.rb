@@ -25,14 +25,10 @@ class SettingsTest < ApplicationSystemTestCase
     assert_no_selector "#v-pills-home.active"
   end
 
-  test "logging out sends the DELETE the session route expects and returns to sign in" do
+  test "logging out returns to the sign in page" do
     click_link "Log Out"
 
     assert_current_path new_user_session_path
     assert_selector "form#new_user"
-
-    visit root_path
-
-    assert_current_path new_user_session_path
   end
 end

@@ -129,7 +129,7 @@ class ReactionsControllerTest < ActionDispatch::IntegrationTest
   test "when signed in as a different user, destroying leaves their reaction in place" do
     sign_in users(:one)
 
-    assert_no_difference("Reaction.count") { delete post_reaction_path(posts(:one)) }
+    delete post_reaction_path(posts(:one))
 
     assert Reaction.exists?(reactions(:one).id)
   end

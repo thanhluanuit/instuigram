@@ -19,7 +19,8 @@ class InboxTest < ApplicationSystemTestCase
   end
 
   test "a message from another user rewrites its inbox row and moves it to the top" do
-    assert_equal [ dom_id(conversations(:one_and_two)), dom_id(conversations(:one_and_admin)) ], conversation_row_ids
+    assert_selector ".conversations__list > .conversation-row:nth-child(1)##{dom_id(conversations(:one_and_two))}"
+    assert_selector ".conversations__list > .conversation-row:nth-child(2)##{dom_id(conversations(:one_and_admin))}"
 
     assert_no_navigation do
       send_admin_message
@@ -30,8 +31,8 @@ class InboxTest < ApplicationSystemTestCase
         assert_selector ".conversation-row__unread", text: "2"
       end
 
-      assert_selector ".conversations__list > .conversation-row:first-child##{dom_id(conversations(:one_and_admin))}"
-      assert_equal [ dom_id(conversations(:one_and_admin)), dom_id(conversations(:one_and_two)) ], conversation_row_ids
+      assert_selector ".conversations__list > .conversation-row:nth-child(1)##{dom_id(conversations(:one_and_admin))}"
+      assert_selector ".conversations__list > .conversation-row:nth-child(2)##{dom_id(conversations(:one_and_two))}"
     end
   end
 
@@ -45,9 +46,5 @@ class InboxTest < ApplicationSystemTestCase
 
       assert_selector ".chat-message--mine", text: "Standup in five"
     end
-  end
-
-  def conversation_row_ids
-    all(".conversation-row").map { |row| row[:id] }
   end
 end

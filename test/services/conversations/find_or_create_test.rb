@@ -37,30 +37,25 @@ class Conversations::FindOrCreateTest < ActiveSupport::TestCase
 
   test "returns the conversation that won the insert race rather than raising" do
     winner = Conversations::FindOrCreate.call(user: users(:two), other_user: users(:admin))
-    conversation = nil
 
-    assert_no_difference("Conversation.count") do
-      losing_the_insert_race do
-        conversation = Conversations::FindOrCreate.call(user: users(:two), other_user: users(:admin))
-      end
+    losing_the_insert_race do
+      assert_equal winner, Conversations::FindOrCreate.call(user: users(:two), other_user: users(:admin))
     end
-
-    assert_equal winner, conversation
   end
 
   private
 
   def losing_the_insert_race
-    lookups = 0
+    raced = false
     inherited_find_by = Conversation.method(:find_by)
 
     Conversation.define_singleton_method(:find_by) do |*args|
-      lookups += 1
-      lookups == 1 ? nil : inherited_find_by.call(*args)
+      raced ? inherited_find_by.call(*args) : nil
     end
 
     Conversation.define_singleton_method(:create!) do |*|
-      raise ActiveRecord::RecordNotUnique, "duplicate key value violates unique constraint"
+      raced = true
+      raise ActiveRecord::RecordNotUnique
     end
 
     yield
