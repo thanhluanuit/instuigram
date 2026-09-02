@@ -143,4 +143,14 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to conversations_path
   end
+
+  test "responds not found when the other participant is addressed by their database id" do
+    sign_in users(:one)
+
+    assert_no_difference("Conversation.count") do
+      post conversations_path, params: { user_id: users(:admin).id }
+    end
+
+    assert_response :not_found
+  end
 end
