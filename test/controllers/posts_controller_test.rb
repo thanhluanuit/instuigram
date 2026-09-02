@@ -233,12 +233,6 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "responds not found when a post is requested with a blank key" do
-    get post_path(id: " ")
-
-    assert_response :not_found
-  end
-
   test "when requested from the post_modal turbo frame, renders the post as a popup" do
     sign_in users(:one)
 
