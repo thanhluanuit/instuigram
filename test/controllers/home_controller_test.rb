@@ -50,11 +50,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     sign_in_and_absorb_trackable_update users(:one)
     11.times { |n| create_post!(users(:one), description: "post #{n}") }
 
-    assert_queries_count(12) { get root_path }
+    assert_queries_count(13) { get root_path }
 
     create_post!(users(:one), description: "one more post")
 
-    assert_queries_count(12) { get root_path }
+    assert_queries_count(13) { get root_path }
   end
 
   test "suggests users the signed-in user does not already follow" do

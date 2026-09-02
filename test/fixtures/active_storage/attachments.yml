@@ -7,3 +7,8 @@ post_two_image_attachment:
   name: image
   record: two (Post)
   blob: post_two_image_blob
+
+user_two_avatar_attachment:
+  name: avatar
+  record: two (User)
+  blob: user_two_avatar_blob

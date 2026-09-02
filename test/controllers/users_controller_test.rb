@@ -64,11 +64,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "falls back to the monogram when the profile has no avatar" do
-    users(:one).avatar.purge
-
     get user_path(users(:one))
 
     assert_select ".profile-header__avatar .avatar-monogram"
+    assert_select ".profile-header__avatar img", count: 0
+  end
+
+  test "shows the uploaded avatar when the profile has one" do
+    get user_path(users(:two))
+
+    assert_select ".profile-header__avatar img[alt=?]", users(:two).username
+    assert_select ".profile-header__avatar .avatar-monogram", count: 0
   end
 
   test "responds not found for a nonexistent user" do

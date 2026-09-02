@@ -50,7 +50,7 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:one)
     create_post!(users(:one), description: "second post")
 
-    assert_queries_count(11) { get profile_path }
+    assert_queries_count(12) { get profile_path }
 
     assert_response :success
   end

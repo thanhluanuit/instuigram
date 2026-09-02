@@ -50,6 +50,14 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 0, conversations(:one_and_two).participant_for(users(:two)).reload.unread_count
   end
 
+  test "shows a participant's uploaded avatar in their inbox row" do
+    sign_in users(:one)
+
+    get conversations_path
+
+    assert_select ".conversation-row__avatar img[alt=?]", users(:two).username
+  end
+
   test "falls back to the monogram for a participant with no avatar" do
     users(:two).avatar.purge
     sign_in users(:one)
@@ -79,13 +87,13 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "renders the inbox with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(14) { get conversations_path }
+    assert_queries_count(15) { get conversations_path }
   end
 
   test "renders a conversation with a bounded number of queries" do
     sign_in users(:one)
 
-    assert_queries_count(13) { get conversation_path(conversations(:one_and_two)) }
+    assert_queries_count(14) { get conversation_path(conversations(:one_and_two)) }
   end
 
   test "when unauthenticated, redirects the new message page to sign in" do
