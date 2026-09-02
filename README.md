@@ -128,16 +128,31 @@ someone sends them no notification; it writes an `EventLog` row.
 
 ## Architecture
 
-**Web app** — standard server-rendered Rails MVC, Devise-authenticated:
-- `User` → has many `posts`, an avatar via Active Storage
-- `Post` → belongs to a user, one attached image, auto-extracted `#hashtag` associations, indexed into Elasticsearch on commit
-- `Comment` and `Reaction` (polymorphic, emoji-style: like/love/haha/wow/sad/angry) attach to posts — reactions broadcast live over ActionCable (`PostChannel`) so like counts update in-browser without a refresh
-- `EventLog` records key domain events (post created/destroyed, profile updated, comment/reaction created) as a lightweight audit trail
+Standard Rails MVC. `User` and `Post` are each split into concerns under `app/models/user/`
+and `app/models/post/` rather than growing into god objects, and multi-step writes live in
+`app/services/` instead of controllers or model callbacks.
+
+**Domain model** — Devise-authenticated, PostgreSQL-backed:
+- `User` → has many `posts`, an avatar via Active Storage; behaviour split across `Followable`, `Conversable`, `Avatarable` and `Presenceable`
+- `Post` → belongs to a user, one attached image, auto-extracted `#hashtag` associations, indexed into Elasticsearch on commit; behaviour split across `Imageable`, `HashTaggable` and `Searchable`
+- `Comment` and `Reaction` (polymorphic, emoji-style: like/love/haha/wow/sad/angry) attach to posts
+- `Follow` → the social graph, a self-join across `users` with a counter cache on each side
+- `Conversation` / `ConversationParticipant` / `Message` → 1:1 direct messaging, with a per-participant unread count
+- `HashTag` / `PostHashTag` → many-to-many tagging, populated from post descriptions
+- `EventLog` → a lightweight audit trail of key domain events (post created/destroyed, profile updated, comment/reaction/follow created, message sent), written asynchronously
+
+**Real-time** — four Action Cable channels, each authenticated from the Devise session:
+`PostChannel` (reaction and comment counts), `ConversationChannel` (messages in an open
+thread), `InboxChannel` (unread badges and inbox rows) and `PresenceChannel` (online status).
+Follows, comments and reactions additionally broadcast declaratively through
+`Turbo::StreamsChannel`, so the app runs both a hand-written and a declarative real-time path
+on purpose.
 
 **JSON API** (`/api/v1`) — a separate, token-authenticated surface alongside the session-based web app:
-- `Client` issues machine credentials (`client_id` / `client_secret`, `has_secure_password`)
-- `POST /api/v1/oauth` exchanges those credentials for a short-lived JWT (1h) via a client-credentials-style flow
-- `Api::V1::PostsController` exposes posts (index/show/create/destroy) to authenticated API clients
+- `POST /api/v1/clients` — verifies an email and password, then issues machine credentials (`client_id` / `client_secret`, stored with `has_secure_password`)
+- `POST /api/v1/oauth` — exchanges those credentials for a short-lived JWT (1h) via a client-credentials-style flow
+- `Api::V1::PostsController` — exposes posts (index/show/create/destroy) to authenticated API clients, scoped to the token's own user
+- Both unauthenticated endpoints are throttled with Rails 8's native `rate_limit`
 
 ## Getting Started
 
