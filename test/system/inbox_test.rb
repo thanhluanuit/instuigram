@@ -30,6 +30,7 @@ class InboxTest < ApplicationSystemTestCase
         assert_selector ".conversation-row__unread", text: "2"
       end
 
+      assert_selector ".conversations__list > .conversation-row:first-child##{dom_id(conversations(:one_and_admin))}"
       assert_equal [ dom_id(conversations(:one_and_admin)), dom_id(conversations(:one_and_two)) ], conversation_row_ids
     end
   end
