@@ -37,7 +37,7 @@ class Api::V1::PostsController < Api::BaseController
 
   def post_json(post)
     {
-      id: post.id,
+      key: post.key,
       description: post.description,
       image_url: post.image.attached? ? Rails.application.routes.url_helpers.rails_blob_url(post.image) : nil,
       hash_tags: post.hashtag_names,
