@@ -5,6 +5,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get user_path(users(:one))
 
     assert_response :success
+    assert_select ".profile-header", text: /#{users(:one).username}/
+    assert_select ".thumbnail-grid .wrapper", count: users(:one).posts.count
   end
 
   test "renders the navigation rail for a signed in visitor" do

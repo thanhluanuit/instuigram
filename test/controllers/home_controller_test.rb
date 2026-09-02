@@ -11,12 +11,14 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
-  test "when authenticated, renders successfully" do
+  test "when authenticated, renders every post in the feed" do
     sign_in users(:one)
 
     get root_path
 
     assert_response :success
+    assert_select "section.post", count: Post.count
+    assert_select "section.post", text: /#{posts(:one).description}/
   end
 
   test "with no avatar, shows a placeholder instead of an image in the composer" do
