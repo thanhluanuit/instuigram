@@ -200,6 +200,12 @@ This project began life as a step-by-step Medium series walking through building
 ### Homepage
 ![Home page](app/assets/images/home_page.png "Homepage")
 
+### Direct Messaging
+![Direct Messaging](app/assets/images/chat_conversation.png "Direct Messaging")
+
+### Follow a Profile
+![Follow a Profile](app/assets/images/follow_profile.png "Follow a Profile")
+
 ### User Profile Page
 ![User Profile Page](app/assets/images/user_profile.png "User Profile Page")
 
