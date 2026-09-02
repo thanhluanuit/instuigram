@@ -93,16 +93,18 @@ class PostTest < ActiveSupport::TestCase
     assert_equal [ newer, older ], ordered
   end
 
-  test "extracts every #word token from the description" do
-    post = build_post(description: "loving this #sunset over the #beach today", attach_image: false)
+  test "creates a hash tag for every #word token in the description" do
+    post = build_post(description: "loving this #sunset over the #beach today")
+    post.save!
 
-    assert_equal %w[sunset beach], post.extract_name_hash_tags
+    assert_equal %w[beach sunset], post.hash_tags.pluck(:name).sort
   end
 
-  test "extracts no tags from a description with none" do
-    post = build_post(description: "just a plain caption", attach_image: false)
+  test "creates no hash tags for a description with none" do
+    post = build_post(description: "just a plain caption")
+    post.save!
 
-    assert_empty post.extract_name_hash_tags
+    assert_empty post.hash_tags
   end
 
   test "creates a HashTag for each new #word when saved" do
