@@ -21,7 +21,7 @@ class Conversation < ApplicationRecord
 
   scope :ordered, -> { order(last_message_at: :desc) }
 
-  def self.key_for(user_a, user_b)
+  def self.participants_key_for(user_a, user_b)
     [ user_a.id, user_b.id ].sort.join("-")
   end
 

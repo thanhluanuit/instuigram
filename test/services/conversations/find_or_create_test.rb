@@ -11,7 +11,7 @@ class Conversations::FindOrCreateTest < ActiveSupport::TestCase
   test "stores the sorted participants key" do
     conversation = Conversations::FindOrCreate.call(user: users(:two), other_user: users(:admin))
 
-    assert_equal Conversation.key_for(users(:two), users(:admin)), conversation.participants_key
+    assert_equal Conversation.participants_key_for(users(:two), users(:admin)), conversation.participants_key
   end
 
   test "returns the existing conversation instead of creating a second one" do
