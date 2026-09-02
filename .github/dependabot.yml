@@ -4,6 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # actioncable's redis adapter declares `gem "redis", ">= 4", "< 6"`; a major
+      # bump breaks ActionCable at runtime and the test env can't catch it (async adapter).
+      - dependency-name: "redis"
+        update-types: ["version-update:semver-major"]
     groups:
       minor-and-patch:
         update-types:
