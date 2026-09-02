@@ -15,9 +15,11 @@ module Post::HashTaggable
   private
 
   def create_hash_tags
-    extracted_hash_tag_names.each do |name|
-      hash_tags << HashTag.create_or_find_by(name: name)
-    end
+    extracted_hash_tag_names.each { |name| hash_tags << hash_tag_named(name) }
+  end
+
+  def hash_tag_named(name)
+    HashTag.find_by(name: name) || HashTag.create_or_find_by(name: name)
   end
 
   def extracted_hash_tag_names
