@@ -115,3 +115,8 @@ surrounding file.
   commented-out code — git remembers.
 - Match the file's existing comment density when editing a file that
   predates this rule; don't add new comments to it either.
+- The ban covers hand-written prose. A tool-generated block is not a comment
+  under this rule — never hand-edit or delete one; regenerate it through the
+  tool that owns it. Today that is the `# == Schema Information` block above
+  each `app/models/*.rb` class, owned by `annotaterb` (see
+  [`technical_stack.md`](technical_stack.md)).
