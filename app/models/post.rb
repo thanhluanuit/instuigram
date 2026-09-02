@@ -5,6 +5,7 @@
 #  id              :bigint           not null, primary key
 #  comments_count  :integer          default(0), not null
 #  description     :string
+#  key             :string           not null
 #  reactions_count :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

@@ -15,6 +15,7 @@
 #  followers_count        :integer          default(0), not null
 #  following_count        :integer          default(0), not null
 #  gender                 :string
+#  key                    :string           not null
 #  last_seen_at           :datetime
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
