@@ -1,6 +1,6 @@
 <div class="comment">
   <div class="comment-body">
-    <%= link_to comment.user.username, user_path(comment.user), class: "username" %>
+    <%= link_to comment.user.username, profile_path_for(comment.user), class: "username" %>
     <span class="text"><%= comment.body %></span>
   </div>
   <% if current_user && comment.user_id == current_user.id %>

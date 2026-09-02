@@ -1,9 +1,9 @@
 <div class="avatar">
-  <%= link_to user_path(user) do %>
+  <%= link_to profile_path_for(user) do %>
     <%= render "users/avatar_image", user: user %>
   <% end %>
 </div>
-<%= link_to user.username, user_path(user), class: 'username' %>
+<%= link_to user.username, profile_path_for(user), class: 'username' %>
 <% if user_signed_in? && user != current_user && !following %>
   <%= render "users/follow_button", user: user, following: following %>
 <% end %>

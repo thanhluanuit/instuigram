@@ -12,12 +12,12 @@
     <div class="conversations__list">
       <% @users.each do |user| %>
         <div class="conversation-row">
-          <%= link_to user_path(user), class: "conversation-row__avatar" do %>
+          <%= link_to profile_path_for(user), class: "conversation-row__avatar" do %>
             <%= render "users/avatar_with_presence", user: user %>
           <% end %>
 
           <div class="conversation-row__body">
-            <%= link_to user.username, user_path(user), class: "conversation-row__name" %>
+            <%= link_to user.username, profile_path_for(user), class: "conversation-row__name" %>
             <span class="conversation-row__preview"><%= user.name %></span>
           </div>
 
