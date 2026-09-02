@@ -12,14 +12,9 @@
 #
 class Post < ApplicationRecord
   include Searchable
+  include Imageable
 
   belongs_to :user
-  has_one_attached :image do |attachable|
-    attachable.variant :feed, resize_to_limit: [ 600, 600 ]
-    attachable.variant :detail, resize_to_limit: [ 1200, 1200 ]
-    attachable.variant :thumb, resize_to_fill: [ 440, 440 ]
-  end
-
   scope :created_recently, -> { order(created_at: :desc) }
   scope :discoverable_for, ->(user) {
     where.not(user_id: user.id)
@@ -34,7 +29,6 @@ class Post < ApplicationRecord
 
   DESCRIPTION_LIMIT = 2200
 
-  validates :image, image: { required: true }
   validates :description, length: { maximum: DESCRIPTION_LIMIT }
   after_commit :create_hash_tags, on: :create
 
