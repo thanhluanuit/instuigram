@@ -54,7 +54,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to conversation_path(conversations(:one_and_two))
   end
 
-  test "throttles a burst of messages, so the conversation cannot be flooded" do
+  test "throttles a burst of requests, so the conversation cannot be flooded" do
     sign_in users(:one)
 
     30.times { post conversation_messages_path(conversations(:one_and_two)), params: { message: { body: "" } } }

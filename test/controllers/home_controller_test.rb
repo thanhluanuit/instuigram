@@ -30,6 +30,15 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select ".composer-avatar img", count: 0
   end
 
+  test "with an avatar, shows it in the composer instead of the placeholder" do
+    attach_test_image(users(:one).avatar)
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select ".composer-avatar img[alt=?]", users(:one).username
+  end
+
   test "with no posts, shows the empty state" do
     sign_in users(:one)
     Post.destroy_all
