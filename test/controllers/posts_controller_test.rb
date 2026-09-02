@@ -244,6 +244,26 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_select "turbo-frame##{dom_id(posts(:one), :reaction)}", count: 0
   end
 
+  test "when requested from the popup's reaction frame, renders the popup so the frame is found" do
+    sign_in users(:one)
+
+    get post_path(posts(:one)), headers: { "Turbo-Frame" => dom_id(posts(:one), :modal_reaction) }
+
+    assert_response :success
+    assert_select "turbo-frame##{dom_id(posts(:one), :modal_reaction)}"
+    assert_select ".post-modal"
+  end
+
+  test "when requested from the detail page's own reaction frame, renders the full page so the frame is found" do
+    sign_in users(:one)
+
+    get post_path(posts(:one)), headers: { "Turbo-Frame" => dom_id(posts(:one), :reaction) }
+
+    assert_response :success
+    assert_select "turbo-frame##{dom_id(posts(:one), :reaction)}"
+    assert_select ".post-modal", count: 0
+  end
+
   test "when requested as a full page, renders the post detail outside a popup" do
     sign_in users(:one)
 

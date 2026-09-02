@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  include ActionView::RecordIdentifier
+
   before_action :authenticate_user!, except: [ :show ]
 
   def create
@@ -15,7 +17,7 @@ class PostsController < ApplicationController
     @post          = Post.includes(comments: :user).find_by!(key: params[:id])
     @user_reaction = current_user&.reactions&.find_by(reactable: @post)
 
-    render "modal" if turbo_frame_request?
+    render "modal" if modal_frame_request?
   end
 
   def destroy
@@ -26,6 +28,10 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def modal_frame_request?
+    turbo_frame_request_id.in?([ "post_modal", dom_id(@post, :modal_reaction) ])
+  end
 
   def render_aside?
     false
