@@ -15,7 +15,7 @@
           <i class="fa fa-paper-plane"></i>
           <span id="unread-badge" class="unread-badge <%= "is-hidden" if unread.zero? %>"><%= unread %></span>
         </a>
-        <a href="<%= user_path(current_user)%>">
+        <a href="<%= profile_path %>">
           <i class="fa fa-user"></i>
         </a>
       <% else %>

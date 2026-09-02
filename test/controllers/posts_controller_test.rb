@@ -194,7 +194,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("Post.count", -1) { delete post_path(posts(:one)) }
 
-    assert_redirected_to user_path(users(:one))
+    assert_redirected_to profile_path
   end
 
   test "when signed in as the post's owner, logs a post_destroyed event" do

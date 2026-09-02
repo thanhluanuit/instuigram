@@ -97,7 +97,7 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference("Follow.count") { post user_follow_path(@user) }
 
     assert_equal "You cannot follow yourself.", flash[:alert]
-    assert_redirected_to user_path(@user)
+    assert_redirected_to profile_path
   end
 
   test "unfollowing destroys the follow" do

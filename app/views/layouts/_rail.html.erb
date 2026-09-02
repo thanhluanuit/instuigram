@@ -17,7 +17,7 @@
       <%= label %>
     </span>
   <% end %>
-  <%= link_to user_path(current_user), nav_rail_link_options(:profile) do %>
+  <%= link_to profile_path, nav_rail_link_options(:profile) do %>
     <span class="app-rail__avatar">
       <%= render "users/avatar_image", user: current_user, loading: "lazy" %>
     </span>

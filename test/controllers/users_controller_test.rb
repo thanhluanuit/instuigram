@@ -7,13 +7,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "renders the navigation rail for a signed in visitor, with Profile marked current" do
-    sign_in users(:one)
+  test "renders the navigation rail for a signed in visitor" do
+    sign_in users(:two)
 
     get user_path(users(:one))
 
     assert_select "nav.app-rail"
-    assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Profile/
+  end
+
+  test "when signed in as the profile owner, redirects to the canonical profile path" do
+    sign_in users(:one)
+
+    get user_path(users(:one))
+
+    assert_redirected_to profile_path
   end
 
   test "omits the navigation rail for an anonymous visitor" do
@@ -94,14 +101,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_select ".thumbnail-grid .wrapper", 10
     assert_select ".pagination"
-  end
-
-  test "when signed in as the profile owner, shows an Edit Profile link" do
-    sign_in users(:one)
-
-    get user_path(users(:one))
-
-    assert_select "a.btn-outline[href=?]", edit_user_path(users(:one))
   end
 
   test "when signed in as a different user, hides the Edit Profile link" do
