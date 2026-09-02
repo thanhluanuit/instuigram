@@ -1,5 +1,5 @@
 <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-  <%= link_to "Edit Profile", edit_user_path(current_user),
+  <%= link_to "Edit Profile", edit_profile_path,
               class: "nav-link #{'active' if active == :profile}",
               data: { tabs_target: "tab" } %>
   <%= link_to "Change Password", edit_user_registration_path,

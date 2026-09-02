@@ -7,13 +7,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "renders the navigation rail for a signed in visitor, with Profile marked current" do
-    sign_in users(:one)
+  test "renders the navigation rail for a signed in visitor" do
+    sign_in users(:two)
 
     get user_path(users(:one))
 
     assert_select "nav.app-rail"
-    assert_select "nav.app-rail a.is-active[aria-current=?]", "page", text: /Profile/
+  end
+
+  test "when signed in as the profile owner, redirects to the canonical profile path" do
+    sign_in users(:one)
+
+    get user_path(users(:one))
+
+    assert_redirected_to profile_path
   end
 
   test "omits the navigation rail for an anonymous visitor" do
@@ -37,15 +44,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "omits the aside for an anonymous visitor" do
     get user_path(users(:one))
 
-    assert_select "aside.app-shell__aside", false
-  end
-
-  test "omits the aside on the settings page so the form spans the full column" do
-    sign_in users(:one)
-
-    get edit_user_path(users(:one))
-
-    assert_select "nav.app-rail"
     assert_select "aside.app-shell__aside", false
   end
 
@@ -96,89 +94,21 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select ".pagination"
   end
 
-  test "when signed in as the profile owner, shows an Edit Profile link" do
-    sign_in users(:one)
-
-    get user_path(users(:one))
-
-    assert_select "a.btn-outline[href=?]", edit_user_path(users(:one))
-  end
-
   test "when signed in as a different user, hides the Edit Profile link" do
     sign_in users(:two)
 
     get user_path(users(:one))
 
-    assert_select "a.btn-outline[href=?]", edit_user_path(users(:one)), count: 0
+    assert_select "a.btn-outline[href=?]", edit_profile_path, count: 0
   end
 
-  test "edit, when unauthenticated, redirects to sign in" do
-    get edit_user_path(users(:one))
-
-    assert_redirected_to new_user_session_path
-  end
-
-  test "edit, when authenticated, renders successfully regardless of the url's user id" do
+  test "no longer routes profile settings under a user id" do
     sign_in users(:one)
 
-    get edit_user_path(users(:two))
+    get "/users/#{users(:two).id}/edit"
+    assert_response :not_found
 
-    assert_response :success
-  end
-
-  test "update, when unauthenticated, redirects to sign in and does not update" do
-    patch user_path(users(:one)), params: { user: { name: "Hacked" } }
-
-    assert_redirected_to new_user_session_path
-    assert_not_equal "Hacked", users(:one).reload.name
-  end
-
-  test "update, when authenticated, updates current_user and redirects to their profile" do
-    sign_in users(:one)
-
-    patch user_path(users(:one)), params: { user: { name: "New Name" } }
-
-    assert_redirected_to user_path(users(:one))
-    assert_equal "New Name", users(:one).reload.name
-  end
-
-  test "update, when authenticated with valid params, logs a profile_updated event" do
-    sign_in users(:one)
-
-    assert_difference("EventLog.count", 1) do
-      perform_enqueued_jobs { patch user_path(users(:one)), params: { user: { name: "New Name" } } }
-    end
-
-    event_log = EventLog.last
-    assert_equal "profile_updated", event_log.event_type
-    assert_equal users(:one), event_log.subject
-    assert_equal users(:one), event_log.user
-  end
-
-  test "update, when authenticated, ignores the url's user id and only ever updates current_user" do
-    sign_in users(:one)
-
-    patch user_path(users(:two)), params: { user: { name: "Sneaky" } }
-
-    assert_equal "Sneaky", users(:one).reload.name
-    assert_not_equal "Sneaky", users(:two).reload.name
-  end
-
-  test "update, when authenticated with an invalid email, does not persist the change" do
-    sign_in users(:one)
-
-    assert_no_difference("EventLog.count") do
-      patch user_path(users(:one)), params: { user: { email: "not-an-email" } }
-    end
-
-    assert_not_equal "not-an-email", users(:one).reload.email
-  end
-
-  test "edit, when authenticated, links the settings sidebar to the change password page" do
-    sign_in users(:one)
-
-    get edit_user_path(users(:one))
-
-    assert_select "a[href=?]", edit_user_registration_path
+    patch "/users/#{users(:two).id}", params: { user: { name: "Sneaky" } }
+    assert_response :not_found
   end
 end

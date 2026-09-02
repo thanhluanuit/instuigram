@@ -13,6 +13,10 @@ module UsersHelper
     "Privacy and Security" => "v-pills-privacy"
   }.freeze
 
+  def profile_path_for(user)
+    user == current_user ? profile_path : user_path(user)
+  end
+
   def user_monogram(user)
     source = user.username.presence || user.email.to_s
     source.strip.first.to_s.upcase

@@ -5,7 +5,7 @@
   </div>
   <div class="user-edit-page__pane tab-content">
     <div class="tab-pane fade show active" data-tabs-target="pane" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-      <%= form_with model: current_user, local: true, html: { class: "settings-form" } do |f| %>
+      <%= form_with model: current_user, url: profile_path, html: { class: "settings-form" } do |f| %>
         <%= render "users/form_identity", user: current_user %>
 
         <%= render "users/form_row", f: f, attribute: :avatar,

@@ -3,12 +3,12 @@
   <% users.each do |user| %>
     <div class="people-result">
       <div class="avatar">
-        <%= link_to user_path(user) do %>
+        <%= link_to profile_path_for(user) do %>
           <%= render "users/avatar_image", user: user, loading: "lazy" %>
         <% end %>
       </div>
       <div class="people-result__identity">
-        <%= link_to user.username, user_path(user), class: "people-result__name" %>
+        <%= link_to user.username, profile_path_for(user), class: "people-result__name" %>
         <span class="people-result__meta"><%= pluralize(user.followers_count, "follower") %></span>
       </div>
       <% if user_signed_in? && user != current_user %>

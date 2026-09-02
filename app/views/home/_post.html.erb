@@ -16,7 +16,7 @@
       <span class="post-action post-action--end" aria-hidden="true"><i class="fa fa-bookmark-o"></i></span>
     </div>
     <p class="description">
-      <%= link_to post.user.username, user_path(post.user), class: "description-author" %>
+      <%= link_to post.user.username, profile_path_for(post.user), class: "description-author" %>
       <%= render partial: "posts/description", locals: { post: post } %>
     </p>
     <%= link_to "View all comments", post_path(post), class: "post-comments-link", data: { turbo_frame: "post_modal" } %>

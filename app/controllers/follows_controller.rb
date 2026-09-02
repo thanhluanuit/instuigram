@@ -3,7 +3,7 @@ class FollowsController < ApplicationController
   before_action :set_user
 
   def create
-    return redirect_to user_path(@user), alert: "You cannot follow yourself." if @user == current_user
+    return redirect_to profile_path, alert: "You cannot follow yourself." if @user == current_user
 
     follow = Follows::Create.call(follower: current_user, followed: @user)
     log_event(event_type: :follow_created, subject: follow) if follow.previously_new_record?

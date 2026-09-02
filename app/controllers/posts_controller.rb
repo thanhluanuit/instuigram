@@ -22,7 +22,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.find(params[:id])
     log_event(event_type: :post_destroyed, subject: @post) if @post.destroy
 
-    redirect_to user_path(current_user)
+    redirect_to profile_path
   end
 
   private

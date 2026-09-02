@@ -12,7 +12,7 @@
     </div>
 
     <div class="chat__identity">
-      <%= link_to other&.username, other ? user_path(other) : "#", class: "chat__name" %>
+      <%= link_to other&.username, other ? profile_path_for(other) : "#", class: "chat__name" %>
       <span class="chat__presence" data-presence-status-for="<%= other&.id %>">
         <%= other&.online? ? "Active now" : "Offline" %>
       </span>

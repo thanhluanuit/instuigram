@@ -101,7 +101,7 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select ".conversations__list a[href=?]", user_path(users(:two))
-    assert_select ".conversations__list a[href=?]", user_path(users(:one)), false
+    assert_select ".conversations__list a[href=?]", profile_path, false
   end
 
   test "the new message page filters users by username" do

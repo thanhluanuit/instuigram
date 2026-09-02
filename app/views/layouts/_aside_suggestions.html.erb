@@ -4,12 +4,12 @@
     <% suggestions.each do |user| %>
       <div class="aside-suggestion">
         <div class="avatar">
-          <%= link_to user_path(user) do %>
+          <%= link_to profile_path_for(user) do %>
             <%= render "users/avatar_image", user: user %>
           <% end %>
         </div>
         <div class="aside-suggestion__identity">
-          <%= link_to user.username, user_path(user), class: "aside-suggestion__name" %>
+          <%= link_to user.username, profile_path_for(user), class: "aside-suggestion__name" %>
           <span class="aside-suggestion__meta"><%= pluralize(user.followers_count, "follower") %></span>
         </div>
         <%= render "users/follow_button", user: user, following: false %>
