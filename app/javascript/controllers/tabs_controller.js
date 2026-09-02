@@ -1,8 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Vanilla replacement for Bootstrap 4's data-toggle="pill" vertical tabs
-// (app/views/profiles/edit.html.erb). Toggles .active on the clicked tab and
-// the .tab-pane whose id matches the tab's href.
 export default class extends Controller {
   static targets = ["tab", "pane"]
 
