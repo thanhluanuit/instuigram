@@ -28,9 +28,13 @@ class ReactionsController < ApplicationController
   end
 
   def reaction_return_path
-    return post_path(@post) if turbo_frame_request_id == dom_id(@post, :modal_reaction)
+    return post_path(@post) if reaction_frame_request?
 
     request.referer.presence || post_path(@post)
+  end
+
+  def reaction_frame_request?
+    turbo_frame_request_id.in?([ dom_id(@post, :reaction), dom_id(@post, :modal_reaction) ])
   end
 
   def reaction_params

@@ -118,6 +118,40 @@ class ReactionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to post_path(posts(:one))
   end
 
+  test "when creating from the feed's reaction frame, redirects to the post so the frame is in the response" do
+    sign_in users(:one)
+
+    post post_reaction_path(posts(:two)),
+         headers: { "HTTP_REFERER" => root_path, "Turbo-Frame" => dom_id(posts(:two), :reaction) }
+
+    assert_redirected_to post_path(posts(:two))
+    follow_redirect!
+    assert_select "turbo-frame##{dom_id(posts(:two), :reaction)}"
+  end
+
+  test "when destroying from the feed's reaction frame, redirects to the post so the frame is in the response" do
+    sign_in users(:two)
+
+    delete post_reaction_path(posts(:one)),
+           headers: { "HTTP_REFERER" => root_path, "Turbo-Frame" => dom_id(posts(:one), :reaction) }
+
+    assert_redirected_to post_path(posts(:one))
+    follow_redirect!
+    assert_select "turbo-frame##{dom_id(posts(:one), :reaction)}"
+  end
+
+  test "when reacting to a post the referring feed page does not hold, the response still carries its reaction frame" do
+    sign_in users(:one)
+    11.times { |n| create_post!(users(:one), description: "post #{n}") }
+    beyond_first_page = Post.created_recently.offset(10).first
+
+    post post_reaction_path(beyond_first_page),
+         headers: { "HTTP_REFERER" => root_path, "Turbo-Frame" => dom_id(beyond_first_page, :reaction) }
+    follow_redirect!
+
+    assert_select "turbo-frame##{dom_id(beyond_first_page, :reaction)}"
+  end
+
   test "responds not found when the post being reacted to is addressed by its database id" do
     sign_in users(:one)
 
