@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby
+require "socket"
+require "uri"
+
+def tcp_open?(host, port)
+  Socket.tcp(host, port, connect_timeout: 2, &:close)
+  true
+rescue SystemCallError, IO::TimeoutError, SocketError
+  false
+end
+
+def endpoint_from(url, default_port)
+  uri = URI.parse(url)
+  [ uri.host || "localhost", uri.port || default_port ]
+end
+
+def executable?(*names)
+  paths = ENV.fetch("PATH", "").split(File::PATH_SEPARATOR)
+  names.any? { |name| paths.any? { |path| File.executable?(File.join(path, name)) } }
+end
+
+postgres_host = ENV.fetch("PGHOST", "localhost")
+postgres_port = Integer(ENV.fetch("PGPORT", 5432))
+redis_host, redis_port = endpoint_from(ENV.fetch("REDIS_URL", "redis://localhost:6379/1"), 6379)
+elasticsearch_url = ENV.fetch("ELASTICSEARCH_URL", "http://localhost:9200")
+elasticsearch_host, elasticsearch_port = endpoint_from(elasticsearch_url, 9200)
+
+checks = [
+  {
+    name: "Postgres",
+    where: "#{postgres_host}:#{postgres_port}",
+    ok: tcp_open?(postgres_host, postgres_port),
+    remedy: "brew services start postgresql@14"
+  },
+  {
+    name: "Redis",
+    where: "#{redis_host}:#{redis_port}",
+    ok: tcp_open?(redis_host, redis_port),
+    remedy: "brew services start redis"
+  },
+  {
+    name: "Elasticsearch",
+    where: "#{elasticsearch_host}:#{elasticsearch_port}",
+    ok: tcp_open?(elasticsearch_host, elasticsearch_port),
+    remedy: "start an Elasticsearch 8 node on #{elasticsearch_url}"
+  }
+]
+
+if ENV["SYSTEM_TESTS"]
+  checks << {
+    name: "ImageMagick",
+    where: "magick",
+    ok: executable?("magick", "convert"),
+    remedy: "brew install imagemagick"
+  }
+end
+
+width = checks.map { |check| check[:name].length }.max
+checks.each do |check|
+  puts format("  %-#{width}s  %-22s  %s", check[:name], check[:where], check[:ok] ? "ok" : "down")
+end
+
+missing = checks.reject { |check| check[:ok] }
+exit 0 if missing.empty?
+
+puts "\nStart the missing services and re-run:"
+missing.each { |check| puts "  #{check[:remedy]}" }
+exit 1
