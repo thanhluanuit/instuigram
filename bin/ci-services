@@ -46,7 +46,9 @@ checks = [
   }
 ]
 
-if ENV["SYSTEM_TESTS"]
+system_tests = ![ "", "0", "false", "off", "no" ].include?(ENV["SYSTEM_TESTS"].to_s.strip.downcase)
+
+if system_tests
   checks << {
     name: "ImageMagick",
     where: "magick",

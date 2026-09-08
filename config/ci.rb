@@ -1,3 +1,5 @@
+system_tests = ![ "", "0", "false", "off", "no" ].include?(ENV["SYSTEM_TESTS"].to_s.strip.downcase)
+
 CI.run do
   step "Services: Postgres, Redis, Elasticsearch", "bin/ci-services"
   step "Setup: Gems", "bundle check"
@@ -9,7 +11,7 @@ CI.run do
   step "Annotations: Model schema comments",
     "env RAILS_ENV=test bundle exec annotaterb models && git diff --exit-code app/models"
 
-  if ENV["SYSTEM_TESTS"]
+  if system_tests
     step "Setup: Test database", "bin/rails ci:prepare"
     step "Tests: System", "bin/rails test:system"
   end
