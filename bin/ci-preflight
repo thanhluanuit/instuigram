@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require "net/http"
 require "socket"
 require "uri"
 
@@ -15,6 +16,17 @@ def tcp_open?(host, port)
   Socket.tcp(host, port, connect_timeout: 2, &:close)
   true
 rescue SystemCallError, IO::TimeoutError, SocketError
+  false
+end
+
+def http_ok?(url)
+  uri = URI.parse(url)
+  response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 2, read_timeout: 2) do |http|
+    http.get(uri.request_uri)
+  end
+
+  response.is_a?(Net::HTTPSuccess)
+rescue SystemCallError, IO::TimeoutError, SocketError, EOFError, Net::OpenTimeout, Net::ReadTimeout, Net::HTTPBadResponse
   false
 end
 
@@ -58,7 +70,6 @@ postgres_host = ENV.fetch("PGHOST", "localhost")
 postgres_port = Integer(ENV.fetch("PGPORT", 5432))
 redis_host, redis_port = endpoint_from(ENV.fetch("REDIS_URL", "redis://localhost:6379/1"), 6379)
 elasticsearch_url = ENV.fetch("ELASTICSEARCH_URL", "http://localhost:9200")
-elasticsearch_host, elasticsearch_port = endpoint_from(elasticsearch_url, 9200)
 
 checks = [
   {
@@ -87,8 +98,8 @@ checks = [
   },
   {
     name: "Elasticsearch",
-    where: "#{elasticsearch_host}:#{elasticsearch_port}",
-    ok: tcp_open?(elasticsearch_host, elasticsearch_port),
+    where: elasticsearch_url,
+    ok: http_ok?("#{elasticsearch_url}/_cluster/health"),
     remedy: "start an Elasticsearch 8 node on #{elasticsearch_url}"
   }
 ]
