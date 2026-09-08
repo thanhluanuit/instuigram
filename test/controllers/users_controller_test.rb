@@ -108,12 +108,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "paginates the post grid to 10 per page" do
-    10.times { |n| create_post!(users(:one), description: "post #{n}") }
+  test "paginates the post grid to 12 per page" do
+    12.times { |n| create_post!(users(:one), description: "post #{n}") }
 
     get user_path(users(:one))
 
-    assert_select ".thumbnail-grid .wrapper", 10
+    assert_select ".thumbnail-grid .wrapper", 12
     assert_select ".pagination"
   end
 

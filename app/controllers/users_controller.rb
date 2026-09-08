@@ -5,6 +5,6 @@ class UsersController < ApplicationController
 
     @posts = @user.posts.includes(image_attachment: :blob)
                   .created_recently
-                  .page(params[:page]).per(10)
+                  .page(params[:page]).per(12)
   end
 end
