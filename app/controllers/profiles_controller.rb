@@ -14,8 +14,12 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    log_event(event_type: :profile_updated, subject: current_user) if current_user.update(user_params)
-    redirect_to profile_path
+    if current_user.update(user_params)
+      log_event(event_type: :profile_updated, subject: current_user)
+      redirect_to profile_path
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private

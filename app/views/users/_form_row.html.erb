@@ -5,5 +5,8 @@
     <% if local_assigns[:hint].present? %>
       <p class="settings-form__hint"><%= hint %></p>
     <% end %>
+    <% f.object.errors.full_messages_for(attribute).each do |message| %>
+      <p class="settings-form__error"><%= message %></p>
+    <% end %>
   </div>
 </div>

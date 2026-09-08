@@ -85,6 +85,12 @@
   margin: $space-2 0 0;
 }
 
+.settings-form__error {
+  @extend %meta-mono;
+  color: $danger;
+  margin: $space-2 0 0;
+}
+
 .settings-form__actions {
   display: grid;
   grid-template-columns: 140px minmax(0, 1fr);

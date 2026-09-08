@@ -5,8 +5,7 @@ class ReactionsController < ApplicationController
   before_action :set_post
 
   def create
-    reaction = Reactions::Create.call(user: current_user, post: @post,
-                                      reaction_type: reaction_params[:reaction_type])
+    reaction = Reactions::Create.call(user: current_user, post: @post, reaction_type: reaction_params[:reaction_type])
     if reaction.errors.none?
       log_event(event_type: :reaction_created, subject: reaction) if reaction.previously_new_record?
       redirect_to reaction_return_path

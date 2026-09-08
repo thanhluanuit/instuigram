@@ -130,6 +130,31 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.profile-header__website[href=?]", "https://safe.example"
   end
 
+  test "update, when the record is invalid, re-renders the edit form instead of redirecting" do
+    sign_in users(:one)
+
+    patch profile_path, params: { user: { website: "javascript:alert(document.domain)" } }
+
+    assert_response :unprocessable_entity
+    assert_select "form.settings-form"
+  end
+
+  test "update, when the record is invalid, tells the user why the change was rejected" do
+    sign_in users(:one)
+
+    patch profile_path, params: { user: { website: "javascript:alert(document.domain)" } }
+
+    assert_select ".settings-form__error"
+  end
+
+  test "update, when the record is invalid, keeps the rejected value in the form so it can be corrected" do
+    sign_in users(:one)
+
+    patch profile_path, params: { user: { website: "javascript:alert(document.domain)" } }
+
+    assert_select "input[name=?][value=?]", "user[website]", "javascript:alert(document.domain)"
+  end
+
   test "update, when authenticated, cannot grant the account admin rights" do
     sign_in users(:one)
 
