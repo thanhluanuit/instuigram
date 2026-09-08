@@ -1,0 +1,131 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "net/http"
+require "socket"
+require "uri"
+
+APP_ROOT = File.expand_path("..", __dir__)
+
+def read_dotfile(name)
+  path = File.join(APP_ROOT, name)
+  File.exist?(path) ? File.read(path).strip : nil
+end
+
+def tcp_open?(host, port)
+  Socket.tcp(host, port, connect_timeout: 2, &:close)
+  true
+rescue SystemCallError, IO::TimeoutError, SocketError
+  false
+end
+
+def http_ok?(url)
+  uri = URI.parse(url)
+  response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 2, read_timeout: 2) do |http|
+    http.get(uri.request_uri)
+  end
+
+  response.is_a?(Net::HTTPSuccess)
+rescue SystemCallError, IO::TimeoutError, SocketError, EOFError, Net::OpenTimeout, Net::ReadTimeout, Net::HTTPBadResponse
+  false
+end
+
+def endpoint_from(url, default_port)
+  uri = URI.parse(url)
+  [ uri.host || "localhost", uri.port || default_port ]
+end
+
+def executable?(*names)
+  paths = ENV.fetch("PATH", "").split(File::PATH_SEPARATOR)
+  names.any? { |name| paths.any? { |path| File.executable?(File.join(path, name)) } }
+end
+
+def expected_ruby_version
+  read_dotfile(".ruby-version").to_s.delete_prefix("ruby-")
+end
+
+def ruby_remedy
+  gemset = read_dotfile(".ruby-gemset")
+  gemset ? "rvm use #{expected_ruby_version}@#{gemset}" : "rvm use #{expected_ruby_version}"
+end
+
+def primary_checkout
+  common_dir = IO.popen(%w[git rev-parse --path-format=absolute --git-common-dir], err: File::NULL, &:read).to_s.strip
+  common_dir.empty? ? nil : File.dirname(common_dir)
+rescue SystemCallError
+  nil
+end
+
+def master_key_remedy
+  primary = primary_checkout
+
+  if primary && primary != APP_ROOT
+    "ln -s #{primary}/config/master.key config/master.key"
+  else
+    "add config/master.key, or set RAILS_MASTER_KEY"
+  end
+end
+
+postgres_host = ENV.fetch("PGHOST", "localhost")
+postgres_port = Integer(ENV.fetch("PGPORT", 5432))
+redis_host, redis_port = endpoint_from(ENV.fetch("REDIS_URL", "redis://localhost:6379/1"), 6379)
+elasticsearch_url = ENV.fetch("ELASTICSEARCH_URL", "http://localhost:9200")
+
+checks = [
+  {
+    name: "Ruby",
+    where: RUBY_VERSION,
+    ok: RUBY_VERSION == expected_ruby_version,
+    remedy: ruby_remedy
+  },
+  {
+    name: "Credentials",
+    where: "config/master.key",
+    ok: File.exist?(File.join(APP_ROOT, "config", "master.key")) || !ENV["RAILS_MASTER_KEY"].to_s.empty?,
+    remedy: master_key_remedy
+  },
+  {
+    name: "Postgres",
+    where: "#{postgres_host}:#{postgres_port}",
+    ok: tcp_open?(postgres_host, postgres_port),
+    remedy: "start your local Postgres on #{postgres_host}:#{postgres_port}"
+  },
+  {
+    name: "Redis",
+    where: "#{redis_host}:#{redis_port}",
+    ok: tcp_open?(redis_host, redis_port),
+    remedy: "brew services start redis"
+  },
+  {
+    name: "Elasticsearch",
+    where: elasticsearch_url,
+    ok: http_ok?("#{elasticsearch_url}/_cluster/health"),
+    remedy: "start an Elasticsearch 8 node on #{elasticsearch_url}"
+  }
+]
+
+system_tests = ![ "", "0", "false", "off", "no" ].include?(ENV["SYSTEM_TESTS"].to_s.strip.downcase)
+
+if system_tests
+  checks << {
+    name: "ImageMagick",
+    where: "magick",
+    ok: executable?("magick", "convert"),
+    remedy: "brew install imagemagick"
+  }
+end
+
+name_width, where_width = %i[name where].map { |key| checks.map { |check| check[key].length }.max }
+
+checks.each do |check|
+  puts format("  %-#{name_width}s  %-#{where_width}s  %s", check[:name], check[:where], check[:ok] ? "ok" : "down")
+end
+
+missing = checks.reject { |check| check[:ok] }
+
+if missing.any?
+  puts "\nFix the following and re-run:"
+  missing.each { |check| puts "  #{check[:remedy]}" }
+end
+
+exit(missing.empty?)

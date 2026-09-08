@@ -174,6 +174,13 @@ Seeds are split so either half can run on its own — `bin/rails db:seed:users` 
 Run the test suite with `bin/rails test`, and the browser tests with
 `bin/rails test:system` (headless by default; `HEADED=1` opens a real Chrome window).
 
+`bin/ci` runs everything the GitHub Actions workflow runs — RuboCop, Brakeman, bundler-audit,
+the test suite and the model-annotation check — as one timed, pass/fail report. It starts with a
+preflight that checks your Ruby matches `.ruby-version`, that `config/master.key` is in place, and
+that Postgres, Redis and Elasticsearch are up — reading the services already on your machine rather
+than starting any, and telling you the command to fix whatever is missing. System tests are the one job it leaves out by default, since they are much the
+slowest; `SYSTEM_TESTS=1 bin/ci` includes them.
+
 ## What you'll learn from this project
 
 - Bootstrapping a Rails app and structuring it around MVC
