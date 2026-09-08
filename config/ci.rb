@@ -16,7 +16,7 @@ CI.run do
     step "Tests: Rails", "bin/rails test"
 
     if system_tests
-      step "Setup: Test database", "bin/rails ci:prepare"
+      step "Setup: Clear tmp", "bin/rails tmp:clear"
       step "Tests: System", "bin/rails test:system"
     end
   else
