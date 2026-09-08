@@ -14,7 +14,7 @@ class ReactionsTest < ApplicationSystemTestCase
         find(".reaction-icon").click
 
         assert_selector ".reaction-icon.liked[aria-label='Unlike']"
-        assert_selector ".reactions-count", text: "1 likes"
+        assert_selector ".reactions-count", text: "1 like"
       end
     end
 
@@ -45,7 +45,7 @@ class ReactionsTest < ApplicationSystemTestCase
         within(feed_post(posts(:two))) { assert_selector ".reaction-icon.liked" }
       end
 
-      within(feed_post(posts(:two))) { assert_selector ".reactions-count", text: "1 likes" }
+      within(feed_post(posts(:two))) { assert_selector ".reactions-count", text: "1 like" }
     end
   end
 

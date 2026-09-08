@@ -34,6 +34,15 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert_select "##{ActionView::RecordIdentifier.dom_id(messages(:from_one))}"
   end
 
+  test "renders message timestamps in the application time zone, not UTC" do
+    sign_in users(:one)
+    messages(:from_one).update!(created_at: Time.utc(2026, 9, 8, 2, 24))
+
+    get conversation_path(conversations(:one_and_two))
+
+    assert_select "##{ActionView::RecordIdentifier.dom_id(messages(:from_one))} time", text: /09:24/
+  end
+
   test "when not a participant, responds not found" do
     sign_in users(:admin)
 
