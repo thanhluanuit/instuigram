@@ -67,6 +67,14 @@ module TurboStreamTestHelper
   def follow_state_stream(user)
     Turbo::StreamsChannel.send(:stream_name_from, [ user, :follow_state ])
   end
+
+  def post_stream(reactable)
+    PostChannel.broadcasting_for(reactable)
+  end
+
+  def user_reaction_stream(reactable, user)
+    PostChannel.broadcasting_for([ reactable, user ])
+  end
 end
 
 class ActiveSupport::TestCase
