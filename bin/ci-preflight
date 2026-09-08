@@ -1,6 +1,15 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require "socket"
 require "uri"
+
+APP_ROOT = File.expand_path("..", __dir__)
+
+def read_dotfile(name)
+  path = File.join(APP_ROOT, name)
+  File.exist?(path) ? File.read(path).strip : nil
+end
 
 def tcp_open?(host, port)
   Socket.tcp(host, port, connect_timeout: 2, &:close)
@@ -19,6 +28,32 @@ def executable?(*names)
   names.any? { |name| paths.any? { |path| File.executable?(File.join(path, name)) } }
 end
 
+def expected_ruby_version
+  read_dotfile(".ruby-version").to_s.delete_prefix("ruby-")
+end
+
+def ruby_remedy
+  gemset = read_dotfile(".ruby-gemset")
+  gemset ? "rvm use #{expected_ruby_version}@#{gemset}" : "rvm use #{expected_ruby_version}"
+end
+
+def primary_checkout
+  common_dir = IO.popen(%w[git rev-parse --path-format=absolute --git-common-dir], err: File::NULL, &:read).to_s.strip
+  common_dir.empty? ? nil : File.dirname(common_dir)
+rescue SystemCallError
+  nil
+end
+
+def master_key_remedy
+  primary = primary_checkout
+
+  if primary && primary != APP_ROOT
+    "ln -s #{primary}/config/master.key config/master.key"
+  else
+    "add config/master.key, or set RAILS_MASTER_KEY"
+  end
+end
+
 postgres_host = ENV.fetch("PGHOST", "localhost")
 postgres_port = Integer(ENV.fetch("PGPORT", 5432))
 redis_host, redis_port = endpoint_from(ENV.fetch("REDIS_URL", "redis://localhost:6379/1"), 6379)
@@ -26,6 +61,18 @@ elasticsearch_url = ENV.fetch("ELASTICSEARCH_URL", "http://localhost:9200")
 elasticsearch_host, elasticsearch_port = endpoint_from(elasticsearch_url, 9200)
 
 checks = [
+  {
+    name: "Ruby",
+    where: RUBY_VERSION,
+    ok: RUBY_VERSION == expected_ruby_version,
+    remedy: ruby_remedy
+  },
+  {
+    name: "Credentials",
+    where: "config/master.key",
+    ok: File.exist?(File.join(APP_ROOT, "config", "master.key")) || !ENV["RAILS_MASTER_KEY"].to_s.empty?,
+    remedy: master_key_remedy
+  },
   {
     name: "Postgres",
     where: "#{postgres_host}:#{postgres_port}",
@@ -57,9 +104,10 @@ if system_tests
   }
 end
 
-width = checks.map { |check| check[:name].length }.max
+name_width, where_width = %i[name where].map { |key| checks.map { |check| check[key].length }.max }
+
 checks.each do |check|
-  puts format("  %-#{width}s  %-22s  %s", check[:name], check[:where], check[:ok] ? "ok" : "down")
+  puts format("  %-#{name_width}s  %-#{where_width}s  %s", check[:name], check[:where], check[:ok] ? "ok" : "down")
 end
 
 missing = checks.reject { |check| check[:ok] }

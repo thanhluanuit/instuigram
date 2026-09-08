@@ -1,7 +1,7 @@
 system_tests = ![ "", "0", "false", "off", "no" ].include?(ENV["SYSTEM_TESTS"].to_s.strip.downcase)
 
 CI.run do
-  step "Services: Postgres, Redis, Elasticsearch", "bin/ci-services"
+  step "Preflight: Ruby, credentials, services", "bin/ci-preflight"
   step "Setup: Gems", "bundle check"
   step "Style: Ruby", "bin/rubocop"
   step "Security: Brakeman code analysis", "bundle exec brakeman"
