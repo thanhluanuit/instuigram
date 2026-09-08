@@ -11,9 +11,9 @@ CI.run do
 
   if preflight_ok
     step "Setup: Test database", "bin/rails ci:prepare"
-    step "Tests: Rails", "bin/rails test"
     step "Annotations: Model schema comments",
       "env RAILS_ENV=test bundle exec annotaterb models && git diff --exit-code app/models"
+    step "Tests: Rails", "bin/rails test"
 
     if system_tests
       step "Setup: Test database", "bin/rails ci:prepare"
