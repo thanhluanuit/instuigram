@@ -11,12 +11,14 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
-  test "when authenticated, renders successfully" do
+  test "when authenticated, renders every post in the feed" do
     sign_in users(:one)
 
     get root_path
 
     assert_response :success
+    assert_select "section.post", count: Post.count
+    assert_select "section.post", text: /#{posts(:one).description}/
   end
 
   test "with no avatar, shows a placeholder instead of an image in the composer" do
@@ -26,6 +28,15 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_select ".composer-avatar"
     assert_select ".composer-avatar img", count: 0
+  end
+
+  test "with an avatar, shows it in the composer instead of the placeholder" do
+    attach_test_image(users(:one).avatar)
+    sign_in users(:one)
+
+    get root_path
+
+    assert_select ".composer-avatar img[alt=?]", users(:one).username
   end
 
   test "with no posts, shows the empty state" do
@@ -105,6 +116,29 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_select "section.post:first-of-type", text: /#{newest.description}/
+  end
+
+  test "eagerly loads the first feed image and lazy-loads the rest" do
+    sign_in users(:one)
+    2.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    get root_path
+
+    images = css_select("img.main-image")
+    assert_equal Post.count, images.size
+    assert_equal "eager", images.first["loading"]
+    assert_equal [ "lazy" ], images.drop(1).map { |image| image["loading"] }.uniq
+  end
+
+  test "lazy-loads every image on a page appended by infinite scroll" do
+    sign_in users(:one)
+    11.times { |n| create_post!(users(:one), description: "post #{n}") }
+
+    get root_path(page: 2), as: :turbo_stream
+
+    images = css_select("img.main-image")
+    assert_predicate images, :any?
+    assert_equal [ "lazy" ], images.map { |image| image["loading"] }.uniq
   end
 
   test "shows no filled hearts for a user who has reacted to no posts" do

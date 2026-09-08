@@ -4,58 +4,35 @@
 [![Ruby](https://img.shields.io/badge/Ruby-3.3.11-CC342D?logo=ruby&logoColor=white)](.ruby-version)
 [![Rails](https://img.shields.io/badge/Rails-8.1.3.1-CC0000?logo=rubyonrails&logoColor=white)](Gemfile.lock)
 
-**Instuigram** is an Instagram clone built on Ruby on Rails, covering what a real Rails application needs beyond CRUD: authentication, background jobs, caching, full-text search, real-time direct messaging, a follow graph, and a CI pipeline that enforces security and style on every push.
+**Instuigram** is an Instagram clone built on Ruby on Rails, covering what a real Rails application needs beyond CRUD: authentication, background jobs, caching, full-text search, real-time direct messaging, a follow graph, and a CI pipeline that enforces security and style on every change to `master`.
 
-## What you'll learn from this project
+## Screenshots
 
-- Bootstrapping a Rails app and structuring it around MVC
-- Active Record: migrations, validations, callbacks, associations, and the query interface
-- Views: layouts, partials, and form helpers
-- Controllers: actions and strong parameters
-- Rails routing
-- File uploads with Active Storage
-- Authentication with Devise, pagination with Kaminari
-- Background jobs with Sidekiq and caching with Redis
-- Full-text search with Elasticsearch
-- Real-time UI with Action Cable and Turbo Streams, no SPA framework
-- Keeping a growing model tidy: concerns, service objects, and counter caches
-- Standing up a token-authenticated JSON API alongside the session-based web app
+![Homepage](app/assets/images/home_page.png "Homepage")
 
-## Tech Stack
+![Chat](app/assets/images/chat_conversation.png "Chat")
 
-**Back-end**
-- Ruby 3.3.11 · Rails 8.1.3.1 (`config.load_defaults 8.1`)
-- PostgreSQL — primary database
-- Redis — Rails cache store, Sidekiq queue backend, and Action Cable pub/sub (`redis` gem 6.0; CI runs Redis 7)
-- Sidekiq 8.1 — background job processing
-- Elasticsearch 8.x — full-text search through `elasticsearch-model` / `elasticsearch-rails`, the low-level official gems rather than Searchkick, so the index mapping and query DSL are hand-written
-- Puma 8 — application server
-- Devise 5 (authentication) · Kaminari (pagination) · Active Storage (file uploads)
-- `image_processing` + `mini_magick` — Active Storage named variants, shelling out to ImageMagick rather than libvips
-- JWT 3.2 — token issuance for the `/api/v1` surface
+<details>
+<summary>Profile, follow and post detail</summary>
 
-**Real-time**
-- Action Cable over Redis, with hand-written Stimulus controllers — `ConversationChannel`, `InboxChannel`, `PresenceChannel`, `PostChannel`
-- Turbo Streams via declarative `turbo_stream_from` — follow buttons, follower counts, comments and reactions
+![User Profile Page](app/assets/images/user_profile.png "User Profile Page")
 
-**Front-end**
-- Server-rendered ERB (no ViewComponent)
-- Turbo 2 + Stimulus 1.3 via importmap-rails — no npm build step, `package.json` has zero dependencies
-- Bootstrap 5.3 (CSS only, no jQuery) via sassc-rails/SCSS, with every colour, radius and shadow a token in `_tokens.scss`
-- Self-hosted woff2 webfonts and Font Awesome 4 icons — the app's CSP is `style_src :self` / `font_src :self, :data`, which rules out Google Fonts
-- Sprockets serves CSS, fonts and images; importmap-rails serves all JS
+![Follow](app/assets/images/follow_profile.png "Follow")
 
-**Quality & security**
-- Minitest — model, controller, service, channel, job and Capybara/Selenium system tests
-- SimpleCov — coverage report generated on every local `bin/rails test`
-- RuboCop (`rubocop-rails-omakase`) — style
-- Brakeman 8 — static security analysis
-- bundler-audit — dependency CVE scanning
-- `bullet` — N+1 query detection in development and test
-- `annotaterb` — schema annotations above each model, with CI failing on drift
-- CI runs five independent, parallel GitHub Actions jobs on every push: `brakeman`, `bundler_audit`, `rubocop`, `test` and `system_test` (Rails' default test glob excludes `test/system`, so the browser suite needs its own job)
+![Post details](app/assets/images/post_details.png "Post details")
+
+</details>
 
 ## Key features
+
+- **Posts** — image upload through Active Storage with named variants, `#hashtags` parsed out of the description on create, comments and six emoji reactions, and an infinite-scroll feed
+- **Chat** — one-to-one conversations with live delivery, unread badges and online presence
+- **Follow** — a self-join social graph with counter-cached totals and live button and count updates
+- **Search and Explore** — Elasticsearch across post descriptions and hashtags plus username matching; `/explore` surfaces posts from people you don't follow yet
+- **JSON API** — a token-authenticated `/api/v1` surface: machine credentials exchanged for a short-lived JWT, both entry points rate-limited
+- **Event log** — key domain events (posts, comments, reactions, follows, messages, profile updates) written asynchronously to an audit table
+
+The two features worth reading the code for:
 
 ### Chat
 
@@ -63,7 +40,7 @@ One-to-one messaging with live delivery. A sent message reaches the other browse
 immediately — the unread badge ticks up and the thread jumps to the top of their inbox,
 wherever they are in the app. A dot on each avatar shows who is online.
 
-- **One thread per pair.** `Conversation.key_for` sorts the two user ids into a
+- **One thread per pair.** `Conversation.participants_key_for` sorts the two user ids into a
   `participants_key` carrying a unique index, so
   [`Conversations::FindOrCreate`](app/services/conversations/find_or_create.rb) can never
   open a second thread for the same two people.
@@ -130,6 +107,40 @@ on purpose.
 - `Api::V1::PostsController` — exposes posts (index/show/create/destroy) to authenticated API clients, scoped to the token's own user
 - Both unauthenticated endpoints are throttled with Rails 8's native `rate_limit`
 
+## Tech Stack
+
+**Back-end**
+- Ruby 3.3.11 · Rails 8.1.3.1 
+- PostgreSQL — primary database
+- Redis — Rails cache store, Sidekiq queue backend, and Action Cable pub/sub
+- Sidekiq 8.1 — background job processing
+- Elasticsearch 8.x — full-text search
+- Puma 8 — application server
+- Devise 5 (authentication) · Kaminari (pagination) · Active Storage (file uploads)
+- `image_processing` + `mini_magick` — Active Storage named variants, shelling out to ImageMagick rather than libvips
+- JWT — token issuance for the `/api/v1` surface
+
+**Real-time**
+- Action Cable over Redis, with hand-written Stimulus controllers — `ConversationChannel`, `InboxChannel`, `PresenceChannel`, `PostChannel`
+- Turbo Streams via declarative `turbo_stream_from` — follow buttons, follower counts, comments and reactions
+
+**Front-end**
+- Server-rendered ERB
+- Turbo + Stimulus via importmap-rails — no npm build step, `package.json` has zero dependencies
+- Bootstrap 5.3 (CSS only, no jQuery) via sassc-rails/SCSS, with every colour, radius and shadow a token in `_tokens.scss`
+- Self-hosted woff2 webfonts and Font Awesome 4 icons — the app's CSP is `style_src :self` / `font_src :self, :data`, which rules out Google Fonts
+- Sprockets serves CSS, fonts and images; importmap-rails serves all JS
+
+**Quality & security**
+- Minitest — model, controller, service, channel, job and Capybara/Selenium system tests
+- SimpleCov — coverage report generated on every local `bin/rails test`
+- RuboCop (`rubocop-rails-omakase`) — style
+- Brakeman 8 — static security analysis
+- bundler-audit — dependency CVE scanning
+- `bullet` — N+1 query detection in development and test
+- `annotaterb` — schema annotations above each model, with CI failing on drift
+- CI runs five independent, parallel GitHub Actions jobs on every push to `master` and every pull request targeting it: `brakeman`, `bundler_audit`, `rubocop`, `test` and `system_test` (Rails' default test glob excludes `test/system`, so the browser suite needs its own job)
+
 ## Getting Started
 
 **Prerequisites** — Ruby 3.3.11 (managed with RVM; `.ruby-version` and `.ruby-gemset` are
@@ -163,7 +174,22 @@ Seeds are split so either half can run on its own — `bin/rails db:seed:users` 
 Run the test suite with `bin/rails test`, and the browser tests with
 `bin/rails test:system` (headless by default; `HEADED=1` opens a real Chrome window).
 
-## Article Series
+## What you'll learn from this project
+
+- Bootstrapping a Rails app and structuring it around MVC
+- Active Record: migrations, validations, callbacks, associations, and the query interface
+- Views: layouts, partials, and form helpers
+- Controllers: actions and strong parameters
+- Rails routing
+- File uploads with Active Storage
+- Authentication with Devise, pagination with Kaminari
+- Background jobs with Sidekiq and caching with Redis
+- Full-text search with Elasticsearch
+- Real-time UI with Action Cable and Turbo Streams, no SPA framework
+- Keeping a growing model tidy: concerns, service objects, and counter caches
+- Standing up a token-authenticated JSON API alongside the session-based web app
+
+## Article Series on Medium
 
 This project began life as a step-by-step Medium series walking through building it from scratch:
 
@@ -171,19 +197,3 @@ This project began life as a step-by-step Medium series walking through building
 - [Build Instagram by Ruby on Rails (Part 2)](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-2-d70b44f5c7e6) — 👏 628 · 💬 9
 - [Build Instagram by Ruby on Rails (Part 3)](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-3-2cb65dca46d7) — 👏 578 · 💬 3
 
-## Screenshots
-
-### Homepage
-![Homepage](app/assets/images/home_page.png "Homepage")
-
-### User Profile Page
-![User Profile Page](app/assets/images/user_profile.png "User Profile Page")
-
-### Chat
-![Chat](app/assets/images/chat_conversation.png "Chat")
-
-### Follow
-![Follow](app/assets/images/follow_profile.png "Follow")
-
-### Post details
-![Post details](app/assets/images/post_details.png "Post details")

@@ -2,12 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 
 const EMPTY_HINT = "Drag a photo here, or click to browse"
 
-// Post composer (app/views/home/_upload_form.html.erb): drives the drop zone
-// behind the visually hidden file input, previews the chosen photo, mirrors the
-// caption's #hashtags as chips, and keeps Share disabled until a photo is
-// attached — Post requires an image but not caption text (see Post#image_presence).
-// acceptValue/maxBytesValue mirror ImageValidator so a file the server would
-// reject never reaches it — a rejected create redirects and discards the caption.
 export default class extends Controller {
   static targets = ["fileInput", "filename", "error", "submit", "caption", "counter", "tags", "preview", "dropzone"]
   static values = { limit: Number, accept: String, maxBytes: Number }

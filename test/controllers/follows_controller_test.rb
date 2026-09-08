@@ -123,4 +123,12 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to new_user_session_path
   end
+
+  test "responds not found when the user to follow is addressed by their database id" do
+    sign_in @user
+
+    assert_no_difference("Follow.count") { post user_follow_path(user_id: @other.id) }
+
+    assert_response :not_found
+  end
 end

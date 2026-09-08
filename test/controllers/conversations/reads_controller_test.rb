@@ -17,4 +17,12 @@ class Conversations::ReadsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
   end
+
+  test "responds not found when the conversation is addressed by its database id" do
+    sign_in users(:two)
+
+    post conversation_read_path(conversation_id: conversations(:one_and_two).id)
+
+    assert_response :not_found
+  end
 end

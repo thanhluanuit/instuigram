@@ -120,4 +120,22 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
     assert Comment.exists?(comments(:one).id)
   end
+
+  test "responds not found when the post being commented on is addressed by its database id" do
+    sign_in users(:one)
+
+    assert_no_difference("Comment.count") do
+      post post_comments_path(post_id: posts(:two).id), params: { comment: { body: "Nice" } }
+    end
+
+    assert_response :not_found
+  end
+
+  test "responds not found when the comment to delete is addressed by its database id" do
+    sign_in users(:two)
+
+    assert_no_difference("Comment.count") { delete comment_path(id: comments(:one).id) }
+
+    assert_response :not_found
+  end
 end

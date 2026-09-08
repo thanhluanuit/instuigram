@@ -76,6 +76,8 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     get post_path(posts(:one))
 
     assert_response :success
+    assert_select ".post-detail", text: /#{posts(:one).description}/
+    assert_select "a[href=?]", user_path(posts(:one).user)
   end
 
   test "when signed in as the post's owner, shows a Delete icon" do
@@ -145,6 +147,14 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     get post_path(posts(:one))
 
     assert_select "a.reaction-icon", count: 0
+  end
+
+  test "labels a single reaction in the singular" do
+    Reaction.create!(user: users(:one), reactable: posts(:two))
+
+    get post_path(posts(:two))
+
+    assert_select ".reactions-count", text: /\A\s*1 like\s*\z/
   end
 
   test "shows the post's existing comments" do

@@ -7,25 +7,44 @@
   overflow: hidden;
 
   &__media {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 0;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
     background-color: $ink;
   }
 
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.2);
+    filter: blur(32px) brightness(.55);
+  }
+
   &__image {
+    position: relative;
     display: block;
     width: 100%;
-    max-height: 80vh;
+    height: 100%;
     object-fit: contain;
   }
 
   &__panel {
+    position: relative;
+    min-width: 0;
+  }
+
+  &__panel-inner {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
-    min-width: 0;
-    max-height: 80vh;
     padding: $space-6;
   }
 
@@ -100,13 +119,9 @@
   .post-detail {
     grid-template-columns: minmax(0, 1fr);
 
-    &__panel {
-      max-height: none;
+    &__panel-inner {
+      position: static;
       padding: $space-4;
-    }
-
-    &__image {
-      max-height: 60vh;
     }
   }
 }

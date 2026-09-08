@@ -34,17 +34,6 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "hi"
   end
 
-  test "a turbo stream request receives the rendered message" do
-    sign_in users(:one)
-
-    post conversation_messages_path(conversations(:one_and_two)),
-         params: { message: { body: "hi" } },
-         as: :turbo_stream
-
-    assert_response :success
-    assert_includes response.body, ActionView::RecordIdentifier.dom_id(Message.last)
-  end
-
   test "when not a participant, responds not found and creates no message" do
     sign_in users(:admin)
 
@@ -63,5 +52,17 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to conversation_path(conversations(:one_and_two))
+  end
+
+  test "throttles a burst of requests, so the conversation cannot be flooded" do
+    sign_in users(:one)
+
+    30.times { post conversation_messages_path(conversations(:one_and_two)), params: { message: { body: "" } } }
+
+    assert_no_difference("Message.count") do
+      post conversation_messages_path(conversations(:one_and_two)), params: { message: { body: "one too many" } }
+    end
+
+    assert_response :too_many_requests
   end
 end

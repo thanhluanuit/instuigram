@@ -42,4 +42,18 @@ class Api::V1::OauthControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
     assert_equal "Invalid credentials", JSON.parse(response.body)["message"]
   end
+
+  test "throttles repeated attempts, so client secrets cannot be brute forced" do
+    client = Client.create!(user: users(:one))
+
+    10.times do
+      post api_v1_oauth_path, params: { token: { client_id: client.client_id, client_secret: "wrong-secret" } }
+      assert_response :unauthorized
+    end
+
+    post api_v1_oauth_path, params: { token: { client_id: client.client_id, client_secret: client.client_secret } }
+
+    assert_response :too_many_requests
+    assert_equal({ "message" => "Too many attempts. Try again later." }, JSON.parse(response.body))
+  end
 end

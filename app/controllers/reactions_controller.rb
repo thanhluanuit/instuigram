@@ -5,10 +5,9 @@ class ReactionsController < ApplicationController
   before_action :set_post
 
   def create
-    reaction = current_user.reactions.find_or_initialize_by(reactable: @post)
-    was_new_record = reaction.new_record?
-    if reaction.update(reaction_params)
-      log_event(event_type: :reaction_created, subject: reaction) if was_new_record
+    reaction = Reactions::Create.call(user: current_user, post: @post, reaction_type: reaction_params[:reaction_type])
+    if reaction.errors.none?
+      log_event(event_type: :reaction_created, subject: reaction) if reaction.previously_new_record?
       redirect_to reaction_return_path
     else
       redirect_to reaction_return_path, alert: reaction.errors.full_messages.to_sentence
@@ -16,7 +15,7 @@ class ReactionsController < ApplicationController
   end
 
   def destroy
-    current_user.reactions.find_by(reactable: @post)&.destroy
+    Reactions::Destroy.call(user: current_user, post: @post)
 
     redirect_to reaction_return_path
   end
@@ -28,9 +27,13 @@ class ReactionsController < ApplicationController
   end
 
   def reaction_return_path
-    return post_path(@post) if turbo_frame_request_id == dom_id(@post, :modal_reaction)
+    return post_path(@post) if reaction_frame_request?
 
     request.referer.presence || post_path(@post)
+  end
+
+  def reaction_frame_request?
+    turbo_frame_request_id.in?([ dom_id(@post, :reaction), dom_id(@post, :modal_reaction) ])
   end
 
   def reaction_params
