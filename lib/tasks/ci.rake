@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :ci do
   desc "Purge and reload the test database, drop stale parallel worker databases, and clear tmp"
   task :prepare do
@@ -20,18 +22,25 @@ namespace :ci do
     Rake::Task["tmp:clear"].invoke
   end
 
-  desc "Drop the parallel test worker databases so they are rebuilt from the current schema"
+  desc "Drop the parallel test worker databases whose schema no longer matches db/schema.rb"
   task drop_worker_databases: "db:load_config" do
     db_config = ActiveRecord::Base.configurations.configs_for(env_name: "test", name: "primary")
-    workers = ENV["PARALLEL_WORKERS"]&.to_i ||
-      (Concurrent.available_processor_count || Concurrent.processor_count).floor
 
-    workers.times do |index|
-      worker_config = ActiveRecord::DatabaseConfigurations::HashConfig.new(
+    config_for = ->(database) do
+      ActiveRecord::DatabaseConfigurations::HashConfig.new(
         db_config.env_name,
         db_config.name,
-        db_config.configuration_hash.merge(database: "#{db_config.database}_#{index}")
+        db_config.configuration_hash.merge(database: database)
       )
+    end
+
+    ActiveRecord::Base.establish_connection(config_for.call("postgres"))
+
+    pattern = /\A#{Regexp.escape(db_config.database)}_\d+\z/
+    workers = ActiveRecord::Base.connection.select_values("SELECT datname FROM pg_database").grep(pattern)
+
+    workers.map(&config_for).each do |worker_config|
+      next if ActiveRecord::Tasks::DatabaseTasks.schema_up_to_date?(worker_config)
 
       ActiveRecord::Tasks::DatabaseTasks.drop(worker_config)
     end
