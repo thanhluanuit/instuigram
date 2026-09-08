@@ -88,7 +88,7 @@ checks = [
     name: "Postgres",
     where: "#{postgres_host}:#{postgres_port}",
     ok: tcp_open?(postgres_host, postgres_port),
-    remedy: "brew services start postgresql@14"
+    remedy: "start your local Postgres on #{postgres_host}:#{postgres_port}"
   },
   {
     name: "Redis",
@@ -122,8 +122,10 @@ checks.each do |check|
 end
 
 missing = checks.reject { |check| check[:ok] }
-exit 0 if missing.empty?
 
-puts "\nStart the missing services and re-run:"
-missing.each { |check| puts "  #{check[:remedy]}" }
-exit 1
+if missing.any?
+  puts "\nFix the following and re-run:"
+  missing.each { |check| puts "  #{check[:remedy]}" }
+end
+
+exit(missing.empty?)
