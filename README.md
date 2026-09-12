@@ -6,6 +6,63 @@
 
 **Instuigram** is an Instagram clone built on Ruby on Rails, covering what a real Rails application needs beyond CRUD: authentication, background jobs, caching, full-text search, real-time direct messaging, a follow graph, and a CI pipeline that enforces security and style on every change to `master`.
 
+
+## Article Series on Medium
+
+This project began as a step-by-step Medium series walking through building it from scratch:
+
+- [Build Instagram by Ruby on Rails (Part 1)](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-1-fef7837ee399) — 👏 2K · 💬 11
+- [Build Instagram by Ruby on Rails (Part 2)](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-2-d70b44f5c7e6) — 👏 628 · 💬 9
+- [Build Instagram by Ruby on Rails (Part 3)](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-3-2cb65dca46d7) — 👏 578 · 💬 3
+
+
+## Tech Stack
+
+**Back-end**
+- Ruby 3.3.11 · Rails 8.1.3.1 
+- PostgreSQL — primary database
+- Redis — Rails cache store, Sidekiq queue backend, and Action Cable pub/sub
+- Sidekiq 8.1 — background job processing
+- Elasticsearch 8.x — full-text search
+- Puma 8 — application server
+- Devise 5 (authentication) · Kaminari (pagination) · Active Storage (file uploads)
+- JWT — token issuance for the `/api/v1` surface
+
+**Real-time**
+- Action Cable over Redis, with hand-written Stimulus controllers — `ConversationChannel`, `InboxChannel`, `PresenceChannel`, `PostChannel`
+- Turbo Streams via declarative `turbo_stream_from` — follow buttons, follower counts, comments and reactions
+
+**Front-end**
+- Server-rendered ERB
+- Turbo + Stimulus
+- Bootstrap 5.3 (CSS only, no jQuery)
+- Sprockets serves CSS, fonts and images; importmap-rails serves all JS
+
+**Quality & security**
+- Minitest — model, controller, service, channel, job and Capybara/Selenium system tests
+- SimpleCov — coverage report generated on every local `bin/rails test`
+- RuboCop (`rubocop-rails-omakase`) — style
+- Brakeman 8 — static security analysis
+- bundler-audit — dependency CVE scanning
+- `bullet` — N+1 query detection in development and test
+- `annotaterb` — schema annotations above each model, with CI failing on drift
+- CI runs five independent, parallel GitHub Actions jobs on every push to `master` and every pull request targeting it: `brakeman`, `bundler_audit`, `rubocop`, `test` and `system_test` (Rails' default test glob excludes `test/system`, so the browser suite needs its own job)
+
+
+## What you'll learn from this project
+- Bootstrapping a Rails app and structuring it around MVC
+- Active Record: migrations, validations, callbacks, associations, and the query interface
+- Views: layouts, partials, and form helpers
+- Controllers: actions and strong parameters
+- Rails routing
+- File uploads with Active Storage
+- Authentication with Devise, pagination with Kaminari
+- Background jobs with Sidekiq and caching with Redis
+- Full-text search with Elasticsearch
+- Real-time UI with Action Cable and Turbo Streams, no SPA framework
+- Keeping a growing model tidy: concerns, service objects, and counter caches
+- Standing up a token-authenticated JSON API alongside the session-based web app
+
 ## Screenshots
 
 ![Homepage](app/assets/images/home_page.png "Homepage")
@@ -107,40 +164,6 @@ on purpose.
 - `Api::V1::PostsController` — exposes posts (index/show/create/destroy) to authenticated API clients, scoped to the token's own user
 - Both unauthenticated endpoints are throttled with Rails 8's native `rate_limit`
 
-## Tech Stack
-
-**Back-end**
-- Ruby 3.3.11 · Rails 8.1.3.1 
-- PostgreSQL — primary database
-- Redis — Rails cache store, Sidekiq queue backend, and Action Cable pub/sub
-- Sidekiq 8.1 — background job processing
-- Elasticsearch 8.x — full-text search
-- Puma 8 — application server
-- Devise 5 (authentication) · Kaminari (pagination) · Active Storage (file uploads)
-- `image_processing` + `mini_magick` — Active Storage named variants, shelling out to ImageMagick rather than libvips
-- JWT — token issuance for the `/api/v1` surface
-
-**Real-time**
-- Action Cable over Redis, with hand-written Stimulus controllers — `ConversationChannel`, `InboxChannel`, `PresenceChannel`, `PostChannel`
-- Turbo Streams via declarative `turbo_stream_from` — follow buttons, follower counts, comments and reactions
-
-**Front-end**
-- Server-rendered ERB
-- Turbo + Stimulus via importmap-rails — no npm build step, `package.json` has zero dependencies
-- Bootstrap 5.3 (CSS only, no jQuery) via sassc-rails/SCSS, with every colour, radius and shadow a token in `_tokens.scss`
-- Self-hosted woff2 webfonts and Font Awesome 4 icons — the app's CSP is `style_src :self` / `font_src :self, :data`, which rules out Google Fonts
-- Sprockets serves CSS, fonts and images; importmap-rails serves all JS
-
-**Quality & security**
-- Minitest — model, controller, service, channel, job and Capybara/Selenium system tests
-- SimpleCov — coverage report generated on every local `bin/rails test`
-- RuboCop (`rubocop-rails-omakase`) — style
-- Brakeman 8 — static security analysis
-- bundler-audit — dependency CVE scanning
-- `bullet` — N+1 query detection in development and test
-- `annotaterb` — schema annotations above each model, with CI failing on drift
-- CI runs five independent, parallel GitHub Actions jobs on every push to `master` and every pull request targeting it: `brakeman`, `bundler_audit`, `rubocop`, `test` and `system_test` (Rails' default test glob excludes `test/system`, so the browser suite needs its own job)
-
 ## Getting Started
 
 **Prerequisites** — Ruby 3.3.11 (managed with RVM; `.ruby-version` and `.ruby-gemset` are
@@ -173,27 +196,4 @@ Seeds are split so either half can run on its own — `bin/rails db:seed:users` 
 
 Run the test suite with `bin/rails test`, and the browser tests with
 `bin/rails test:system` (headless by default; `HEADED=1` opens a real Chrome window).
-
-## What you'll learn from this project
-
-- Bootstrapping a Rails app and structuring it around MVC
-- Active Record: migrations, validations, callbacks, associations, and the query interface
-- Views: layouts, partials, and form helpers
-- Controllers: actions and strong parameters
-- Rails routing
-- File uploads with Active Storage
-- Authentication with Devise, pagination with Kaminari
-- Background jobs with Sidekiq and caching with Redis
-- Full-text search with Elasticsearch
-- Real-time UI with Action Cable and Turbo Streams, no SPA framework
-- Keeping a growing model tidy: concerns, service objects, and counter caches
-- Standing up a token-authenticated JSON API alongside the session-based web app
-
-## Article Series on Medium
-
-This project began life as a step-by-step Medium series walking through building it from scratch:
-
-- [Build Instagram by Ruby on Rails (Part 1)](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-1-fef7837ee399) — 👏 2K · 💬 11
-- [Build Instagram by Ruby on Rails (Part 2)](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-2-d70b44f5c7e6) — 👏 628 · 💬 9
-- [Build Instagram by Ruby on Rails (Part 3)](https://medium.com/luanotes/build-instagram-by-ruby-on-rails-part-3-2cb65dca46d7) — 👏 578 · 💬 3
 
